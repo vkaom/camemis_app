@@ -17,15 +17,26 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import CamemisLogo from './camhead';
+import CamemisToolbar from './toolbar';
 
 var {height, width} = Dimensions.get('window');
+
+var Dashboard = require('./dashboard');
+var Academic = require('./academic');
+var Schedule = require('./schedule');
+var Attendance = require('./attendance');
+var Discipline = require('./discipline');
+var Transcript = require('./transcript');
 
 export default class menu extends Component{
   constructor(props) {
     super(props);
+    this.state = {tab: 'dashboard'};
+    this._renderDrawerContent = this._renderDrawerContent.bind(this);
   }
   render(){
-      return (<DrawerLayoutAndroid
+      return (
+        <DrawerLayoutAndroid
           drawerPosition={DrawerLayoutAndroid.positions.Left}
           drawerWidth={Dimensions.get('window').width/1.5}
           keyboardDismissMode="on-drag"
@@ -36,81 +47,145 @@ export default class menu extends Component{
             this._overrideBackPressForDrawerLayout = false;
           }}
           ref={(drawer) => { this.drawer = drawer; }}
-          renderNavigationView={this._renderDrawerContent}>
-          <View style={{flex:1}}>
-            <View style={styles.topStyle}>
-                <View style={{flexDirection: 'row',}}>
-                  <TouchableHighlight onPress={()=>{this.drawer.openDrawer()}} underlayColor="#4682B6" style={{justifyContent:'center',alignItems: 'flex-start'}}>
-                    <View style={{width:40,justifyContent:'center',alignItems:'center'}}>
-                      <Icon name='bars' size={25} color="#fff" />
-                    </View>
-                  </TouchableHighlight>
-                  <CamemisLogo text={'CAMEMIS Education'}/>
-                </View>
-                <TouchableHighlight onPress={this._handlePress} underlayColor="#4682B6" style={{justifyContent:'center',alignItems: 'flex-end'}}>
-                  <View style={{justifyContent:'center',alignItems: 'center',width:40}}>
-                    <Text style={{ fontSize: 25, color:'#ffffff'}}>&#8942;</Text>
-                  </View>
-                </TouchableHighlight>
-            </View>
-            <ScrollView style={styles.container}>
-              <View style={styles.contentStyle}>
-                <Text>Hello!</Text>
-              </View>
-            </ScrollView>
-          </View>
+          renderNavigationView={this._renderDrawerContent}
+        >
+          {this._renderMainContent()}
         </DrawerLayoutAndroid>
       );
     }
   _renderDrawerContent(){
-    return(<View>
-      <ScrollView style={styles.viewsideBarStyle}>
-          <TouchableWithoutFeedback>
-            <View style={styles.schoolStyle}>
-              <Icon name="home" size={25} color="#4682B4" />
-              <Text style={{color:'#000',fontSize:16}}> ELT Elemetary School</Text>
-            </View>
-          </TouchableWithoutFeedback>
-          <TouchableWithoutFeedback>
-            <View style={styles.dropdownOptions}>
-              <Icon name="tachometer" size={15} color="#006400" />
-              <Text style={{color:'#000',}}> Dashboard</Text>
-            </View>
-          </TouchableWithoutFeedback>
-          <TouchableWithoutFeedback>
-            <View style={styles.dropdownOptions}>
-              <Icon name="graduation-cap" size={15} color="#3cb371" />
-              <Text style={{color:'#000',}}> My Academic</Text>
-            </View>
-          </TouchableWithoutFeedback>
-          <TouchableWithoutFeedback>
-            <View style={styles.dropdownOptions}>
-              <Icon name="calendar-check-o" size={15} color="#b22222" />
-              <Text style={{color:'#000',}}> Schdeule</Text>
-            </View>
-          </TouchableWithoutFeedback>
-          <TouchableWithoutFeedback>
-            <View style={styles.dropdownOptions}>
-              <Icon name="pencil" size={15} color="#20b2aa" />
-              <Text style={{color:'#000',}}> Attendance</Text>
-            </View>
-          </TouchableWithoutFeedback>
-          <TouchableWithoutFeedback>
-            <View style={styles.dropdownOptions}>
-              <Icon name="paw" size={15} color="#3cb371" />
-              <Text style={{color:'#000',}}> Disciline</Text>
-            </View>
-          </TouchableWithoutFeedback>
-          <TouchableWithoutFeedback>
-            <View style={styles.dropdownOptions}>
-              <Icon name="star-o" size={15} color="#daa520" />
-              <Text style={{color:'#000',}}> Transparent</Text>
-            </View>
-          </TouchableWithoutFeedback>
-      </ScrollView>
-    </View>);
+    return(
+      <View>
+        <ScrollView style={styles.viewsideBarStyle}>
+            <TouchableWithoutFeedback onPress={this._setTab.bind(this, 'dashboard')}>
+              <View style={styles.schoolStyle}>
+                <Icon name="home" size={25} color="#4682B4" />
+                <Text style={{color:'#000',fontSize:16}}> ELT Elemetary School</Text>
+              </View>
+            </TouchableWithoutFeedback>
+            <TouchableWithoutFeedback onPress={this._setTab.bind(this, 'dashboard')}>
+              <View style={styles.dropdownOptions}>
+                <Icon name="tachometer" size={15} color="#006400" />
+                <Text style={{color:'#000',}}> Dashboard</Text>
+              </View>
+            </TouchableWithoutFeedback>
+            <TouchableWithoutFeedback onPress={this._setTab.bind(this, 'academic')}>
+              <View style={styles.dropdownOptions}>
+                <Icon name="graduation-cap" size={15} color="#3cb371" />
+                <Text style={{color:'#000',}}> My Academic</Text>
+              </View>
+            </TouchableWithoutFeedback>
+            <TouchableWithoutFeedback onPress={this._setTab.bind(this, 'schedule')}>
+              <View style={styles.dropdownOptions}>
+                <Icon name="calendar-check-o" size={15} color="#b22222" />
+                <Text style={{color:'#000',}}> Schdeule</Text>
+              </View>
+            </TouchableWithoutFeedback>
+            <TouchableWithoutFeedback onPress={this._setTab.bind(this, 'attendance')}>
+              <View style={styles.dropdownOptions}>
+                <Icon name="pencil" size={15} color="#20b2aa" />
+                <Text style={{color:'#000',}}> Attendance</Text>
+              </View>
+            </TouchableWithoutFeedback>
+            <TouchableWithoutFeedback onPress={this._setTab.bind(this, 'discipline')}>
+              <View style={styles.dropdownOptions}>
+                <Icon name="paw" size={15} color="#3cb371" />
+                <Text style={{color:'#000',}}> Disciline</Text>
+              </View>
+            </TouchableWithoutFeedback>
+            <TouchableWithoutFeedback onPress={() => {this._setTab('transcript')}}>
+              <View style={styles.dropdownOptions}>
+                <Icon name="star-o" size={15} color="#daa520" />
+                <Text style={{color:'#000',}}> Transcript</Text>
+              </View>
+            </TouchableWithoutFeedback>
+        </ScrollView>
+      </View>
+    );
   }
-  changeRout = (_v) => {
+  _renderMainContent(){
+    switch (this.state.tab) {
+      case 'dashboard':
+        return (
+          <View style={{flex: 1, flexDirection:'column'}}>
+            <View>
+              <CamemisToolbar title="Dashboard" openDrawer={this._openDrawer} onActionSelected={this._onActionSelected} actions={toolbarActions} />
+            </View>
+            <ScrollView style={styles.container}>
+              <Dashboard></Dashboard>
+            </ScrollView>
+          </View>
+        );
+        break;
+      case 'academic':
+        return (
+          <View style={{flex: 1, flexDirection:'column'}}>
+            <View>
+              <CamemisToolbar title="Academic" openDrawer={this._openDrawer} onActionSelected={this._onActionSelected} actions={toolbarActions} />
+            </View>
+            <ScrollView style={styles.container}>
+              <Academic></Academic>
+            </ScrollView>
+          </View>
+        );
+        break;
+      case 'schedule':
+        return (
+          <View style={{flex: 1, flexDirection:'column'}}>
+            <View>
+              <CamemisToolbar title="Schedule" openDrawer={this._openDrawer} onActionSelected={this._onActionSelected} actions={toolbarActions} />
+            </View>
+            <ScrollView style={styles.container}>
+              <Schedule></Schedule>
+            </ScrollView>
+          </View>
+        );
+        break;
+      case 'attendance':
+        return (
+          <View style={{flex: 1, flexDirection:'column'}}>
+            <View>
+              <CamemisToolbar title="Attendance" openDrawer={this._openDrawer} onActionSelected={this._onActionSelected} actions={toolbarActions} />
+            </View>
+            <ScrollView style={styles.container}>
+              <Attendance></Attendance>
+            </ScrollView>
+          </View>
+        );
+        break;
+      case 'discipline':
+        return (
+          <View style={{flex: 1, flexDirection:'column'}}>
+            <View>
+              <CamemisToolbar title="Discipline" openDrawer={this._openDrawer} onActionSelected={this._onActionSelected} actions={toolbarActions} />
+            </View>
+            <ScrollView style={styles.container}>
+              <Discipline></Discipline>
+            </ScrollView>
+          </View>
+        );
+        break;
+      case 'transcript':
+        return (
+          <View style={{flex: 1, flexDirection:'column'}}>
+            <View>
+              <CamemisToolbar title="Transcript" openDrawer={this._openDrawer} onActionSelected={this._onActionSelected} actions={toolbarActions} />
+            </View>
+            <ScrollView style={styles.container}>
+              <Transcript></Transcript>
+            </ScrollView>
+          </View>
+        );
+        break;
+      default:
+    }
+  }
+  _setTab (tab) {
+    this.setState({tab: tab});
+    this._closeDrawer();
+
+  }
+  _changeRoute = (_v) => {
       this.props.navigator.push({name: _v});
   }
   _handlePress = () => {
@@ -120,8 +195,31 @@ export default class menu extends Component{
     //toggle the sidebar
     this._overrideBackPressForDrawerLayout = true;
   }
+  _openDrawer = () => {
+    this.drawer.openDrawer();
+  }
+  _closeDrawer = () => {
+    this.drawer.closeDrawer();
+  }
+  _onActionSelected = (position) => {
+    switch (position) {
+      case 0:
+        this.props.navigator.push({name: 'setting'});
+        break;
+      case 1:
+        this.props.navigator.pop();
+        break;
+      default:
+        this.props.navigator.pop();
+    }
+    //console.log(this.props.navigator.getCurrentRoutes(0));
+  }
 }
-
+var toolbarActions = [
+  {title: 'Create', icon: 'star-o', show: 'always'},
+  {title: 'Filter', icon: 'calendar-check-o'},
+  {title: 'Settings', icon: 'paw', show: 'always'},
+];
 const styles = StyleSheet.create({
   container:{
       flex: 1,

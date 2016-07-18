@@ -204,6 +204,7 @@ module.exports = class setting extends Component{
                       onValueChange={(lang) => this.setState({LANGUAGE: lang})}>
                       <Picker.Item label="Khmer" value="Khmer" />
                       <Picker.Item label="English" value="English" />
+                      <Picker.Item label="Vietnamese" value="Vietnamese" />
                     </Picker>
               );
             break;

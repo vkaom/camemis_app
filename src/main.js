@@ -29,7 +29,7 @@ class main extends Component {
               style={styles.container}
               initialRoute={{name: 'singin'}}
               renderScene={this.renderScene}
-              configureScene={(route, routeStack) => Navigator.SceneConfigs.FloatFromRight}
+              configureScene={(route, routeStack) => Navigator.SceneConfigs.PushFromRight}
           />
     );
   }
