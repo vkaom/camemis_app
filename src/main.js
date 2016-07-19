@@ -9,14 +9,16 @@ import {
   View
 } from 'react-native';
 
-var Singin = require('./components/singin');
+var Signin = require('./components/signin');
 var Setting = require('./components/setting');
+var ChatList = require('./components/chatList');
 import Mymenu from './components/menu';
 
 var ROUTES = {
-    singin: Singin,
+    signin: Signin,
     setting: Setting,
     mymenu: Mymenu,
+    chatList: ChatList,
 };
 
 class main extends Component {
@@ -27,7 +29,7 @@ class main extends Component {
     return(
           <Navigator
               style={styles.container}
-              initialRoute={{name: 'singin'}}
+              initialRoute={{name: 'signin'}}
               renderScene={this.renderScene}
               configureScene={(route, routeStack) => Navigator.SceneConfigs.PushFromRight}
           />

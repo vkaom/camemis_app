@@ -28,6 +28,7 @@ var Schedule = require('./schedule');
 var Attendance = require('./attendance');
 var Discipline = require('./discipline');
 var Transcript = require('./transcript');
+var ChatList = require('./chatList');
 var MUNUROUTES = {
     dashboard: Dashboard,
     academic: Academic,
@@ -35,6 +36,7 @@ var MUNUROUTES = {
     attendance: Attendance,
     discipline: Discipline,
     transcript: Transcript,
+    chatList: ChatList,
 };
 export default class menu extends Component{
   constructor(props) {
@@ -237,10 +239,10 @@ export default class menu extends Component{
   _closeDrawer = () => {
     this.drawer.closeDrawer();
   }
-  _onActionSelected = (position) => {
-    switch (position) {
-      case 0:
-        this.props.navigator.push({name: 'setting'});
+  _onActionSelected = (action) => {
+    switch (action) {
+      case 'chatList':
+        this.props.navigator.push({name: 'chatList'});
         break;
       case 1:
         this.props.navigator.pop();
@@ -252,9 +254,9 @@ export default class menu extends Component{
   }
 }
 var toolbarActions = [
-  {title: 'Create', icon: 'star-o', show: 'always'},
-  {title: 'Filter', icon: 'calendar-check-o'},
-  {title: 'Settings', icon: 'paw', show: 'always'},
+  // {title: 'Create', icon: 'star-o', action: 'create'},
+  // {title: 'Filter', icon: 'calendar-check-o', action: 'filter'},
+  {title: 'Chat List', icon: 'comment', action: 'chatList'},
 ];
 const styles = StyleSheet.create({
   container:{

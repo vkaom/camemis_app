@@ -36,70 +36,68 @@ module.exports = class CamemisSideBarNave extends Component{
           paddingTop:0,
           shadowColor: '#ccc',
           shadowOpacity: 1.0,
-          height:this.state.height
+          //height:this.state.height
       });
     }
     render() {
       return(
-          <View style={this.viewsideBarStyle()}>
-                <View style={styles.schoolStyle}>
-                  <Icon name="home" size={25} color="#FFF" />
-                  <Text style={styles.schoolStyleText}> ELT Elemetary School</Text>
+          <ScrollView style={this.viewsideBarStyle()}>
+            <View style={styles.schoolStyle}>
+              <Icon name="home" size={25} color="#FFF" />
+              <Text style={styles.schoolStyleText}> ELT Elemetary School</Text>
+            </View>
+            <View style={[styles.schoolStyle,styles.schoolStyleImageProf]}>
+              <Image
+                source={require('../images/av1.png')}
+                style={styles.profileImg}
+                />
+              <Text style={styles.schoolStyleText}> Sna Sor</Text>
+            </View>
+            <View style={styles.wrapperdropdown}>
+              <TouchableHighlight  onPress={()=>{this._changeRout('dashboard')}} underlayColor="#4682B6" >
+                <View style={styles.dropdownOptions}>
+                  <Icon name="tachometer" size={20} color="#006400" />
+                  <Text style={styles.textDropdownOptions}> Dashboard</Text>
                 </View>
-                <View style={[styles.schoolStyle,styles.schoolStyleImageProf]}>
-                  <Image
-                    source={require('../images/av1.png')}
-                    style={styles.profileImg}
-                    />
-                  <Text style={styles.schoolStyleText}> Sna Sor</Text>
+              </TouchableHighlight>
+              <TouchableHighlight  onPress={()=>{this._changeRout('academic')}} underlayColor="#4682B6" >
+                <View style={styles.dropdownOptions}>
+                  <Icon name="graduation-cap" size={20} color="#3cb371" />
+                  <Text style={styles.textDropdownOptions}> My Academic</Text>
                 </View>
-                <ScrollView>
-                  <View style={styles.wrapperdropdown}>
-                    <TouchableHighlight  onPress={()=>{this._changeRout('dashboard')}} underlayColor="#4682B6" >
-                      <View style={styles.dropdownOptions}>
-                        <Icon name="tachometer" size={20} color="#006400" />
-                        <Text style={styles.textDropdownOptions}> Dashboard</Text>
-                      </View>
-                    </TouchableHighlight>
-                    <TouchableHighlight  onPress={()=>{this._changeRout('academic')}} underlayColor="#4682B6" >
-                      <View style={styles.dropdownOptions}>
-                        <Icon name="graduation-cap" size={20} color="#3cb371" />
-                        <Text style={styles.textDropdownOptions}> My Academic</Text>
-                      </View>
-                    </TouchableHighlight>
-                    <TouchableHighlight  onPress={()=>{this._changeRout('schedule')}} underlayColor="#4682B6" >
-                      <View style={styles.dropdownOptions}>
-                        <Icon name="calendar-check-o" size={20} color="#b22222" />
-                        <Text style={styles.textDropdownOptions}> Schedule</Text>
-                      </View>
-                    </TouchableHighlight>
-                    <TouchableHighlight onPress={()=>{this._changeRout('attendance')}} underlayColor="#4682B6" >
-                      <View style={styles.dropdownOptions}>
-                        <Icon name="pencil" size={20} color="#20b2aa" />
-                        <Text style={styles.textDropdownOptions}> Attendance</Text>
-                      </View>
-                    </TouchableHighlight>
-                    <TouchableHighlight onPress={()=>{this._changeRout('discipline')}} underlayColor="#4682B6" >
-                      <View style={styles.dropdownOptions}>
-                        <Icon name="paw" size={20} color="#3cb371" />
-                        <Text style={styles.textDropdownOptions}> Discipline</Text>
-                      </View>
-                    </TouchableHighlight>
-                    <TouchableHighlight onPress={()=>{this._changeRout('transcript')}} underlayColor="#4682B6" >
-                      <View style={styles.dropdownOptions}>
-                        <Icon name="star-o" size={20} color="#daa520" />
-                        <Text style={styles.textDropdownOptions}> Transcript</Text>
-                      </View>
-                    </TouchableHighlight>
-                  </View>
-                  <TouchableHighlight onPress={()=>{this._logout()}} underlayColor="#4682B6" >
-                    <View style={styles.dropdownOptions}>
-                      <Icon name="sign-out" size={20} color="#000" />
-                      <Text style={{color:'#000',}}> Logout</Text>
-                    </View>
-                  </TouchableHighlight>
-              </ScrollView>
-          </View>
+              </TouchableHighlight>
+              <TouchableHighlight  onPress={()=>{this._changeRout('schedule')}} underlayColor="#4682B6" >
+                <View style={styles.dropdownOptions}>
+                  <Icon name="calendar-check-o" size={20} color="#b22222" />
+                  <Text style={styles.textDropdownOptions}> Schedule</Text>
+                </View>
+              </TouchableHighlight>
+              <TouchableHighlight onPress={()=>{this._changeRout('attendance')}} underlayColor="#4682B6" >
+                <View style={styles.dropdownOptions}>
+                  <Icon name="pencil" size={20} color="#20b2aa" />
+                  <Text style={styles.textDropdownOptions}> Attendance</Text>
+                </View>
+              </TouchableHighlight>
+              <TouchableHighlight onPress={()=>{this._changeRout('discipline')}} underlayColor="#4682B6" >
+                <View style={styles.dropdownOptions}>
+                  <Icon name="paw" size={20} color="#3cb371" />
+                  <Text style={styles.textDropdownOptions}> Discipline</Text>
+                </View>
+              </TouchableHighlight>
+              <TouchableHighlight onPress={()=>{this._changeRout('transcript')}} underlayColor="#4682B6" >
+                <View style={styles.dropdownOptions}>
+                  <Icon name="star-o" size={20} color="#daa520" />
+                  <Text style={styles.textDropdownOptions}> Transcript</Text>
+                </View>
+              </TouchableHighlight>
+            </View>
+            <TouchableHighlight onPress={()=>{this._logout()}} underlayColor="#4682B6" >
+              <View style={styles.dropdownOptions}>
+                <Icon name="sign-out" size={20} color="#000" />
+                <Text style={{color:'#000',}}> Logout</Text>
+              </View>
+            </TouchableHighlight>
+          </ScrollView>
       );
     }
 }
