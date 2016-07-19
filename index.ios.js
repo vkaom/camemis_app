@@ -12,4 +12,4 @@ import {
   View
 } from 'react-native';
 import Main from './src/main';
-AppRegistry.registerComponent('camemisapp', () => Main);
+AppRegistry.registerComponent('camemis_app', () => Main);

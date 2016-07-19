@@ -18,7 +18,8 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome';
 import CamemisLogo from './camhead';
 import CamemisToolbar from './toolbar';
-
+import CamemisSideBarNave from './sidebarnav';
+var widthSideBar = 280;
 var {height, width} = Dimensions.get('window');
 
 var Dashboard = require('./dashboard');
@@ -27,7 +28,14 @@ var Schedule = require('./schedule');
 var Attendance = require('./attendance');
 var Discipline = require('./discipline');
 var Transcript = require('./transcript');
-
+var MUNUROUTES = {
+    dashboard: Dashboard,
+    academic: Academic,
+    schedule: Schedule,
+    attendance: Attendance,
+    discipline: Discipline,
+    transcript: Transcript,
+};
 export default class menu extends Component{
   constructor(props) {
     super(props);
@@ -38,7 +46,7 @@ export default class menu extends Component{
       return (
         <DrawerLayoutAndroid
           drawerPosition={DrawerLayoutAndroid.positions.Left}
-          drawerWidth={Dimensions.get('window').width/1.5}
+          drawerWidth={widthSideBar}
           keyboardDismissMode="on-drag"
           onDrawerOpen={() => {
             this._overrideBackPressForDrawerLayout = true;
@@ -50,10 +58,16 @@ export default class menu extends Component{
           renderNavigationView={this._renderDrawerContent}
         >
           {this._renderMainContent()}
+
         </DrawerLayoutAndroid>
       );
     }
-  _renderDrawerContent(){
+    _renderDrawerContent(){
+      return(
+          <CamemisSideBarNave navigator={this.navigator} loggle={this._closeDrawer} logout={this._logout}/>
+      );
+    }
+  /*_renderDrawerContent(){
     return(
       <View>
         <ScrollView style={styles.viewsideBarStyle}>
@@ -102,8 +116,37 @@ export default class menu extends Component{
         </ScrollView>
       </View>
     );
-  }
+  }*/
+  ///////////////////
+  ///using navigator
+  ////////////////////
   _renderMainContent(){
+    return (
+      <Navigator
+          style={styles.container}
+          ref={(navigator) => { this.navigator = navigator; }}
+          initialRoute={{name: 'dashboard'}}
+          renderScene={(route, navigator) =>this.renderScene(route, navigator)}
+          configureScene={(route, routeStack) => Navigator.SceneConfigs.FloatFromRight}
+      />
+    );
+  }
+
+  renderScene(route, navigator){
+      var MySceneComponent = MUNUROUTES[route.name];
+      return (
+        <View style={{flex: 1,}}>
+          <View>
+            <CamemisToolbar title={route.name} openDrawer={this._openDrawer} onActionSelected={this._onActionSelected} actions={toolbarActions} />
+          </View>
+          <ScrollView style={styles.container}>
+            <MySceneComponent route={route} navigator={navigator} />
+          </ScrollView>
+        </View>
+      );
+  }
+
+  /*_renderMainContent(){
     switch (this.state.tab) {
       case 'dashboard':
         return (
@@ -179,22 +222,15 @@ export default class menu extends Component{
         break;
       default:
     }
-  }
+  }*/
   _setTab (tab) {
     this.setState({tab: tab});
     this._closeDrawer();
+  }
+  _logout = () => {
+      this.props.navigator.immediatelyResetRouteStack([{name:'singin'}]);
+  }
 
-  }
-  _changeRoute = (_v) => {
-      this.props.navigator.push({name: _v});
-  }
-  _handlePress = () => {
-    this.props.navigator.push({name: 'setting'});
-  }
-  _handleToggle = () => {
-    //toggle the sidebar
-    this._overrideBackPressForDrawerLayout = true;
-  }
   _openDrawer = () => {
     this.drawer.openDrawer();
   }
@@ -237,31 +273,6 @@ const styles = StyleSheet.create({
       flexDirection: 'row',
       backgroundColor: '#4682B4',
       justifyContent: 'space-between'
-  },
-  dropdownOptions: {
-      flexDirection: 'row',
-      padding: 20,
-      borderBottomWidth: 1 / PixelRatio.get(),
-      borderBottomColor: '#CDCDCD',
-      alignItems: 'center'
-  },
-  viewsideBarStyle: {
-      backgroundColor:'#f0f8ff',
-      width:width/1.5,
-      flexDirection:'column',
-      shadowColor: 'black',
-      shadowOpacity: 1.0,
-      borderRightWidth:2,
-      borderRightColor: '#000',
-      height:height
-  },
-  schoolStyle: {
-      flexDirection: 'row',
-      padding: 10,
-      backgroundColor: '#dcdcdc',
-      borderBottomWidth: 1 / PixelRatio.get(),
-      borderBottomColor: '#CDCDCD',
-      alignItems: 'center'
-  },
+  }
 
 });
