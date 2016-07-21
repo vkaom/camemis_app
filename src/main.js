@@ -28,7 +28,7 @@ class main extends Component {
   render() {
     return(
           <Navigator
-              
+
               initialRoute={{name: 'signin'}}
               renderScene={this.renderScene}
               configureScene={(route, routeStack) => Navigator.SceneConfigs.PushFromRight}

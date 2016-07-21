@@ -12,29 +12,30 @@ import {
   Image,
   ScrollView,
   PixelRatio,
-  RefreshControl
+  RefreshControl,
+  Modal,
+  TouchableHighlight,
 } from 'react-native';
 
 import CamemisToolbar from './toolbar';
 
 var REQUEST_URL = 'https://raw.githubusercontent.com/facebook/react-native/master/docs/MoviesExample.json';
-var personList = [
-  // {name: 'Ethan Fox', img: require('../images/person-1.jpg'), lastChatText: 'Sweet! I heard they had a great time over at the cabin. Next time we should bring the croquest set.'},
-  // {name: 'John Son', img: require('../images/person-2.jpg'), lastChatText: 'You: Nope! We are good!'},
-  // {name: 'Marry', img: require('../images/person-3.jpg'), lastChatText: 'Oh yeah? Because I think no.:)'},
-  // {name: 'Steven', img: require('../images/person-4.png'), lastChatText: 'Oh yeah? Because I think no.:)'},
-  // {name: 'Hungary', img: require('../images/person-5.jpg'), lastChatText: 'Oh yeah? Because I think no.:)'},
+var personList = [];
+var toolbarActions = [
+  {title: 'Search', icon: 'search', action: 'search'},
 ];
+var EventBus = require('eventbusjs');
 module.exports = class ChatList extends Component {
   constructor(props) {
     super(props);
     this.state = {
       refreshing: false,
       loaded: false,
+      searchModalVisible: false,
     };
-    //this._renderDrawerContent = this._renderDrawerContent.bind(this);
+    //this._setSearchModalVisible = this._setSearchModalVisible.bind(this);
   }
-  componentDidMount() {
+  componentWillMount() {
     this._fetchData();
   }
   _onRefresh() {
@@ -56,11 +57,38 @@ module.exports = class ChatList extends Component {
       })
       .done();
   }
+  _setSearchModalVisible(visible){
+    this.setState({searchModalVisible: visible});
+  }
+  _renderSearchModal(){
+    return(
+      <Modal
+        animationType={"none"}
+        transparent={false}
+        visible={this.state.searchModalVisible}
+        onRequestClose={() => {
+          //alert("Modal has been closed.")
+        }}
+        >
+       <View style={{}}>
+        <View>
+          <CamemisToolbar navigator={this.props.navigator} onNavIconPress={this._setSearchModalVisible.bind(this, false)} title="Search" onActionSelected={this._onActionSelected} actions={toolbarActions} />
+          <Text>Hello World!</Text>
+          <TouchableHighlight onPress={() => {
+            this._setSearchModalVisible(!this.state.searchModalVisible)
+          }}>
+            <Text>Hide Modal</Text>
+          </TouchableHighlight>
+        </View>
+       </View>
+      </Modal>
+    );
+  }
   _renderLoadingView() {
     return (
       <View style={{flex: 1}}>
         <View>
-          <CamemisToolbar navigator={this.props.navigator} title="Chat" />
+          <CamemisToolbar navigator={this.props.navigator} title="Chat" onActionSelected={this._onActionSelected} actions={toolbarActions} />
         </View>
         <View style={{flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center',backgroundColor: '#FFFFFF',}}>
           <Text>
@@ -70,6 +98,17 @@ module.exports = class ChatList extends Component {
       </View>
     );
   }
+  _onActionSelected = (action) => {
+    switch (action) {
+      case 'search':
+        console.log('action: search');
+        this._setSearchModalVisible(true);
+        break;
+      default:
+        console.log('action: default');
+    }
+    //console.log(this.props.navigator.getCurrentRoutes(0));
+  }
   render() {
     if (!this.state.loaded) {
       return this._renderLoadingView();
@@ -77,8 +116,9 @@ module.exports = class ChatList extends Component {
     return (
       <View style={{flex: 1}}>
         <View>
-          <CamemisToolbar navigator={this.props.navigator} title="Chat" />
+          <CamemisToolbar navigator={this.props.navigator} title="Chat" onActionSelected={this._onActionSelected} actions={toolbarActions} />
         </View>
+        {this._renderSearchModal()}
         <ScrollView
           style={styles.container}
           contentContainerStyle={{paddingTop:10}}
@@ -123,8 +163,8 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   thumbnail: {
-    width: 70,
-    height: 70,
+    width: 50,
+    height: 50,
     marginLeft: 10,
     marginRight:20,
     borderRadius: 60,
@@ -135,7 +175,7 @@ const styles = StyleSheet.create({
 	  //backgroundColor: '#FF0000',
   },
   name: {
-    fontSize: 20,
+    fontSize: 16,
     marginBottom: 8,
     // textAlign: 'center',
   },
