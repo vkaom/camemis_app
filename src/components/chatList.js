@@ -72,7 +72,7 @@ module.exports = class ChatList extends Component {
         >
        <View style={{}}>
         <View>
-          <CamemisToolbar navigator={this.props.navigator} onNavIconPress={this._setSearchModalVisible.bind(this, false)} title="Search" onActionSelected={this._onActionSelected} actions={toolbarActions} />
+          <CamemisToolbar navigator={this.props.navigator} onNavIconPress={this._setSearchModalVisible.bind(this, false)} title="Search" />
           <Text>Hello World!</Text>
           <TouchableHighlight onPress={() => {
             this._setSearchModalVisible(!this.state.searchModalVisible)
