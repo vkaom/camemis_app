@@ -140,8 +140,8 @@ const styles = StyleSheet.create({
       borderRadius:15
   },
   schoolStyleImageProf: {
-    paddingTop:20,
-    paddingBottom:20,
-    justifyContent: 'center',
+      paddingTop:20,
+      paddingBottom:20,
+      justifyContent: 'center',
   }
 });

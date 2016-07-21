@@ -23,6 +23,7 @@ import Schedule from './schedule';
 import Attendance from './attendance';
 import Discipline from './discipline';
 import Transcript from './transcript';
+import ChatList from './chatList';
 
 var MUNUROUTES = {
     dashboard: Dashboard,
@@ -31,6 +32,7 @@ var MUNUROUTES = {
     attendance: Attendance,
     discipline: Discipline,
     transcript: Transcript,
+    chatList: ChatList,
 };
 var widthSideBar = 280;
 var animate = {
@@ -96,7 +98,6 @@ export default class menu extends Component{
   }
   slidebarStyle(){
     return({
-      flex:1,
       flexDirection:'row',
       height:this.state.height,
       width:this.state.width,
@@ -104,6 +105,7 @@ export default class menu extends Component{
       left: this.state._previousLeft,
       top: 0,
       backfaceVisibility: 'visible',
+      justifyContent: 'flex-end',
       backgroundColor:this.state._tranparant,
     });
   }
@@ -128,11 +130,11 @@ export default class menu extends Component{
       var MySceneComponent = MUNUROUTES[route.name];
       return (
           <View style={{flex:1}}>
-            <View>
+            <View style={{flex:1}}>
               <CamemisToolbar title={route.name} openDrawer={this._handleToggle} onActionSelected={this._onActionSelected} actions={toolbarActions} />
             </View>
-            <ScrollView style={styles.container} {...this._ViewPanResponder.panHandlers}>
-                <MySceneComponent route={route} navigator={navigator} />
+            <ScrollView style={{flex:9}}  {...this._ViewPanResponder.panHandlers}>
+              <MySceneComponent route={route} navigator={navigator} />
             </ScrollView>
             <View style={this.slidebarStyle()}>
               <CamemisSideBarNave loggle={this._handleToggle} navigator={navigator} logout={this._logout}/>
@@ -144,7 +146,7 @@ export default class menu extends Component{
       );
   }
   _logout = () => {
-      this.props.navigator.immediatelyResetRouteStack([{name:'singin'}]);
+      this.props.navigator.immediatelyResetRouteStack([{name:'signin'}]);
       this._handleToggle();
   }
   _changeRout = (route) => {
@@ -162,10 +164,10 @@ export default class menu extends Component{
   /////////////
   //////Rada
   //////////////
-  _onActionSelected = (position) => {
-    switch (position) {
-      case 0:
-        this.props.navigator.push({name: 'setting'});
+  _onActionSelected = (action) => {
+    switch (action) {
+      case 'chatList':
+        this.props.navigator.push({name: 'chatList'});
         break;
       case 1:
         this.props.navigator.pop();
@@ -178,15 +180,16 @@ export default class menu extends Component{
 }
 
 var toolbarActions = [
-  {title: 'Create', icon: 'star-o', show: 'always'},
-  {title: 'Filter', icon: 'calendar-check-o'},
-  {title: 'Settings', icon: 'paw', show: 'always'},
+  // {title: 'Create', icon: 'star-o', action: 'create'},
+  // {title: 'Filter', icon: 'calendar-check-o', action: 'filter'},
+  {title: 'Chat List', icon: 'comment', action: 'chatList'},
 ];
 
 const styles = StyleSheet.create({
   container:{
       backgroundColor: '#FFFFFF',
       shadowColor: "#000000",
+      flex: 1,
   },
   contentStyle:{
       alignItems: 'center',

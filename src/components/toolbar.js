@@ -65,9 +65,7 @@ var styles = StyleSheet.create({
   toolbar: {
     flex: 1,
     flexDirection: 'row',
-    alignItems: 'stretch',
     backgroundColor: '#4682B4',
-    height: 60
   },
   toolbarNavIcon: {
     flex: 1,
@@ -86,7 +84,6 @@ var styles = StyleSheet.create({
   toolbarTitle: {
     color: '#FFFFFF',
     fontSize: 18,
-    fontWeight: 'bold',
   },
   toolbarAction: {
     flex: 1,

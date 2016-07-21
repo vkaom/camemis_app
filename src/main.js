@@ -28,7 +28,7 @@ class main extends Component {
   render() {
     return(
           <Navigator
-              style={styles.container}
+              
               initialRoute={{name: 'signin'}}
               renderScene={this.renderScene}
               configureScene={(route, routeStack) => Navigator.SceneConfigs.PushFromRight}
@@ -54,10 +54,7 @@ var styles = StyleSheet.create({
     container:{
         flex:1,
         backgroundColor: '#808080',
-    },
-    contents:{
-        flex:9,
-    },
+    }
 
 });
 

@@ -230,7 +230,7 @@ export default class menu extends Component{
     this._closeDrawer();
   }
   _logout = () => {
-      this.props.navigator.immediatelyResetRouteStack([{name:'singin'}]);
+      this.props.navigator.immediatelyResetRouteStack([{name:'signin'}]);
   }
 
   _openDrawer = () => {
