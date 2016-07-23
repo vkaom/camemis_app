@@ -24,7 +24,7 @@ var personList = [];
 var toolbarActions = [
   {title: 'Search', icon: 'search', action: 'search'},
 ];
-var EventBus = require('eventbusjs');
+
 module.exports = class ChatList extends Component {
   constructor(props) {
     super(props);
