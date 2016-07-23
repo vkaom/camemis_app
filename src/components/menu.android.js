@@ -141,9 +141,9 @@ export default class menu extends Component{
           <View>
             <CamemisToolbar title={route.name} openDrawer={this._openDrawer} onActionSelected={this._onActionSelected} actions={toolbarActions} />
           </View>
-          <ScrollView style={styles.container}>
+          <View style={styles.container}>
             <MySceneComponent route={route} navigator={navigator} />
-          </ScrollView>
+          </View>
         </View>
       );
   }

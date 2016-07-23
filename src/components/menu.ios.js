@@ -133,9 +133,9 @@ export default class menu extends Component{
             <View style={{flex:1}}>
               <CamemisToolbar title={route.name} openDrawer={this._handleToggle} onActionSelected={this._onActionSelected} actions={toolbarActions} />
             </View>
-            <ScrollView style={{flex:9}}  {...this._ViewPanResponder.panHandlers}>
+            <View style={{flex:9}}>
               <MySceneComponent route={route} navigator={navigator} />
-            </ScrollView>
+            </View>
             <View style={this.slidebarStyle()}>
               <CamemisSideBarNave loggle={this._handleToggle} navigator={navigator} logout={this._logout}/>
               <TouchableWithoutFeedback onPress={this._handleToggle}>

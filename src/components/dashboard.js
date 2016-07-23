@@ -11,7 +11,7 @@ import {
   View
 } from 'react-native';
 
-module.exports = class Dashboard extends Component {
+export default class Dashboard extends Component {
   render() {
     return (
       <View style={styles.container}>

@@ -14,23 +14,33 @@ import {
     Modal,
     DatePickerIOS,
     DatePickerAndroid,
+    ScrollView,
     LayoutAnimation,
     View
 } from 'react-native';
 import moment from 'moment';
 var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
-module.exports = class Schedule extends Component {
+export default class Schedule extends Component {
   constructor(props){
     super(props);
-    LayoutAnimation.easeInEaseOut();
-    var myDialyData = [{time:'13:00-14:00',subject:'Math',room:'RM_007',teacher:'Chun Veng',color:'#228b22'},
-                      {time:'14:30-15:30',subject:'Khmer',room:'RM_009',teacher:'Rada Klourk',color:'#1e90ff'},
-                      {time:'15:40-16:40',subject:'English',room:'RM_987',teacher:'Raskmey',color:'#20b2aa'},
-                      {time:'16:45-17:45',subject:'Science',room:'RM_987',teacher:'Chantra',color:'#4169e1'},
-                      {time:'17:45-18:45',subject:'Music',room:'RM_987',teacher:'Sor Veasna',color:'#ff6347'}];
+  }
+  render() {
+    return (
+        <StudentSchedule />
+    );
+  }
+}
+class StudentSchedule extends Component {
+  constructor(props){
+    super(props);
+    var myDialyData = [{starttime:'13:00PM',endtime:'14:00PM',subject:'Math',room:'RM_007',teacher:'Chun Veng',color:'#228b22'},
+                      {starttime:'14:30PM',endtime:'15:30PM',subject:'Khmer',room:'RM_009',teacher:'Rada Klourk',color:'#1e90ff'},
+                      {starttime:'15:40PM',endtime:'16:40PM',subject:'English',room:'RM_987',teacher:'Raskmey',color:'#20b2aa'},
+                      {starttime:'16:45PM',endtime:'17:45PM',subject:'Science',room:'RM_987',teacher:'Chantra',color:'#4169e1'},
+                      {starttime:'17:45PM',endtime:'18:45PM',subject:'Music',room:'RM_987',teacher:'Sor Veasna',color:'#ff6347'}];
 
-    var myWeekData = [{time: '', Mon: 'Mo', Tu: 'Tu', We: 'We', Thu:'Th', Fr: 'Fr',color:'#000'},
+    var myWeekData = [{time: '', Mon: 'Mo', Tu: 'Tu', We: 'We', Thu:'Th', Fr: 'Fr',color:'#4682B4'},
                       {time:'13:00\n14:00', Mon: 'Khmer', Tu: 'Science', 'We': 'IT', Thu:'Music', Fr: 'English',color:'#90ee90'},
                       {time:'14:30\n15:30', Mon: 'Science', Tu: 'Khmer', 'We': 'IT', Thu:'Music', Fr: 'Science',color:'#20b2aa'},
                       {time:'15:40\n16:40', Mon: 'IT', Tu: 'Science', 'We': 'Khmer', Thu:'Music', Fr: 'English',color:'#ff6347'},
@@ -52,7 +62,7 @@ module.exports = class Schedule extends Component {
           paddingBottom:5,
           paddingLeft:15,
           paddingRight:15,
-          backgroundColor:(this.state.selectedIndex==0)?'#000':'#f0f8ff',
+          backgroundColor:(this.state.selectedIndex==0)?'#4682B4':'#f0f8ff',
           borderRadius:5
       });
   }
@@ -62,17 +72,17 @@ module.exports = class Schedule extends Component {
           paddingBottom:5,
           paddingLeft:15,
           paddingRight:15,
-          backgroundColor:(this.state.selectedIndex==1)?'#000':'#f0f8ff',
+          backgroundColor:(this.state.selectedIndex==1)?'#4682B4':'#f0f8ff',
           borderRadius:5
       });
   }
   render() {
     return (
-      <View>
+      <ScrollView>
         <View style={styles.barStyle}>
             <TouchableHighlight
                 style={this.buttonStyleDialy()}
-                underlayColor="#eff0f1"
+                underlayColor="#4682B4"
                 onPress={()=>{this._onChange(0);}}>
               <View><Text style={{color:(this.state.selectedIndex==0)?'#fff':'#000'}}>Dialy</Text></View>
             </TouchableHighlight>
@@ -81,7 +91,7 @@ module.exports = class Schedule extends Component {
             </View>
             <TouchableHighlight
                 style={this.buttonStyleWeek()}
-                underlayColor="#eff0f1"
+                underlayColor="#4682B4"
                 onPress={()=>{this._onChange(1);}}
                 >
               <View><Text style={{color:(this.state.selectedIndex==1)?'#fff':'#000'}}>Week</Text></View>
@@ -91,7 +101,7 @@ module.exports = class Schedule extends Component {
           {this.renderScene()}
           {this.modalDisplay()}
         </View>
-      </View>
+      </ScrollView>
     );
   }
 
@@ -111,16 +121,15 @@ module.exports = class Schedule extends Component {
   }
   renderScene(){
     if(this.state.selectedIndex==0){
-      return(<View>
-              <View style={{marginBottom:20}}>
+      return(<View style={{padding:5}}>
                 <ListView
                     dataSource={this.state.dataSource}
                     renderRow={(rowData)=>this.renderRow(rowData)}
                   />
               </View>
-            </View>);
+            );
     }else{
-      return(<View>
+      return(<View style={{paddingTop:10}}>
               <ListView
                   dataSource={this.state.dataSourceWeek}
                   renderRow={(rowData)=>this.renderWeekRow(rowData)}
@@ -161,13 +170,15 @@ module.exports = class Schedule extends Component {
   }
   renderRow(rowData) {
       return(
-        <View style={{flexDirection:'row',padding:10, backgroundColor:rowData['color'],justifyContent:'space-between'}}>
-            <View><Text style={{color:'#fff'}}>{rowData['time']}</Text></View>
-            <View>
-              <Text style={{color:'#fff',fontSize:20}}>{rowData['subject']}</Text>
-              <Text style={{color:'#fff'}}>{rowData['room']}</Text>
+        <View style={{flexDirection:'row',padding:10, backgroundColor:rowData['color'],marginBottom:5,marginTop:5,borderRadius:5}}>
+            <View style={{width:70,alignItems:'center',justifyContent:'center'}}>
+              <Text style={{color:'#fff'}}>{rowData['starttime']}</Text>
+              <Text style={{color:'#fff',marginTop:8,marginBottom:8}}>To</Text>
+              <Text style={{color:'#fff'}}>{rowData['endtime']}</Text>
             </View>
-            <View>
+            <View style={{flex:1,paddingLeft:50,justifyContent:'center'}}>
+              <Text style={{color:'#fff'}}>{rowData['subject']}</Text>
+              <Text style={{color:'#fff'}}>{rowData['room']}</Text>
               <Text style={{color:'#fff'}}>{rowData['teacher']}</Text>
               {this.currectScedule(rowData['subject'])}
             </View>
@@ -177,20 +188,19 @@ module.exports = class Schedule extends Component {
   renderSelectDisplayDate(){
     if(Platform.OS === 'android'){
         return(
-          <TouchableHighlight onPress={this.showPicker.bind(this, 'simple', {date: this.state.date})}>
+          <TouchableHighlight onPress={this.showPicker.bind(this, 'simple', {date: this.state.date})} underlayColor="#fff" style={{padding:5}}>
             <Text style={{fontSize:16,color:'#4169e1'}}>{this.state.displaydate}</Text>
           </TouchableHighlight>
         );
     }
     if(Platform.OS === 'ios'){
         return(
-          <TouchableHighlight onPress={()=>{this._setModalVisible(true)}}>
+          <TouchableHighlight onPress={()=>{this._setModalVisible(true)}} underlayColor="#fff" style={{padding:5}}>
             <Text style={{fontSize:16,color:'#4169e1'}}>{this.state.displaydate}</Text>
           </TouchableHighlight>
         );
     }
   }
-
   modalDisplay(){
       return(
         <Modal
@@ -219,7 +229,7 @@ module.exports = class Schedule extends Component {
       );
   }
   _onChange(event){
-    LayoutAnimation.easeInEaseOut();
+    LayoutAnimation.linear();
     this.setState({
       selectedIndex: event,
     });
@@ -235,7 +245,6 @@ module.exports = class Schedule extends Component {
         modalVisible: visible
       });
   }
-
 }
 
 const styles = StyleSheet.create({
