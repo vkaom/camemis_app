@@ -44,7 +44,7 @@ var animate = {
       type: LayoutAnimation.Types.easeInEaseOut,
       springDamping: 0.7,
     }};
-export default class menu extends Component{
+module.exports = class menu extends Component{
   constructor(props) {
     super(props);
     this.state = {

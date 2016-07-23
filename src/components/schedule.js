@@ -21,7 +21,7 @@ import {
 import moment from 'moment';
 var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
-export default class Schedule extends Component {
+module.exports = class Schedule extends Component {
   constructor(props){
     super(props);
   }

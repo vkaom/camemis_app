@@ -23,7 +23,7 @@ var personList = [
   {name: 'Steven', img: require('../images/person-4.png'), lastChatText: 'Oh yeah? Because I think no.:)'},
   {name: 'Hungary', img: require('../images/person-5.jpg'), lastChatText: 'Oh yeah? Because I think no.:)'},
 ];
-export default class Academic extends Component {
+module.exports = class Academic extends Component {
   constructor(props) {
     super(props);
     this.state = {
