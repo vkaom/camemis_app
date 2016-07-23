@@ -57,13 +57,13 @@ module.exports = class CamemisSideBarNave extends Component{
               <TouchableHighlight  onPress={()=>{this._changeRout('dashboard')}} underlayColor="#4682B6" >
                 <View style={styles.dropdownOptions}>
                   <Icon name="tachometer" size={20} color="#006400" />
-                  <Text style={styles.textDropdownOptions}> Dashboard</Text>
+                  <Text style={styles.textDropdownOptions}> bảng điều khiển</Text>
                 </View>
               </TouchableHighlight>
               <TouchableHighlight  onPress={()=>{this._changeRout('academic')}} underlayColor="#4682B6" >
                 <View style={styles.dropdownOptions}>
                   <Icon name="graduation-cap" size={20} color="#3cb371" />
-                  <Text style={styles.textDropdownOptions}> My Academic</Text>
+                  <Text style={styles.textDropdownOptions}> học Mỹ</Text>
                 </View>
               </TouchableHighlight>
               <TouchableHighlight  onPress={()=>{this._changeRout('schedule')}} underlayColor="#4682B6" >

@@ -120,7 +120,7 @@ module.exports = class menu extends Component{
       <Navigator
           style={styles.container}
           ref={(navigator) => { this.navigator = navigator; }}
-          initialRoute={{name: 'dashboard'}}
+          initialRoute={{name: 'academic'}}
           renderScene={(route, navigator) =>this.renderScene(route, navigator)}
           configureScene={(route, routeStack) => Navigator.SceneConfigs.FloatFromRight}
       />
