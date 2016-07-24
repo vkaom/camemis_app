@@ -192,8 +192,7 @@ class StudentSchedule extends Component {
             <Text style={{fontSize:16,color:'#4169e1'}}>{this.state.displaydate}</Text>
           </TouchableHighlight>
         );
-    }
-    if(Platform.OS === 'ios'){
+    }else if(Platform.OS === 'ios'){
         return(
           <TouchableHighlight onPress={()=>{this._setModalVisible(true)}} underlayColor="#fff" style={{padding:5}}>
             <Text style={{fontSize:16,color:'#4169e1'}}>{this.state.displaydate}</Text>
