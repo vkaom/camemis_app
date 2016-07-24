@@ -36,42 +36,42 @@ class StudentTranscript extends Component {
         super(props);
         
         var myScoreData = [
-            {RT: 'Assignment', Score: 'Score', Subject: 'Subject', Date:'Date',color:'#001f3f'},
-            {RT: 'RT', Score: '7.8', Subject: 'Math', Date:'30/05/2016',color:'#AAAAAA'},
-            {RT: 'PT', Score: '6.0', Subject: 'Science', Date:'25/05/2016',color:'#7FDBFF'},
-            {RT: 'PT', Score: '8.2', Subject: 'English', Date:'29/05/2016',color:'#AAAAAA'},
-            {RT: 'PT', Score: '6.0', Subject: 'Science', Date:'25/05/2016',color:'#7FDBFF'},
-            {RT: 'RT', Score: '7.8', Subject: 'Math', Date:'30/05/2016',color:'#AAAAAA'},
-            {RT: 'RT', Score: '7.5', Subject: 'Computer', Date:'24/05/2016',color:'#7FDBFF'},
-            {RT: 'PT', Score: '8.2', Subject: 'English', Date:'29/05/2016',color:'#AAAAAA'},
-            {RT: 'PT', Score: '6.0', Subject: 'Science', Date:'25/05/2016',color:'#7FDBFF'},
-            {RT: 'PT', Score: '8.2', Subject: 'English', Date:'29/05/2016',color:'#AAAAAA'}
+            {RT: 'Assignment',Subject: 'Subject', Score: 'Score',  Date:'Date',color:'#7FDBFF'},
+            {RT: 'RT', Subject: 'Math', Score: '7.8', Date:'30/05/2016',color:'#DDDDDD'},
+            {RT: 'PT', Subject: 'Science', Score: '6.0', Date:'25/05/2016',color:'#FFFFFF'},
+            {RT: 'PT', Subject: 'English', Score: '8.2', Date:'29/05/2016',color:'#DDDDDD'},
+            {RT: 'PT', Subject: 'Physics', Score: '6.0', Date:'25/05/2016',color:'#FFFFFF'},
+            {RT: 'RT', Subject: 'Math', Score: '7.8', Date:'30/05/2016',color:'#DDDDDD'},
+            {RT: 'RT', Subject: 'Computer', Score: '7.5', Date:'24/05/2016',color:'#FFFFFF'},
+            {RT: 'PT', Subject: 'English', Score: '8.2', Date:'29/05/2016',color:'#DDDDDD'},
+            {RT: 'PT', Subject: 'Mathematics', Score: '6.0', Date:'25/05/2016',color:'#FFFFFF'},
+            {RT: 'PT', Subject: 'English', Score: '8.2', Date:'29/05/2016',color:'#DDDDDD'}
         ];
 
         var FIRST_SEMESTER = [
-            {SUB: 'Subject', Average: 'Average', Rank: 'Rank', Remark:'Remark',color:'#001f3f'},
-            {SUB: 'Vietnamese', Average: '8.5', Rank: '2', Remark:'Very Good',color:'#AAAAAA'},
-            {SUB: 'Science', Average: '7.3', Rank: '1', Remark:'Good', color:'#7FDBFF'},
-            {SUB: 'IT', Average: '6.6', Rank: '1', Remark:'Good',color:'#AAAAAA'},
-            {SUB: 'Science', Average: '7.6', Rank: '5', Remark:'Very Good',color:'#7FDBFF'},
-            {SUB: 'IT', Average: '6.6', Rank: '1', Remark:'Good',color:'#AAAAAA'},
-            {SUB: 'Science', Average: '7.6', Rank: '5', Remark:'Very Good',color:'#7FDBFF'},
-            {SUB: 'IT', Average: '6.6', Rank: '1', Remark:'Good',color:'#AAAAAA'},
-            {SUB: 'Science', Average: '7.6', Rank: '5', Remark:'Very Good',color:'#7FDBFF'},
-            {SUB: 'Vietnamese', Average: '7.8', Rank: '8', Remark:'Good',color:'#AAAAAA'}
+            {SUB: 'Subject', Average: 'Average', Rank: 'Rank', Remark:'Remark',color:'#7FDBFF'},
+            {SUB: 'Vietnamese', Average: '8.5', Rank: '2', Remark:'Very Good',color:'#DDDDDD'},
+            {SUB: 'Music', Average: '7.3', Rank: '1', Remark:'Good', color:'#FFFFFF'},
+            {SUB: 'IT', Average: '6.6', Rank: '1', Remark:'Good',color:'#DDDDDD'},
+            {SUB: 'Sport', Average: '7.6', Rank: '5', Remark:'Very Good',color:'#FFFFFF'},
+            {SUB: 'Mathematics', Average: '6.6', Rank: '1', Remark:'Good',color:'#DDDDDD'},
+            {SUB: 'Geography', Average: '7.6', Rank: '5', Remark:'Very Good',color:'#FFFFFF'},
+            {SUB: 'Chemistry', Average: '6.6', Rank: '1', Remark:'Good',color:'#DDDDDD'},
+            {SUB: 'Science', Average: '7.6', Rank: '5', Remark:'Very Good',color:'#FFFFFF'},
+            {SUB: 'Physics', Average: '7.8', Rank: '8', Remark:'Good',color:'#DDDDDD'}
         ];
         
         var SECOND_SEMESTER = [
-            {SUB: 'Subject', Average: 'Average', Rank: 'Rank', Remark:'Remark',color:'#001f3f'},
-            {SUB: 'Music', Average: '6.5', Rank: '2', Remark:'Very Good',color:'#AAAAAA'},
-            {SUB: 'Science', Average: '10.0', Rank: '1', Remark:'Good', color:'#7FDBFF'},
-            {SUB: 'IT', Average: '8.3', Rank: '1', Remark:'Good',color:'#AAAAAA'},
-            {SUB: 'Vietnamese', Average: '6.0', Rank: '5', Remark:'Very Good',color:'#7FDBFF'},
-            {SUB: 'Geography', Average: '8.0', Rank: '1', Remark:'Good',color:'#AAAAAA'},
-            {SUB: 'Science', Average: '7.6', Rank: '5', Remark:'Very Good',color:'#7FDBFF'},
-            {SUB: 'Sport', Average: '9.3', Rank: '1', Remark:'Good',color:'#AAAAAA'},
-            {SUB: 'Science', Average: '7.6', Rank: '5', Remark:'Very Good',color:'#7FDBFF'},
-            {SUB: 'Vietnamese', Average: '7.8', Rank: '8', Remark:'Good',color:'#AAAAAA'}
+            {SUB: 'Subject', Average: 'Average', Rank: 'Rank', Remark:'Remark',color:'#7FDBFF'},
+            {SUB: 'Music', Average: '6.5', Rank: '2', Remark:'Very Good',color:'#DDDDDD'},
+            {SUB: 'Physics', Average: '10.0', Rank: '1', Remark:'Good', color:'#FFFFFF'},
+            {SUB: 'IT', Average: '8.3', Rank: '1', Remark:'Good',color:'#DDDDDD'},
+            {SUB: 'Vietnamese', Average: '6.0', Rank: '5', Remark:'Very Good',color:'#FFFFFF'},
+            {SUB: 'Geography', Average: '8.0', Rank: '1', Remark:'Good',color:'#DDDDDD'},
+            {SUB: 'Chemistry', Average: '7.6', Rank: '5', Remark:'Very Good',color:'#FFFFFF'},
+            {SUB: 'Sport', Average: '9.3', Rank: '1', Remark:'Good',color:'#DDDDDD'},
+            {SUB: 'Science', Average: '7.6', Rank: '5', Remark:'Very Good',color:'#FFFFFF'},
+            {SUB: 'Mathematics', Average: '7.8', Rank: '8', Remark:'Good',color:'#DDDDDD'}
         ];
         
         this.state = {
@@ -114,8 +114,7 @@ class StudentTranscript extends Component {
                 <TouchableHighlight
                     style={[styles.buttonStyle,{backgroundColor:(this.state.selectedIndex==3)?'#4682B4':'#f0f8ff',}]}
                     underlayColor="#4682B4"
-                    onPress={()=>{this._onChange(3);}}
-                    >
+                    onPress={()=>{this._onChange(3);}}>
                     <View><Text style={{color:(this.state.selectedIndex==3)?'#fff':'#000'}}>Year</Text></View>
                 </TouchableHighlight>
                 </View>
@@ -195,16 +194,16 @@ class StudentTranscript extends Component {
       return(
         <View style={{flexDirection:'row',backgroundColor:rowData['color'],borderTopWidth:1,borderTopColor:'#fff'}}>
             <View style={{alignItems:'center',flex:2,paddingTop:15,paddingBottom:15}}>
-              <Text style={{color:'#fff',textAlign:'center'}}>{rowData['RT']}</Text>
+              <Text style={{color:'#000',textAlign:'center'}}>{rowData['RT']}</Text>
             </View>
             <View style={{alignItems:'center',flex:2,paddingTop:15,paddingBottom:15}}>
-              <Text style={{color:'#fff',textAlign:'center'}}>{rowData['Score']}</Text>
+              <Text style={{color:'#000',textAlign:'center'}}>{rowData['Subject']}</Text>
             </View>
             <View style={{alignItems:'center',flex:2,paddingTop:15,paddingBottom:15}}>
-              <Text style={{color:'#fff',textAlign:'center'}}>{rowData['Subject']}</Text>
+              <Text style={{color:'#000',textAlign:'center'}}>{rowData['Score']}</Text>
             </View>
             <View style={{alignItems:'center',flex:2,paddingTop:15,paddingBottom:15}}>
-              <Text style={{color:'#fff',textAlign:'center'}}>{rowData['Date']}</Text>
+              <Text style={{color:'#000',textAlign:'center'}}>{rowData['Date']}</Text>
             </View>
         </View>
       );
@@ -213,16 +212,16 @@ class StudentTranscript extends Component {
       return(
         <View style={{flexDirection:'row',backgroundColor:rowData['color'],borderTopWidth:1,borderTopColor:'#fff'}}>
             <View style={{alignItems:'center',flex:2,paddingTop:15,paddingBottom:15}}>
-              <Text style={{color:'#fff',textAlign:'center'}}>{rowData['SUB']}</Text>
+              <Text style={{color:'#000',textAlign:'center'}}>{rowData['SUB']}</Text>
             </View>
             <View style={{alignItems:'center',flex:2,paddingTop:15,paddingBottom:15}}>
-              <Text style={{color:'#fff',textAlign:'center'}}>{rowData['Average']}</Text>
+              <Text style={{color:'#000',textAlign:'center'}}>{rowData['Average']}</Text>
             </View>
             <View style={{alignItems:'center',flex:2,paddingTop:15,paddingBottom:15}}>
-              <Text style={{color:'#fff',textAlign:'center'}}>{rowData['Rank']}</Text>
+              <Text style={{color:'#000',textAlign:'center'}}>{rowData['Rank']}</Text>
             </View>
             <View style={{alignItems:'center',flex:2,paddingTop:15,paddingBottom:15}}>
-              <Text style={{color:'#fff',textAlign:'center'}}>{rowData['Remark']}</Text>
+              <Text style={{color:'#000',textAlign:'center'}}>{rowData['Remark']}</Text>
             </View>
         </View>
       );
