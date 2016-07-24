@@ -32,87 +32,115 @@ module.exports = class Transcript extends Component {
   }
 }
 class StudentTranscript extends Component {
-  constructor(props){
-    super(props);
-    var myScoreData = [{RT: 'RT', Score: 'Score', Subject: 'Subject', Date:'Date',color:'#4682B4'},
-                      {RT: '123', Score: '98', Subject: 'Math', Date:'30/05/2016',color:'#ccc'},
-                      {RT: '1346', Score: '90', Subject: 'Science', Date:'25/05/2016',color:'#ccc'},
-                      {RT: '45454', Score: '80', Subject: 'English', Date:'29/05/2016',color:'#ccc'},
-                      {RT: '65354', Score: '69', Subject: 'Computer', Date:'24/05/2016',color:'#ccc'},
-                      {RT: '7643', Score: '79', Subject: 'Cemestry', Date:'19/05/2016',color:'#ccc'}];
+    constructor(props){
+        super(props);
+        
+        var myScoreData = [
+            {RT: 'Assignment', Score: 'Score', Subject: 'Subject', Date:'Date',color:'#001f3f'},
+            {RT: 'RT', Score: '7.8', Subject: 'Math', Date:'30/05/2016',color:'#AAAAAA'},
+            {RT: 'PT', Score: '6.0', Subject: 'Science', Date:'25/05/2016',color:'#7FDBFF'},
+            {RT: 'PT', Score: '8.2', Subject: 'English', Date:'29/05/2016',color:'#AAAAAA'},
+            {RT: 'PT', Score: '6.0', Subject: 'Science', Date:'25/05/2016',color:'#7FDBFF'},
+            {RT: 'RT', Score: '7.8', Subject: 'Math', Date:'30/05/2016',color:'#AAAAAA'},
+            {RT: 'RT', Score: '7.5', Subject: 'Computer', Date:'24/05/2016',color:'#7FDBFF'},
+            {RT: 'PT', Score: '8.2', Subject: 'English', Date:'29/05/2016',color:'#AAAAAA'},
+            {RT: 'PT', Score: '6.0', Subject: 'Science', Date:'25/05/2016',color:'#7FDBFF'},
+            {RT: 'PT', Score: '8.2', Subject: 'English', Date:'29/05/2016',color:'#AAAAAA'}
+        ];
 
-    var mySubjectData = [{Sub: 'Subject', Average: 'Average', Rank: 'Rank', Remark:'Remark',color:'#4682B4'},
-                      {Sub: 'Khmer', Average: '89.87', Rank: '2', Remark:'Very Good',color:'#333'},
-                      {Sub: 'Science', Average: '89.98', Rank: '1', Remark:'Good', color:'#333'},
-                      {Sub: 'IT', Average: '89', Rank: '1', Remark:'Good',color:'#333'},
-                      {Sub: 'Science', Average: '89', Rank: '5', Remark:'Very Good',color:'#333'},
-                      {Sub: 'Khmer', Average: '90.01', Rank: '8', Remark:'Good',color:'#333'}];
-    this.state = {
-        dataScoreSource: ds.cloneWithRows(myScoreData),
-        dataSubjectSource: ds.cloneWithRows(mySubjectData),
-        modalVisible: false,
-        selectedIndex: 0,
-        date: new Date(),
-        displaydate: moment().format('ddd, Do MMMM YYYY'),
-        timeZoneOffsetInHours: (-1) * (new Date()).getTimezoneOffset() / 60,
-    };
-  }
-
-
-  render() {
-    return (
-      <ScrollView>
-        <View style={styles.barStyle}>
-            <TouchableHighlight
-                style={[styles.buttonStyle,{backgroundColor:(this.state.selectedIndex==0)?'#4682B4':'#f0f8ff',}]}
-                underlayColor="#4682B4"
-                onPress={()=>{this._onChange(0);}}>
-              <View><Text style={{color:(this.state.selectedIndex==0)?'#fff':'#000'}}>Score</Text></View>
-            </TouchableHighlight>
-
-            <TouchableHighlight
-                style={[styles.buttonStyle,{backgroundColor:(this.state.selectedIndex==1)?'#4682B4':'#f0f8ff',}]}
-                underlayColor="#4682B4"
-                onPress={()=>{this._onChange(1);}}>
-              <View><Text style={{color:(this.state.selectedIndex==1)?'#fff':'#000'}}>Average</Text></View>
-            </TouchableHighlight>
-
-            <TouchableHighlight
-                style={[styles.buttonStyle,{backgroundColor:(this.state.selectedIndex==2)?'#4682B4':'#f0f8ff',}]}
-                underlayColor="#4682B4"
-                onPress={()=>{this._onChange(2);}}>
-              <View><Text style={{color:(this.state.selectedIndex==2)?'#fff':'#000'}}>1st Semester</Text></View>
-            </TouchableHighlight>
-
-            <TouchableHighlight
-                style={[styles.buttonStyle,{backgroundColor:(this.state.selectedIndex==3)?'#4682B4':'#f0f8ff',}]}
-                underlayColor="#4682B4"
-                onPress={()=>{this._onChange(3);}}
-                >
-              <View><Text style={{color:(this.state.selectedIndex==3)?'#fff':'#000'}}>2nd Semester</Text></View>
-            </TouchableHighlight>
-        </View>
-        <View>
-          {this.renderScene()}
-        </View>
-      </ScrollView>
-    );
-  }
-
-  async showPicker(stateKey, options) {
-    try {
-      var newState = {};
-      const {action, year, month, day} = await DatePickerAndroid.open(options);
-      if (action === DatePickerAndroid.dismissedAction) {
-        //newState[stateKey + 'Text'] = 'dismissed';
-      } else {
-        var date = new Date(year, month, day);
-        this._onDateChange(date);
-      }
-    } catch ({code, message}) {
-      console.warn(`Error in example '${stateKey}': `, message);
+        var FIRST_SEMESTER = [
+            {SUB: 'Subject', Average: 'Average', Rank: 'Rank', Remark:'Remark',color:'#001f3f'},
+            {SUB: 'Vietnamese', Average: '8.5', Rank: '2', Remark:'Very Good',color:'#AAAAAA'},
+            {SUB: 'Science', Average: '7.3', Rank: '1', Remark:'Good', color:'#7FDBFF'},
+            {SUB: 'IT', Average: '6.6', Rank: '1', Remark:'Good',color:'#AAAAAA'},
+            {SUB: 'Science', Average: '7.6', Rank: '5', Remark:'Very Good',color:'#7FDBFF'},
+            {SUB: 'IT', Average: '6.6', Rank: '1', Remark:'Good',color:'#AAAAAA'},
+            {SUB: 'Science', Average: '7.6', Rank: '5', Remark:'Very Good',color:'#7FDBFF'},
+            {SUB: 'IT', Average: '6.6', Rank: '1', Remark:'Good',color:'#AAAAAA'},
+            {SUB: 'Science', Average: '7.6', Rank: '5', Remark:'Very Good',color:'#7FDBFF'},
+            {SUB: 'Vietnamese', Average: '7.8', Rank: '8', Remark:'Good',color:'#AAAAAA'}
+        ];
+        
+        var SECOND_SEMESTER = [
+            {SUB: 'Subject', Average: 'Average', Rank: 'Rank', Remark:'Remark',color:'#001f3f'},
+            {SUB: 'Music', Average: '6.5', Rank: '2', Remark:'Very Good',color:'#AAAAAA'},
+            {SUB: 'Science', Average: '10.0', Rank: '1', Remark:'Good', color:'#7FDBFF'},
+            {SUB: 'IT', Average: '8.3', Rank: '1', Remark:'Good',color:'#AAAAAA'},
+            {SUB: 'Vietnamese', Average: '6.0', Rank: '5', Remark:'Very Good',color:'#7FDBFF'},
+            {SUB: 'Geography', Average: '8.0', Rank: '1', Remark:'Good',color:'#AAAAAA'},
+            {SUB: 'Science', Average: '7.6', Rank: '5', Remark:'Very Good',color:'#7FDBFF'},
+            {SUB: 'Sport', Average: '9.3', Rank: '1', Remark:'Good',color:'#AAAAAA'},
+            {SUB: 'Science', Average: '7.6', Rank: '5', Remark:'Very Good',color:'#7FDBFF'},
+            {SUB: 'Vietnamese', Average: '7.8', Rank: '8', Remark:'Good',color:'#AAAAAA'}
+        ];
+        
+        this.state = {
+            dataScoreSource: ds.cloneWithRows(myScoreData),
+            FIRST_SEMESTER_DATA: ds.cloneWithRows(FIRST_SEMESTER),
+            SECOND_SEMESTER_DATA: ds.cloneWithRows(SECOND_SEMESTER),
+            modalVisible: false,
+            selectedIndex: 0,
+            date: new Date(),
+            displaydate: moment().format('ddd, Do MMMM YYYY'),
+            timeZoneOffsetInHours: (-1) * (new Date()).getTimezoneOffset() / 60,
+        };
     }
-  }
+
+    render() {
+        return (
+            <ScrollView>
+                <View style={styles.barStyle}>
+                    <TouchableHighlight
+                    style={[styles.buttonStyle,{backgroundColor:(this.state.selectedIndex==0)?'#4682B4':'#f0f8ff',}]}
+                    underlayColor="#4682B4"
+                    onPress={()=>{this._onChange(0);}}>
+                    <View><Text style={{color:(this.state.selectedIndex==0)?'#fff':'#000'}}>Score</Text></View>
+                </TouchableHighlight>
+
+                <TouchableHighlight
+                    style={[styles.buttonStyle,{backgroundColor:(this.state.selectedIndex==1)?'#4682B4':'#f0f8ff',}]}
+                    underlayColor="#4682B4"
+                    onPress={()=>{this._onChange(1);}}>
+                    <View><Text style={{color:(this.state.selectedIndex==1)?'#fff':'#000'}}>1st Semester</Text></View>
+                </TouchableHighlight>
+
+                <TouchableHighlight
+                    style={[styles.buttonStyle,{backgroundColor:(this.state.selectedIndex==2)?'#4682B4':'#f0f8ff',}]}
+                    underlayColor="#4682B4"
+                    onPress={()=>{this._onChange(2);}}>
+                    <View><Text style={{color:(this.state.selectedIndex==2)?'#fff':'#000'}}>2nd Semester</Text></View>
+                </TouchableHighlight>
+
+                <TouchableHighlight
+                    style={[styles.buttonStyle,{backgroundColor:(this.state.selectedIndex==3)?'#4682B4':'#f0f8ff',}]}
+                    underlayColor="#4682B4"
+                    onPress={()=>{this._onChange(3);}}
+                    >
+                    <View><Text style={{color:(this.state.selectedIndex==3)?'#fff':'#000'}}>Year</Text></View>
+                </TouchableHighlight>
+                </View>
+                <View>
+                {this.renderScene()}
+                </View>
+            </ScrollView>
+        );
+    }
+
+    async showPicker(stateKey, options) {
+        try {
+            var newState = {};
+            const {action, year, month, day} = await DatePickerAndroid.open(options);
+            if (action === DatePickerAndroid.dismissedAction) {
+                //newState[stateKey + 'Text'] = 'dismissed';
+            } else {
+                var date = new Date(year, month, day);
+                this._onDateChange(date);
+            }
+        } catch ({code, message}) {
+            console.warn("Error in example '${stateKey}': ", message);
+        }
+    }
+  
   renderScene(){
     switch (this.state.selectedIndex) {
       case 0://score
@@ -127,7 +155,7 @@ class StudentTranscript extends Component {
       case 1://subject average
         return(<View style={{paddingTop:10}}>
               <ListView
-                  dataSource={this.state.dataSubjectSource}
+                  dataSource={this.state.FIRST_SEMESTER_DATA}
                   renderRow={(rowData)=>this.renderViewAverage(rowData)}
                 />
             </View>
@@ -136,7 +164,7 @@ class StudentTranscript extends Component {
       case 2://1st Semester
           return(<View style={{paddingTop:10}}>
                 <ListView
-                    dataSource={this.state.dataSubjectSource}
+                    dataSource={this.state.SECOND_SEMESTER_DATA}
                     renderRow={(rowData)=>this.renderViewAverage(rowData)}
                   />
               </View>
@@ -145,7 +173,7 @@ class StudentTranscript extends Component {
       case 3://2nd Semester
           return(<View style={{paddingTop:10}}>
                 <ListView
-                    dataSource={this.state.dataSubjectSource}
+                    dataSource={this.state.FIRST_SEMESTER_DATA}
                     renderRow={(rowData)=>this.renderViewAverage(rowData)}
                   />
               </View>
@@ -185,7 +213,7 @@ class StudentTranscript extends Component {
       return(
         <View style={{flexDirection:'row',backgroundColor:rowData['color'],borderTopWidth:1,borderTopColor:'#fff'}}>
             <View style={{alignItems:'center',flex:2,paddingTop:15,paddingBottom:15}}>
-              <Text style={{color:'#fff',textAlign:'center'}}>{rowData['Sub']}</Text>
+              <Text style={{color:'#fff',textAlign:'center'}}>{rowData['SUB']}</Text>
             </View>
             <View style={{alignItems:'center',flex:2,paddingTop:15,paddingBottom:15}}>
               <Text style={{color:'#fff',textAlign:'center'}}>{rowData['Average']}</Text>

@@ -87,7 +87,7 @@ module.exports = class CamemisSideBarNave extends Component{
               <TouchableHighlight onPress={()=>{this._changeRout('transcript')}} underlayColor="#4682B6" >
                 <View style={styles.dropdownOptions}>
                   <Icon name="star-o" size={20} color="#daa520" />
-                  <Text style={styles.textDropdownOptions}> Transcript</Text>
+                  <Text style={styles.textDropdownOptions}> Gradebook</Text>
                 </View>
               </TouchableHighlight>
             </View>
