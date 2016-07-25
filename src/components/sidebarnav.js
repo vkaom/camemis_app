@@ -116,7 +116,8 @@ const styles = StyleSheet.create({
   },
   textDropdownOptions:{
       color:'#000',
-      marginLeft:10
+      marginLeft:10,
+      fontSize:16,
   },
   schoolStyle: {
       flexDirection: 'row',
@@ -131,7 +132,7 @@ const styles = StyleSheet.create({
   },
   schoolStyleText: {
       color:'#FFF',
-      fontSize:16,
+      fontSize:18,
       marginLeft:10
   },
   profileImg: {

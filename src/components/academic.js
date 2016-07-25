@@ -36,8 +36,8 @@ module.exports = class Academic extends Component {
       <ScrollView>
         <View>
           <View style={styles.barInfoStyle}>
-            <Icon name="info-circle" size={24} color="#fff"/>
-            <Text style={{marginLeft:10,fontSize:14,color:'#fff'}}>Class Informations</Text>
+            <Icon name="info-circle" size={20} color="#fff"/>
+            <Text style={{marginLeft:10,fontSize:18,color:'#fff'}}>Class Informations</Text>
           </View>
           <View style={{padding:10,backgroundColor:'#f0f8ff'}}>
               <View style={{flex:1, flexDirection:'row',}}>
@@ -57,8 +57,8 @@ module.exports = class Academic extends Component {
         </View>
         <View>
           <View style={styles.barInfoStyle}>
-            <Icon name="list-alt" size={24} color="#fff"/>
-            <Text style={{marginLeft:10,fontSize:14,color:'#fff'}}>Student Lists</Text>
+            <Icon name="list-alt" size={20} color="#fff"/>
+            <Text style={{marginLeft:10,fontSize:18,color:'#fff'}}>Student Lists</Text>
           </View>
           <View>
             {this.personLists()}
@@ -66,8 +66,8 @@ module.exports = class Academic extends Component {
         </View>
         <View>
           <View style={styles.barInfoStyle}>
-            <Icon name="file-text" size={24} color="#fff"/>
-            <Text style={{marginLeft:10,fontSize:14,color:'#fff'}}>Teachers And Subjects</Text>
+            <Icon name="file-text" size={20} color="#fff"/>
+            <Text style={{marginLeft:10,fontSize:18,color:'#fff'}}>Teachers And Subjects</Text>
           </View>
           <View>
             {this.personLists()}
@@ -109,11 +109,11 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   thumbnail: {
-    width: 70,
-    height: 70,
+    width: 50,
+    height: 50,
     marginLeft: 10,
     marginRight:20,
-    borderRadius:35,
+    borderRadius:25,
   },
   rightContainer: {
     flex: 1,

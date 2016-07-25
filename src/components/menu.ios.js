@@ -26,13 +26,34 @@ import Transcript from './transcript';
 import ChatList from './chatList';
 
 var MUNUROUTES = {
-    dashboard: Dashboard,
-    academic: Academic,
-    schedule: Schedule,
-    attendance: Attendance,
-    discipline: Discipline,
-    transcript: Transcript,
-    chatList: ChatList,
+    dashboard: {
+      Component:Dashboard,
+      title:'My Dashboard'
+    },
+    academic: {
+      Component:Academic,
+      title:'My Academic'
+    },
+    schedule: {
+      Component:Schedule,
+      title:'My Schedule'
+    },
+    attendance: {
+      Component:Attendance,
+      title:'My Attendance'
+    },
+    discipline: {
+      Component:Discipline,
+      title:'My Discipline'
+    },
+    transcript: {
+      Component:Transcript,
+      title:'My Transcript'
+    },
+    chatList: {
+      Component:ChatList,
+      title:'ChatList'
+    },
 };
 var widthSideBar = 280;
 var animate = {
@@ -127,11 +148,12 @@ module.exports = class menu extends Component{
     );
   }
   renderScene(route, navigator){
-      var MySceneComponent = MUNUROUTES[route.name];
+      var CamemisRoute = MUNUROUTES[route.name];
+      var MySceneComponent = CamemisRoute.Component;
       return (
           <View style={{flex:1}}>
             <View style={{flex:1}}>
-              <CamemisToolbar title={route.name} openDrawer={this._handleToggle} onActionSelected={this._onActionSelected} actions={toolbarActions} />
+              <CamemisToolbar title={CamemisRoute.title} openDrawer={this._handleToggle} onActionSelected={this._onActionSelected} actions={toolbarActions} />
             </View>
             <View style={{flex:9}}>
               <MySceneComponent route={route} navigator={navigator} />

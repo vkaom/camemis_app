@@ -30,13 +30,34 @@ var Discipline = require('./discipline');
 var Transcript = require('./transcript');
 var ChatList = require('./chatList');
 var MUNUROUTES = {
-    dashboard: Dashboard,
-    academic: Academic,
-    schedule: Schedule,
-    attendance: Attendance,
-    discipline: Discipline,
-    transcript: Transcript,
-    chatList: ChatList,
+    dashboard: {
+      Component:Dashboard,
+      title:'My Dashboard'
+    },
+    academic: {
+      Component:Academic,
+      title:'My Academic'
+    },
+    schedule: {
+      Component:Schedule,
+      title:'My Schedule'
+    },
+    attendance: {
+      Component:Attendance,
+      title:'My Attendance'
+    },
+    discipline: {
+      Component:Discipline,
+      title:'My Discipline'
+    },
+    transcript: {
+      Component:Transcript,
+      title:'My Transcript'
+    },
+    chatList: {
+      Component:ChatList,
+      title:'ChatList'
+    },
 };
 export default class menu extends Component{
   constructor(props) {
@@ -133,13 +154,13 @@ export default class menu extends Component{
       />
     );
   }
-
   renderScene(route, navigator){
-      var MySceneComponent = MUNUROUTES[route.name];
+      var CamemisRoute = MUNUROUTES[route.name];
+      var MySceneComponent = CamemisRoute.Component;
       return (
         <View style={{flex: 1,}}>
           <View>
-            <CamemisToolbar title={route.name} openDrawer={this._openDrawer} onActionSelected={this._onActionSelected} actions={toolbarActions} />
+            <CamemisToolbar title={CamemisRoute.title} openDrawer={this._openDrawer} onActionSelected={this._onActionSelected} actions={toolbarActions} />
           </View>
           <View style={styles.container}>
             <MySceneComponent route={route} navigator={navigator} />

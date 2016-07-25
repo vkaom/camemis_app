@@ -12,13 +12,11 @@ import {
     TouchableHighlight,
     ListView,
     Modal,
-    DatePickerIOS,
-    DatePickerAndroid,
     ScrollView,
-    LayoutAnimation,
     View
 } from 'react-native';
 import moment from 'moment';
+import ScrollableTabView from 'react-native-scrollable-tab-view';
 var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
 module.exports = class Transcript extends Component {
@@ -34,7 +32,7 @@ module.exports = class Transcript extends Component {
 class StudentTranscript extends Component {
     constructor(props){
         super(props);
-        
+
         var myScoreData = [
             {RT: 'Assignment',Subject: 'Subject', Score: 'Score',  Date:'Date',color:'#7FDBFF'},
             {RT: 'RT', Subject: 'Math', Score: '7.8', Date:'30/05/2016',color:'#DDDDDD'},
@@ -60,7 +58,7 @@ class StudentTranscript extends Component {
             {SUB: 'Science', Average: '7.6', Rank: '5', Remark:'Very Good',color:'#FFFFFF'},
             {SUB: 'Physics', Average: '7.8', Rank: '8', Remark:'Good',color:'#DDDDDD'}
         ];
-        
+
         var SECOND_SEMESTER = [
             {SUB: 'Subject', Average: 'Average', Rank: 'Rank', Remark:'Remark',color:'#7FDBFF'},
             {SUB: 'Music', Average: '6.5', Rank: '2', Remark:'Very Good',color:'#DDDDDD'},
@@ -73,123 +71,111 @@ class StudentTranscript extends Component {
             {SUB: 'Science', Average: '7.6', Rank: '5', Remark:'Very Good',color:'#FFFFFF'},
             {SUB: 'Mathematics', Average: '7.8', Rank: '8', Remark:'Good',color:'#DDDDDD'}
         ];
-        
+
         this.state = {
             dataScoreSource: ds.cloneWithRows(myScoreData),
             FIRST_SEMESTER_DATA: ds.cloneWithRows(FIRST_SEMESTER),
             SECOND_SEMESTER_DATA: ds.cloneWithRows(SECOND_SEMESTER),
-            modalVisible: false,
-            selectedIndex: 0,
-            date: new Date(),
-            displaydate: moment().format('ddd, Do MMMM YYYY'),
-            timeZoneOffsetInHours: (-1) * (new Date()).getTimezoneOffset() / 60,
         };
     }
 
-    render() {
-        return (
-            <ScrollView>
-                <View style={styles.barStyle}>
-                    <TouchableHighlight
-                    style={[styles.buttonStyle,{backgroundColor:(this.state.selectedIndex==0)?'#4682B4':'#f0f8ff',}]}
-                    underlayColor="#4682B4"
-                    onPress={()=>{this._onChange(0);}}>
-                    <View><Text style={{color:(this.state.selectedIndex==0)?'#fff':'#000'}}>Score</Text></View>
-                </TouchableHighlight>
-
-                <TouchableHighlight
-                    style={[styles.buttonStyle,{backgroundColor:(this.state.selectedIndex==1)?'#4682B4':'#f0f8ff',}]}
-                    underlayColor="#4682B4"
-                    onPress={()=>{this._onChange(1);}}>
-                    <View><Text style={{color:(this.state.selectedIndex==1)?'#fff':'#000'}}>1st Semester</Text></View>
-                </TouchableHighlight>
-
-                <TouchableHighlight
-                    style={[styles.buttonStyle,{backgroundColor:(this.state.selectedIndex==2)?'#4682B4':'#f0f8ff',}]}
-                    underlayColor="#4682B4"
-                    onPress={()=>{this._onChange(2);}}>
-                    <View><Text style={{color:(this.state.selectedIndex==2)?'#fff':'#000'}}>2nd Semester</Text></View>
-                </TouchableHighlight>
-
-                <TouchableHighlight
-                    style={[styles.buttonStyle,{backgroundColor:(this.state.selectedIndex==3)?'#4682B4':'#f0f8ff',}]}
-                    underlayColor="#4682B4"
-                    onPress={()=>{this._onChange(3);}}>
-                    <View><Text style={{color:(this.state.selectedIndex==3)?'#fff':'#000'}}>Year</Text></View>
-                </TouchableHighlight>
-                </View>
-                <View>
-                {this.renderScene()}
-                </View>
-            </ScrollView>
-        );
-    }
-
-    async showPicker(stateKey, options) {
-        try {
-            var newState = {};
-            const {action, year, month, day} = await DatePickerAndroid.open(options);
-            if (action === DatePickerAndroid.dismissedAction) {
-                //newState[stateKey + 'Text'] = 'dismissed';
-            } else {
-                var date = new Date(year, month, day);
-                this._onDateChange(date);
-            }
-        } catch ({code, message}) {
-            console.warn("Error in example '${stateKey}': ", message);
+    renderMenuNav(TabView){
+      return(
+        <View style={[styles.tabs]}>
+          {
+            TabView.tabs.map((tab, i) => {
+            return(
+            <TouchableHighlight
+              key={tab}
+              style={[styles.tab,{backgroundColor:TabView.activeTab === i ?'#4682B4':'#fff',}]}
+              underlayColor="#4682B4"
+              onPress={() => TabView.goToPage(i)} >
+              <View><Text style={{color:TabView.activeTab === i ?'#fff':'#000'}}>{tab}</Text></View>
+            </TouchableHighlight>
+          );
+          })
         }
+        </View>
+      );
     }
-  
-  renderScene(){
-    switch (this.state.selectedIndex) {
-      case 0://score
-        return(<View style={{paddingTop:10}}>
-              <ListView
-                  dataSource={this.state.dataScoreSource}
-                  renderRow={(rowData)=>this.renderViewScore(rowData)}
-                />
-            </View>
-            );
-        break;
-      case 1://subject average
-        return(<View style={{paddingTop:10}}>
-              <ListView
-                  dataSource={this.state.FIRST_SEMESTER_DATA}
-                  renderRow={(rowData)=>this.renderViewAverage(rowData)}
-                />
-            </View>
-            );
-        break;
-      case 2://1st Semester
-          return(<View style={{paddingTop:10}}>
-                <ListView
-                    dataSource={this.state.SECOND_SEMESTER_DATA}
-                    renderRow={(rowData)=>this.renderViewAverage(rowData)}
-                  />
-              </View>
-              );
-          break;
-      case 3://2nd Semester
-          return(<View style={{paddingTop:10}}>
-                <ListView
-                    dataSource={this.state.FIRST_SEMESTER_DATA}
-                    renderRow={(rowData)=>this.renderViewAverage(rowData)}
-                  />
-              </View>
-              );
-          break;
-      default:
-        return(<View style={{paddingTop:10}}>
-              <ListView
-                  dataSource={this.state.dataScoreSource}
-                  renderRow={(rowData)=>this.renderView(rowData)}
-                />
-            </View>
-            );
-        break;
 
+    render() {
+      return (<ScrollableTabView
+                initialPage={0}
+                renderTabBar={(TabView) => this.renderMenuNav(TabView)}
+                >
+                <ScrollView tabLabel="Score" style={styles.tabView}>
+                  <View style={styles.card}>
+                      <ListView
+                          dataSource={this.state.dataScoreSource}
+                          renderRow={(rowData)=>this.renderViewScore(rowData)}
+                        />
+                  </View>
+                </ScrollView>
+                <ScrollView tabLabel="1st Semester" style={styles.tabView}>
+                  <View style={styles.card}>
+                      <ListView
+                          dataSource={this.state.FIRST_SEMESTER_DATA}
+                          renderRow={(rowData)=>this.renderViewAverage(rowData)}
+                        />
+                  </View>
+                </ScrollView>
+                <ScrollView tabLabel="2nd Semester" style={styles.tabView}>
+                  <View style={styles.card}>
+                      <ListView
+                          dataSource={this.state.SECOND_SEMESTER_DATA}
+                          renderRow={(rowData)=>this.renderViewAverage(rowData)}
+                        />
+                  </View>
+                </ScrollView>
+                <ScrollView tabLabel="Year" style={styles.tabView}>
+                  <View style={{padding:5}}>
+                      <View style={{flexDirection:'row',padding:10, backgroundColor:'#DDDDDD',marginBottom:5,marginTop:5,borderRadius:5}}>
+                          <View style={{flex:1,paddingLeft:50,justifyContent:'center'}}>
+                            <Text style={{color:'#000'}}>1st Semester</Text>
+                            <Text style={{color:'#000'}}>90.8</Text>
+                            <Text style={{color:'#000'}}>1</Text>
+                            <Text style={{color:'#000'}}>Very Good</Text>
+                          </View>
+                      </View>
+                      <View style={{flexDirection:'row',padding:10, backgroundColor:'#f1f1f1',marginBottom:5,marginTop:5,borderRadius:5}}>
+                          <View style={{flex:1,paddingLeft:50,justifyContent:'center'}}>
+                            <Text style={{color:'#000'}}>2nd Semester</Text>
+                            <Text style={{color:'#000'}}>90.8</Text>
+                            <Text style={{color:'#000'}}>1</Text>
+                            <Text style={{color:'#000'}}>Very Good</Text>
+                          </View>
+                      </View>
+                      <View style={{flexDirection:'row',padding:10, backgroundColor:'#DDDDDD',marginBottom:5,marginTop:5,borderRadius:5}}>
+                          <View style={{flex:1,paddingLeft:50,justifyContent:'center'}}>
+                            <Text style={{color:'#000'}}>Total</Text>
+                            <Text style={{color:'#000'}}>90.8</Text>
+                            <Text style={{color:'#000'}}>1</Text>
+                            <Text style={{color:'#000'}}>Very Good</Text>
+                          </View>
+                      </View>
+                      <View style={{flexDirection:'row',padding:10, backgroundColor:'#f1f1f1',marginBottom:5,marginTop:5,borderRadius:5}}>
+                          <View style={{flex:1,paddingLeft:50,justifyContent:'center'}}>
+                            <Text style={{color:'#000'}}>Behavior</Text>
+                            <Text style={{color:'#000'}}>90.8</Text>
+                            <Text style={{color:'#000'}}>1</Text>
+                            <Text style={{color:'#000'}}>Very Good</Text>
+                          </View>
+                      </View>
+                      <View style={{flexDirection:'row',padding:10, backgroundColor:'#DDDDDD',marginBottom:5,marginTop:5,borderRadius:5}}>
+                          <View style={{flex:1,paddingLeft:50,justifyContent:'center'}}>
+                            <Text style={{color:'#000'}}>Award</Text>
+                            <Text style={{color:'#000'}}>90.8</Text>
+                            <Text style={{color:'#000'}}>1</Text>
+                            <Text style={{color:'#000'}}>Very Good</Text>
+                          </View>
+                      </View>
+                  </View>
+                </ScrollView>
+              </ScrollableTabView>
+            );
     }
-  }
+
   renderViewScore(rowData) {
       return(
         <View style={{flexDirection:'row',backgroundColor:rowData['color'],borderTopWidth:1,borderTopColor:'#fff'}}>
@@ -290,14 +276,6 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
       alignItems: 'center',
     },
-    barStyle: {
-      flex:1,flexDirection:'row',
-      backgroundColor:'#f0f8ff',
-      justifyContent:'space-around',
-      alignItems:'center',
-      paddingTop:5,
-      paddingBottom:5
-    },
     modalContainer: {
       flex: 1,
       padding: 20,
@@ -306,12 +284,25 @@ const styles = StyleSheet.create({
     innerModal: {
       borderRadius: 10,
     },
-    buttonStyle: {
+    tab: {
+      alignItems: 'center',
+      justifyContent: 'center',
       paddingTop:5,
       paddingBottom:5,
-      paddingLeft:5,
-      paddingRight:5,
-      borderRadius:5
-    }
+      paddingLeft:10,
+      paddingRight:10,
+      borderRadius:5,
+    },
+    tabs: {
+      height: 45,
+      flexDirection: 'row',
+      paddingTop: 5,
+      borderWidth: 1,
+      borderTopWidth: 0,
+      borderLeftWidth: 0,
+      borderRightWidth: 0,
+      justifyContent:'space-around',
+      borderBottomColor: 'rgba(0,0,0,0.05)',
+    },
 
 });

@@ -46,7 +46,7 @@ module.exports = class CamemisToolbar extends Component{
     }
     _renderActions(){
       if(this.props.actions && this.props.actions.length > 0){
-        console.log(0);
+        
         return this.props.actions.map(function(object, i){
           return (
             <TouchableHighlight style={styles.toolbarAction} key={i} onPress={()=>{this.props.onActionSelected(object.action)}} underlayColor="#4682B6">

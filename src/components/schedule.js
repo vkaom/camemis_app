@@ -15,10 +15,10 @@ import {
     DatePickerIOS,
     DatePickerAndroid,
     ScrollView,
-    LayoutAnimation,
     View
 } from 'react-native';
 import moment from 'moment';
+import ScrollableTabView from 'react-native-scrollable-tab-view';
 var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
 module.exports = class Schedule extends Component {
@@ -53,7 +53,6 @@ class StudentSchedule extends Component {
       selectedIndex: 0,
       date: new Date(),
       displaydate: moment().format('ddd, Do MMMM YYYY'),
-      timeZoneOffsetInHours: (-1) * (new Date()).getTimezoneOffset() / 60,
     };
   }
   buttonStyleDialy(){
@@ -76,33 +75,52 @@ class StudentSchedule extends Component {
           borderRadius:5
       });
   }
-  render() {
-    return (
-      <ScrollView>
-        <View style={styles.barStyle}>
-            <TouchableHighlight
-                style={this.buttonStyleDialy()}
-                underlayColor="#4682B4"
-                onPress={()=>{this._onChange(0);}}>
-              <View><Text style={{color:(this.state.selectedIndex==0)?'#fff':'#000'}}>Dialy</Text></View>
-            </TouchableHighlight>
-            <View>
-                {this.renderSelectDisplayDate()}
-            </View>
-            <TouchableHighlight
-                style={this.buttonStyleWeek()}
-                underlayColor="#4682B4"
-                onPress={()=>{this._onChange(1);}}
-                >
-              <View><Text style={{color:(this.state.selectedIndex==1)?'#fff':'#000'}}>Week</Text></View>
-            </TouchableHighlight>
-        </View>
-        <View>
-          {this.renderScene()}
-          {this.modalDisplay()}
-        </View>
-      </ScrollView>
+  renderMenuNav(TabView){
+    return(
+      <View style={[styles.tabs]}>
+          <TouchableHighlight
+            style={[styles.tab,{backgroundColor:TabView.activeTab === 0 ?'#4682B4':'#fff',}]}
+            underlayColor="#4682B4"
+            onPress={() => TabView.goToPage(0)} >
+            <View><Text style={{color:TabView.activeTab === 0 ?'#fff':'#000'}}>Dialy</Text></View>
+          </TouchableHighlight>
+          <View>
+              {this.renderSelectDisplayDate()}
+          </View>
+          <TouchableHighlight
+            style={[styles.tab,{backgroundColor:TabView.activeTab === 1 ?'#4682B4':'#fff',}]}
+            underlayColor="#4682B4"
+            onPress={() => TabView.goToPage(1)} >
+            <View><Text style={{color:TabView.activeTab === 1 ?'#fff':'#000'}}>Week</Text></View>
+          </TouchableHighlight>
+      </View>
     );
+  }
+  render() {
+    return (<ScrollableTabView
+              initialPage={0}
+              renderTabBar={(TabView) => this.renderMenuNav(TabView)}
+              >
+              <ScrollView tabLabel="Dialy" style={styles.tabView}>
+                <View style={{padding:5}}>
+                    <ListView
+                        dataSource={this.state.dataSource}
+                        renderRow={(rowData)=>this.renderRow(rowData)}
+                      />
+                      {this.modalDisplay()}
+                </View>
+              </ScrollView>
+              <ScrollView tabLabel="Week" style={styles.tabView}>
+                <View style={{padding:5}}>
+                    <ListView
+                        dataSource={this.state.dataSourceWeek}
+                        renderRow={(rowData)=>this.renderWeekRow(rowData)}
+                      />
+                      {this.modalDisplay()}
+                </View>
+              </ScrollView>
+            </ScrollableTabView>
+          );
   }
 
   async showPicker(stateKey, options) {
@@ -119,24 +137,7 @@ class StudentSchedule extends Component {
       console.warn(`Error in example '${stateKey}': `, message);
     }
   }
-  renderScene(){
-    if(this.state.selectedIndex==0){
-      return(<View style={{padding:5}}>
-                <ListView
-                    dataSource={this.state.dataSource}
-                    renderRow={(rowData)=>this.renderRow(rowData)}
-                  />
-              </View>
-            );
-    }else{
-      return(<View style={{paddingTop:10}}>
-              <ListView
-                  dataSource={this.state.dataSourceWeek}
-                  renderRow={(rowData)=>this.renderWeekRow(rowData)}
-                />
-            </View>);
-    }
-  }
+
   currectScedule(time){
     if(time=='Math'){
       return(
@@ -252,14 +253,6 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
       alignItems: 'center',
     },
-    barStyle: {
-      flex:1,flexDirection:'row',
-      backgroundColor:'#f0f8ff',
-      justifyContent:'space-around',
-      alignItems:'center',
-      paddingTop:5,
-      paddingBottom:5
-    },
     modalContainer: {
       flex: 1,
       padding: 20,
@@ -267,6 +260,26 @@ const styles = StyleSheet.create({
     },
     innerModal: {
       borderRadius: 10,
+    },
+    tab: {
+      alignItems: 'center',
+      justifyContent: 'center',
+      paddingTop:5,
+      paddingBottom:5,
+      paddingLeft:10,
+      paddingRight:10,
+      borderRadius:5,
+    },
+    tabs: {
+      height: 45,
+      flexDirection: 'row',
+      paddingTop: 5,
+      borderWidth: 1,
+      borderTopWidth: 0,
+      borderLeftWidth: 0,
+      borderRightWidth: 0,
+      justifyContent:'space-around',
+      borderBottomColor: 'rgba(0,0,0,0.05)',
     },
 
 });
