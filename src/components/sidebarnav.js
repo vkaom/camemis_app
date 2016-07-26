@@ -57,13 +57,13 @@ module.exports = class CamemisSideBarNave extends Component{
               <TouchableHighlight  onPress={()=>{this._changeRout('dashboard')}} underlayColor="#4682B6" >
                 <View style={styles.dropdownOptions}>
                   <Icon name="tachometer" size={20} color="#006400" />
-                  <Text style={styles.textDropdownOptions}> bảng điều khiển</Text>
+                  <Text style={styles.textDropdownOptions}> Dashboard</Text>
                 </View>
               </TouchableHighlight>
               <TouchableHighlight  onPress={()=>{this._changeRout('academic')}} underlayColor="#4682B6" >
                 <View style={styles.dropdownOptions}>
                   <Icon name="graduation-cap" size={20} color="#3cb371" />
-                  <Text style={styles.textDropdownOptions}> học Mỹ</Text>
+                  <Text style={styles.textDropdownOptions}> Academic</Text>
                 </View>
               </TouchableHighlight>
               <TouchableHighlight  onPress={()=>{this._changeRout('schedule')}} underlayColor="#4682B6" >
@@ -136,9 +136,9 @@ const styles = StyleSheet.create({
       marginLeft:10
   },
   profileImg: {
-      width: 30,
-      height: 30,
-      borderRadius:15
+      width: 45,
+      height: 45,
+      borderRadius:22.5
   },
   schoolStyleImageProf: {
       paddingTop:20,

@@ -111,7 +111,7 @@ class StudentSchedule extends Component {
                 </View>
               </ScrollView>
               <ScrollView tabLabel="Week" style={styles.tabView}>
-                <View style={{padding:5}}>
+                <View style={{padding:5,marginTop:5}}>
                     <ListView
                         dataSource={this.state.dataSourceWeek}
                         renderRow={(rowData)=>this.renderWeekRow(rowData)}

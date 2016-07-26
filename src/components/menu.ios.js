@@ -48,7 +48,7 @@ var MUNUROUTES = {
     },
     transcript: {
       Component:Transcript,
-      title:'My Transcript'
+      title:'My Gradebook'
     },
     chatList: {
       Component:ChatList,

@@ -130,44 +130,121 @@ class StudentTranscript extends Component {
                 </ScrollView>
                 <ScrollView tabLabel="Year" style={styles.tabView}>
                   <View style={{padding:5}}>
-                      <View style={{flexDirection:'row',padding:10, backgroundColor:'#DDDDDD',marginBottom:5,marginTop:5,borderRadius:5}}>
-                          <View style={{flex:1,paddingLeft:50,justifyContent:'center'}}>
-                            <Text style={{color:'#000'}}>1st Semester</Text>
-                            <Text style={{color:'#000'}}>90.8</Text>
-                            <Text style={{color:'#000'}}>1</Text>
-                            <Text style={{color:'#000'}}>Very Good</Text>
+                      <View style={{padding:5, backgroundColor:'#4682B4',marginBottom:5,marginTop:5,borderRadius:5}}>
+                          <View style={{flexDirection:'row',backgroundColor:'#4682B4',padding:5}}>
+                              <View style={{alignItems:'center',flex:1}}>
+                                <Text style={{color:'#FFF',textAlign:'center',fontWeight: 'bold',}}>Semester Result</Text>
+                              </View>
+                          </View>
+                          <View style={{flexDirection:'row',backgroundColor:'#7FDBFF',padding:5}}>
+                              <View style={{alignItems:'center',flex:2,paddingTop:15,paddingBottom:15}}>
+                                <Text style={{color:'#000',textAlign:'center'}}>Semester</Text>
+                              </View>
+                              <View style={{alignItems:'center',flex:2,paddingTop:15,paddingBottom:15}}>
+                                <Text style={{color:'#000',textAlign:'center'}}>Average</Text>
+                              </View>
+                              <View style={{alignItems:'center',flex:1,paddingTop:15,paddingBottom:15}}>
+                                <Text style={{color:'#000',textAlign:'center'}}>Rank</Text>
+                              </View>
+                              <View style={{alignItems:'center',flex:2,paddingTop:15,paddingBottom:15}}>
+                                <Text style={{color:'#000',textAlign:'center'}}>Remark</Text>
+                              </View>
+                          </View>
+                          <View style={{flexDirection:'row',backgroundColor:'#FFF',padding:5}}>
+                              <View style={{alignItems:'center',flex:2,paddingTop:15,paddingBottom:15}}>
+                                <Text style={{color:'#000',textAlign:'center'}}>1st Semester</Text>
+                              </View>
+                              <View style={{alignItems:'center',flex:2,paddingTop:15,paddingBottom:15}}>
+                                <Text style={{color:'#000',textAlign:'center'}}>9.87</Text>
+                              </View>
+                              <View style={{alignItems:'center',flex:1,paddingTop:15,paddingBottom:15}}>
+                                <Text style={{color:'#000',textAlign:'center'}}>2</Text>
+                              </View>
+                              <View style={{alignItems:'center',flex:2,paddingTop:15,paddingBottom:15}}>
+                                <Text style={{color:'#000',textAlign:'center'}}>Very Good</Text>
+                              </View>
+                          </View>
+                          <View style={{flexDirection:'row',backgroundColor:'#DDD',padding:5}}>
+                              <View style={{alignItems:'center',flex:2,paddingTop:15,paddingBottom:15}}>
+                                <Text style={{color:'#000',textAlign:'center'}}>2nd Semester</Text>
+                              </View>
+                              <View style={{alignItems:'center',flex:2,paddingTop:15,paddingBottom:15}}>
+                                <Text style={{color:'#000',textAlign:'center'}}>8.99</Text>
+                              </View>
+                              <View style={{alignItems:'center',flex:1,paddingTop:15,paddingBottom:15}}>
+                                <Text style={{color:'#000',textAlign:'center'}}>7</Text>
+                              </View>
+                              <View style={{alignItems:'center',flex:2,paddingTop:15,paddingBottom:15}}>
+                                <Text style={{color:'#000',textAlign:'center'}}>Good</Text>
+                              </View>
                           </View>
                       </View>
-                      <View style={{flexDirection:'row',padding:10, backgroundColor:'#f1f1f1',marginBottom:5,marginTop:5,borderRadius:5}}>
-                          <View style={{flex:1,paddingLeft:50,justifyContent:'center'}}>
-                            <Text style={{color:'#000'}}>2nd Semester</Text>
-                            <Text style={{color:'#000'}}>90.8</Text>
-                            <Text style={{color:'#000'}}>1</Text>
-                            <Text style={{color:'#000'}}>Very Good</Text>
+                      <View style={{padding:5, backgroundColor:'#4682B4',marginBottom:5,marginTop:5,borderRadius:5}}>
+                          <View style={{flexDirection:'row',backgroundColor:'#4682B4',padding:5}}>
+                              <View style={{alignItems:'center',flex:1}}>
+                                <Text style={{color:'#FFF',textAlign:'center',fontWeight: 'bold',}}>Year Result</Text>
+                              </View>
+                          </View>
+                          <View style={{flexDirection:'row',backgroundColor:'#fff',padding:5}}>
+                              <View style={{alignItems:'center',flex:3,paddingTop:15,paddingBottom:15}}>
+                                <Text style={{color:'#000',textAlign:'center',fontWeight: 'bold',}}>2015-2016</Text>
+                              </View>
+                              <View style={{alignItems:'center',flex:2,paddingTop:15,paddingBottom:15}}>
+                                <Text style={{color:'#000',textAlign:'center', fontWeight: 'bold',}}>9.43</Text>
+                              </View>
+                              <View style={{alignItems:'center',flex:2,paddingTop:15,paddingBottom:15}}>
+                                <Text style={{color:'#000',textAlign:'center', fontWeight: 'bold',}}>1</Text>
+                              </View>
+                              <View style={{alignItems:'center',flex:3,paddingTop:15,paddingBottom:15}}>
+                                <Text style={{color:'#000',textAlign:'center', fontWeight: 'bold',}}>Very Good</Text>
+                              </View>
                           </View>
                       </View>
-                      <View style={{flexDirection:'row',padding:10, backgroundColor:'#DDDDDD',marginBottom:5,marginTop:5,borderRadius:5}}>
-                          <View style={{flex:1,paddingLeft:50,justifyContent:'center'}}>
-                            <Text style={{color:'#000'}}>Total</Text>
-                            <Text style={{color:'#000'}}>90.8</Text>
-                            <Text style={{color:'#000'}}>1</Text>
-                            <Text style={{color:'#000'}}>Very Good</Text>
+
+                      <View style={{padding:5, backgroundColor:'#4682B4',marginBottom:5,marginTop:5,borderRadius:5}}>
+                          <View style={{flexDirection:'row',backgroundColor:'#4682B4',padding:5}}>
+                              <View style={{alignItems:'center',flex:1}}>
+                                <Text style={{color:'#FFF',textAlign:'center',fontWeight: 'bold',}}>Behavior</Text>
+                              </View>
+                          </View>
+                          <View style={{flexDirection:'row',backgroundColor:'#fff',padding:5}}>
+                              <View style={{flex:6}}>
+                                <Text style={{color:'#000',}}>Follow class and school rules</Text>
+                              </View>
+                              <View style={{flex:4}}>
+                                <Text style={{color:'#000',textAlign:'center'}}>Good</Text>
+                              </View>
+                          </View>
+                          <View style={{flexDirection:'row',backgroundColor:'#fff',padding:5}}>
+                              <View style={{flex:6}}>
+                                <Text style={{color:'#000'}}>Works the best of his/her ability</Text>
+                              </View>
+                              <View style={{flex:4}}>
+                                <Text style={{color:'#000',textAlign:'center'}}>strong</Text>
+                              </View>
+                          </View>
+                          <View style={{flexDirection:'row',backgroundColor:'#fff',padding:5}}>
+                              <View style={{flex:6}}>
+                                <Text style={{color:'#000'}}>Works independently</Text>
+                              </View>
+                              <View style={{flex:4}}>
+                                <Text style={{color:'#000',textAlign:'center'}}>strong</Text>
+                              </View>
                           </View>
                       </View>
-                      <View style={{flexDirection:'row',padding:10, backgroundColor:'#f1f1f1',marginBottom:5,marginTop:5,borderRadius:5}}>
-                          <View style={{flex:1,paddingLeft:50,justifyContent:'center'}}>
-                            <Text style={{color:'#000'}}>Behavior</Text>
-                            <Text style={{color:'#000'}}>90.8</Text>
-                            <Text style={{color:'#000'}}>1</Text>
-                            <Text style={{color:'#000'}}>Very Good</Text>
+                      <View style={{padding:5, backgroundColor:'#4682B4',marginBottom:5,marginTop:5,borderRadius:5}}>
+                          <View style={{flexDirection:'row',backgroundColor:'#4682B4',padding:5}}>
+                              <View style={{alignItems:'center',flex:1}}>
+                                <Text style={{color:'#FFF',textAlign:'center',fontWeight: 'bold',}}>Award</Text>
+                              </View>
                           </View>
-                      </View>
-                      <View style={{flexDirection:'row',padding:10, backgroundColor:'#DDDDDD',marginBottom:5,marginTop:5,borderRadius:5}}>
-                          <View style={{flex:1,paddingLeft:50,justifyContent:'center'}}>
-                            <Text style={{color:'#000'}}>Award</Text>
-                            <Text style={{color:'#000'}}>90.8</Text>
-                            <Text style={{color:'#000'}}>1</Text>
-                            <Text style={{color:'#000'}}>Very Good</Text>
+                          <View style={{flexDirection:'row',backgroundColor:'#fff',padding:5}}>
+                              <View style={{flex:6}}>
+                                <Text style={{color:'#000'}}>Get Certificate from Mr.Mark</Text>
+                              </View>
+                              <View style={{flex:4}}>
+                                <Text style={{color:'#000',textAlign:'center'}}>28/08/2015</Text>
+                              </View>
                           </View>
                       </View>
                   </View>

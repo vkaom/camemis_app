@@ -17,11 +17,11 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 var personList = [
-  {name: 'Ethan Fox', img: require('../images/person-1.jpg'), lastChatText: 'Sweet! I heard they had a great time over at the cabin. Next time we should bring the croquest set.'},
-  {name: 'John Son', img: require('../images/person-2.jpg'), lastChatText: 'You: Nope! We are good!'},
-  {name: 'Marry', img: require('../images/person-3.jpg'), lastChatText: 'Oh yeah? Because I think no.:)'},
-  {name: 'Steven', img: require('../images/person-4.png'), lastChatText: 'Oh yeah? Because I think no.:)'},
-  {name: 'Hungary', img: require('../images/person-5.jpg'), lastChatText: 'Oh yeah? Because I think no.:)'},
+  {name: 'Ethan Fox', img: require('../images/av2.png'), lastChatText: 'Sweet! I heard they had a great time over at the cabin. Next time we should bring the croquest set.'},
+  {name: 'John Son', img: require('../images/av3.png'), lastChatText: 'You: Nope! We are good!'},
+  {name: 'Marry', img: require('../images/av4.png'), lastChatText: 'Oh yeah? Because I think no.:)'},
+  {name: 'Steven', img: require('../images/av6.png'), lastChatText: 'Oh yeah? Because I think no.:)'},
+  {name: 'Hungary', img: require('../images/av5.png'), lastChatText: 'Oh yeah? Because I think no.:)'},
 ];
 module.exports = class Academic extends Component {
   constructor(props) {
@@ -109,11 +109,11 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   thumbnail: {
-    width: 50,
-    height: 50,
+    width: 45,
+    height: 45,
     marginLeft: 10,
     marginRight:20,
-    borderRadius:25,
+    borderRadius:22.5,
   },
   rightContainer: {
     flex: 1,
