@@ -2,12 +2,14 @@
 import React, { Component } from 'react';
 import {
   Platform,
+  AppState,
   StyleSheet,
   Text,
   TouchableHighlight,
   Navigator,
   View
 } from 'react-native';
+import PushNotification from 'react-native-push-notification';
 
 var Signin = require('./components/signin');
 var Setting = require('./components/setting');
@@ -24,11 +26,34 @@ var ROUTES = {
 class main extends Component {
   constructor(props) {
     super(props);
+    this._handleAppStateChange = this._handleAppStateChange.bind(this);
+    this.state={second:5};
+  }
+  componentDidMount() {
+    AppState.addEventListener('change', this._handleAppStateChange);
+    PushNotification.configure({
+      onNotification: function(notification) {
+           console.log( 'NOTIFICATION:', notification );
+       }
+    });
+  }
+  componentWillUnmount() {
+    AppState.removeEventListener('change', this._handleAppStateChange);
+  }
+  _handleAppStateChange(AppState) {
+      if (AppState === 'background'){
+          console.log('this app is run background: '+this.state.second);
+          PushNotification.localNotificationSchedule({
+              message: "My Notification Message", // (required)
+              date: new Date(Date.now() + (this.state.second * 1000)), // in 60 secs
+              playSound: true,
+              vibrate: true,
+          });
+      }
   }
   render() {
     return(
           <Navigator
-
               initialRoute={{name: 'signin'}}
               renderScene={this.renderScene}
               configureScene={(route, routeStack) => Navigator.SceneConfigs.PushFromRight}
@@ -38,15 +63,6 @@ class main extends Component {
   renderScene(route, navigator){
     var Component = ROUTES[route.name];
     return (<Component route={route} navigator={navigator}/>);
-  }
-  topVeiw(){
-    return(<View style={styles.topVeiwStyle}>
-              <Image
-                style={styles.avatar}
-                source={require('./images/camemis_logo.png')}
-                />
-            </View>
-        );
   }
 }
 

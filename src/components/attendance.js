@@ -15,18 +15,20 @@ import {
     DatePickerIOS,
     Modal,
     DatePickerAndroid,
+    RefreshControl,
+    ActivityIndicator,
     View
 } from 'react-native';
 import moment from 'moment';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import TimerMixin from 'react-timer-mixin';
 
 var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 var dataDialyData = [
     {Date: 'Date',Time: 'Time', Type: 'Type', Subject:'Subject', isDialy:true,color:'#4682B4'},
     {Date: '27/07/2016', Time: '14:00-15:00', Type: 'Absence', Subject:'Science', isDialy:true,color:'#DDDDDD'},
-    {Date: '27/07/2016', Time: '13:00-14:00', Type: 'Late', Subject:'Math', isDialy:true,color:'#DDDDDD'},
-];
+    {Date: '27/07/2016', Time: '13:00-14:00', Type: 'Late', Subject:'Math', isDialy:true,color:'#DDDDDD'},];
 var dataAllData = [
     {Date: 'Date',Time: 'Time', Type: 'Type', Subject:'Subject', isDialy:true,color:'#4682B4'},
     {Date: '27/07/2016', Time: '14:00-15:00', Type: 'Absence', Subject:'Science', isDialy:true,color:'#DDDDDD'},
@@ -68,8 +70,22 @@ module.exports = class Attendance extends Component {
           date: new Date(),
           displaydate: moment().format('DD/MM/YYYY'),
           modalVisible: false,
+          animating: true,
+          loading: false,
+          refreshing: false,
       };
+
   }
+  _onRefresh() {
+    this.setState({refreshing: true});
+    TimerMixin.setTimeout(
+      () => {
+      this.setState({refreshing: false});
+      },
+      800
+    );
+  }
+
   renderTabBar(TabView){
     return(
       <View style={[styles.tabs]}>
@@ -121,42 +137,98 @@ module.exports = class Attendance extends Component {
     );
   }
   render() {
-    return (<ScrollableTabView
+    return (
+      <ScrollableTabView
               style={{marginTop: 0, }}
               initialPage={0}
               renderTabBar={(TabView) => this.renderTabBar(TabView)}
               >
-
               <View tabLabel="calendar-check-o" style={styles.tabView}>
-                  {this.renderSelectDisplayDate()}
-                  <ScrollView>
-                    <ListView
-                        dataSource={this.state.dataDialySource}
-                        renderRow={(rowData)=>this.renderViewDialy(rowData)}
+                  <ScrollView
+                    refreshControl={
+                      <RefreshControl
+                        refreshing={this.state.refreshing}
+                        onRefresh={this._onRefresh.bind(this)}
                       />
+                    }
+                  >
+                    {this.renderLisView(0)}
                   </ScrollView>
+                  {this.renderSelectDisplayDate()}
               </View>
-              <ScrollView tabLabel="calendar" style={styles.tabView}>
+              <ScrollView tabLabel="calendar" style={styles.tabView}
+                  refreshControl={
+                    <RefreshControl
+                      refreshing={this.state.refreshing}
+                      onRefresh={this._onRefresh.bind(this)}
+                    />
+                  }
+                >
+                {this.renderLisView(1)}
+              </ScrollView>
+              <ScrollView tabLabel="calendar-o" style={styles.tabView}
+                refreshControl={
+                  <RefreshControl
+                    refreshing={this.state.refreshing}
+                    onRefresh={this._onRefresh.bind(this)}
+                  />
+                }
+              >
+                {this.renderLisView(2)}
+              </ScrollView>
+              <ScrollView tabLabel="calendar-o" style={styles.tabView}
+                refreshControl={
+                  <RefreshControl
+                    refreshing={this.state.refreshing}
+                    onRefresh={this._onRefresh.bind(this)}
+                  />
+                }
+              >
+                {this.renderLisView(3)}
+              </ScrollView>
+            </ScrollableTabView>
+          );
+  }
+
+  renderLisView(v){
+
+          switch (v) {
+            case 0:
+              return(
+                <ListView
+                    dataSource={this.state.dataDialySource}
+                    renderRow={(rowData)=>this.renderViewDialy(rowData)}
+                  />
+              );
+              break;
+              case 1:
+                return(
                   <ListView
                       dataSource={this.state.dataAllSource}
                       renderRow={(rowData)=>this.renderViewDialy(rowData)}
                     />
-              </ScrollView>
-              <ScrollView tabLabel="calendar-o" style={styles.tabView}>
+                );
+                break;
+              case 2:
+                return(
                   <ListView
                       dataSource={this.state.data1stSource}
                       renderRow={(rowData)=>this.renderViewDialy(rowData)}
                     />
-              </ScrollView>
-              <ScrollView tabLabel="calendar-o" style={styles.tabView}>
+                );
+              break;
+              case 3:
+                return(
                   <ListView
                       dataSource={this.state.data2ndSource}
                       renderRow={(rowData)=>this.renderViewDialy(rowData)}
                     />
-              </ScrollView>
+                );
+              break;
+            default:
 
-            </ScrollableTabView>
-          );
+          }
+
   }
   renderViewDialy(rowData) {
       return(

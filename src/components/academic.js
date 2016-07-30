@@ -15,7 +15,7 @@ import {
     View
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-
+import TimerMixin from 'react-timer-mixin';
 var personList = [
   {name: 'Ethan Fox', img: require('../images/av2.png'), lastChatText: 'Sweet! I heard they had a great time over at the cabin. Next time we should bring the croquest set.'},
   {name: 'John Son', img: require('../images/av3.png'), lastChatText: 'You: Nope! We are good!'},
@@ -31,9 +31,25 @@ module.exports = class Academic extends Component {
       loaded: false,
     };
   }
+  _onRefresh() {
+    this.setState({refreshing: true});
+    TimerMixin.setTimeout(
+      () => {
+      this.setState({refreshing: false});
+      },
+      800
+    );
+  }
   render() {
     return (
-      <ScrollView>
+      <ScrollView
+        refreshControl={
+          <RefreshControl
+            refreshing={this.state.refreshing}
+            onRefresh={this._onRefresh.bind(this)}
+          />
+        }
+      >
         <View>
           <View style={styles.barInfoStyle}>
             <Icon name="info-circle" size={20} color="#fff"/>
