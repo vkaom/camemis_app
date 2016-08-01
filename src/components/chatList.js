@@ -16,30 +16,58 @@ import {
   Modal,
   TouchableHighlight,
 } from 'react-native';
-
 import CamemisToolbar from './toolbar';
-
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { ActionCreators } from '../actions';
+import { fetchChatList } from '../actions/chat'
 var REQUEST_URL = 'https://raw.githubusercontent.com/facebook/react-native/master/docs/MoviesExample.json';
 var personList = [];
 var toolbarActions = [
   {title: 'Search', icon: 'search', action: 'search'},
 ];
 
-module.exports = class ChatList extends Component {
+class ChatListCom extends Component {
   constructor(props) {
     super(props);
     this.state = {
       refreshing: false,
-      loaded: false,
+      isLoading: true,
       searchModalVisible: false,
     };
     //this._setSearchModalVisible = this._setSearchModalVisible.bind(this);
   }
-  componentWillMount() {
-    this._fetchData();
+  componentWillReceiveProps(nextProps) {
+    if (this.props.navOnDidFocus !== nextProps.navOnDidFocus) {
+      // If somehow we're sure we can actually be faster than React at this. (not likely)
+      console.log('--------------------init ajax-----------------------------');
+      this._fetchChatList();
+    }
+  }
+  componentDidMount() {
+    //this._fetchChatList();
+
+    //using this also works but must remove mapDispatchToProps
+    // this.props.dispatch(fetchChatList()).then(() => {
+    //   this.setState({isLoading: false});
+    // });
+
+    //this._fetchData();
+  }
+  componentWillUpdate(nextProps) {
+    // console.log('componentWillReceiveProps');
+    // console.log(this.props.navOnDidFocus);
+    // console.log(nextProps.navOnDidFocus);
+    //this._fetchChatList()
   }
   _onRefresh() {
-    this._fetchData();
+    //this._fetchData();
+    this.props.fetchChatList()
+  }
+  _fetchChatList(){
+    this.props.fetchChatList().then(() => {
+      this.setState({isLoading: false});
+    });
   }
   _fetchData() {
     this.setState({refreshing: true});
@@ -69,18 +97,21 @@ module.exports = class ChatList extends Component {
         onRequestClose={() => {
           //alert("Modal has been closed.")
         }}
+        style={{flex:1,backgroundColor: 'yellow', margin:0, padding:0}}
         >
-       <View style={{}}>
-        <View>
-          <CamemisToolbar navigator={this.props.navigator} onNavIconPress={this._setSearchModalVisible.bind(this, false)} title="Search" />
-          <Text>Hello World!</Text>
-          <TouchableHighlight onPress={() => {
-            this._setSearchModalVisible(!this.state.searchModalVisible)
-          }}>
-            <Text>Hide Modal</Text>
-          </TouchableHighlight>
+        <View style={{flex: 1}}>
+          <View>
+            <CamemisToolbar navigator={this.props.navigator} onNavIconPress={this._setSearchModalVisible.bind(this, false)} title="Search" />
+          </View>
+          <View style={{flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center',backgroundColor: '#FFFFFF',}}>
+            <Text>Hello World!</Text>
+            <TouchableHighlight onPress={() => {
+              this._setSearchModalVisible(!this.state.searchModalVisible)
+            }}>
+              <Text>Hide Modal</Text>
+            </TouchableHighlight>
+          </View>
         </View>
-       </View>
       </Modal>
     );
   }
@@ -88,12 +119,17 @@ module.exports = class ChatList extends Component {
     return (
       <View style={{flex: 1}}>
         <View>
-          <CamemisToolbar navigator={this.props.navigator} title="Chat" onActionSelected={this._onActionSelected} actions={toolbarActions} />
+          <CamemisToolbar navigator={this.props.navigator} title="ជជែក" onActionSelected={this._onActionSelected} actions={toolbarActions} />
         </View>
         <View style={{flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center',backgroundColor: '#FFFFFF',}}>
           <Text>
             Loading...
           </Text>
+          <TouchableHighlight onPress={() => {this._fetchChatList()}} >
+            <Text>
+
+            </Text>
+          </TouchableHighlight>
         </View>
       </View>
     );
@@ -109,14 +145,21 @@ module.exports = class ChatList extends Component {
     }
     //console.log(this.props.navigator.getCurrentRoutes(0));
   }
+
   render() {
-    if (!this.state.loaded) {
+    // console.log('---START---');
+    // console.log('navOnDidFocus: ' + this.props.navOnDidFocus);
+    // console.log('---END---');
+    // if(this.props.navOnDidFocus === true){
+    //   this._fetchChatList.bind(this);
+    // }
+    if (this.state.isLoading) {
       return this._renderLoadingView();
     }
     return (
       <View style={{flex: 1}}>
         <View>
-          <CamemisToolbar navigator={this.props.navigator} title="Chat" onActionSelected={this._onActionSelected} actions={toolbarActions} />
+          <CamemisToolbar navigator={this.props.navigator} title="ជជែក" onActionSelected={this._onActionSelected} actions={toolbarActions} />
         </View>
         {this._renderSearchModal()}
         <ScrollView
@@ -130,7 +173,7 @@ module.exports = class ChatList extends Component {
           }
         >
           {
-            personList.map(function(object, i){
+            this.props.personList.map(function(object, i){
               return (
                 <View style={styles.chatItemList} key={i}>
                   <Image
@@ -180,3 +223,42 @@ const styles = StyleSheet.create({
     // textAlign: 'center',
   },
 });
+
+//module.exports = connect()(ChatList);
+const mapStateToProps = (state) => {
+  //console.log(state);
+  return {
+    //navOnDidFocus: state.navigator.navOnDidFocus
+    //result: state.chat.result
+    //isLoading: state.chat.isLoading,
+    navOnDidFocus: state.navigator.navOnDidFocus,
+    personList: state.chat.result.items
+  }
+}
+
+/*1st Method*/
+// const mapDispatchToProps = (dispatch) => {
+//   return {
+//     // onTodoClick: (id) => {
+//     //   dispatch(toggleTodo(id))
+//     // }
+//     test: () => {
+//       dispatch(test())
+//     }
+//   }
+// }
+/*2nd Method*/
+// function mapDispatchToProps(dispatch){
+//   return bindActionCreators({test}, dispatch);
+// }
+
+function mapDispatchToProps(dispatch){
+  return bindActionCreators(ActionCreators, dispatch);
+}
+
+const ChatList = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ChatListCom)
+
+module.exports = ChatList

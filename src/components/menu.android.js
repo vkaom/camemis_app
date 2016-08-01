@@ -264,6 +264,8 @@ export default class menu extends Component{
     switch (action) {
       case 'chatList':
         this.props.navigator.push({name: 'chatList'});
+        //this.navigator.push({name: 'chatList'});
+        //this.props.navigator.immediatelyResetRouteStack([{name:'chatList'}]);
         break;
       case 1:
         this.props.navigator.pop();

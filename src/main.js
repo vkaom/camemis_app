@@ -15,7 +15,21 @@ var Signin = require('./components/signin');
 var Setting = require('./components/setting');
 var ChatList = require('./components/chatList');
 import Mymenu from './components/menu';
+import { Provider } from 'react-redux';
+import { createStore, applyMiddleware } from 'redux';
+import thunkMiddleware from 'redux-thunk';
+import createLogger from 'redux-logger';
+import camemisApp from './reducers';
+import {navOnDidFocus} from './actions/navigator';
 
+const loggerMiddleware = createLogger({predicate: (getState, action) => __DEV__});
+const store = createStore(
+  camemisApp,
+  applyMiddleware(
+    thunkMiddleware, // lets us dispatch() functions
+    loggerMiddleware // neat middleware that logs actions
+  )
+);
 var ROUTES = {
     signin: Signin,
     setting: Setting,
@@ -53,11 +67,16 @@ class main extends Component {
   }
   render() {
     return(
+      <Provider store={store}>
           <Navigator
               initialRoute={{name: 'signin'}}
               renderScene={this.renderScene}
               configureScene={(route, routeStack) => Navigator.SceneConfigs.PushFromRight}
+              onDidFocus={(route) => {
+                store.dispatch(navOnDidFocus())
+              }}
           />
+      </Provider>
     );
   }
   renderScene(route, navigator){
