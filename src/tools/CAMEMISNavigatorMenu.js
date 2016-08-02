@@ -1,0 +1,113 @@
+'use strict';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { StyleSheet,Navigator, View } from 'react-native';
+import CamemisToolbar from '../components/toolbar';
+import Dashboard from '../components/dashboard';
+import Academic from '../components/academic';
+import Schedule from '../components/schedule';
+import Attendance from '../components/attendance';
+import Discipline from '../components/discipline';
+import Transcript from '../components/transcript';
+import ChatList from '../components/chatList';
+
+var MUNUROUTES = {
+    dashboard: {
+      Component:Dashboard,
+      title:'My Dashboard'
+    },
+    academic: {
+      Component:Academic,
+      title:'My Academic'
+    },
+    schedule: {
+      Component:Schedule,
+      title:'My Schedule'
+    },
+    attendance: {
+      Component:Attendance,
+      title:'My Attendance'
+    },
+    discipline: {
+      Component:Discipline,
+      title:'My Discipline'
+    },
+    transcript: {
+      Component:Transcript,
+      title:'My Transcript'
+    },
+    chatList: {
+      Component:ChatList,
+      title:'ChatList'
+    },
+};
+var toolbarActions = [
+  {title: 'Chat List', icon: 'comment', action: 'chatList'},
+];
+class CAMEMISNavigatorMenu extends Component{
+  constructor(props) {
+    super(props);
+  }
+  render(){
+    return(
+      <Navigator
+          ref={(navigator) => { this.navigator = navigator; }}
+          style={styles.container}
+          initialRoute={{name: 'academic'}}
+          renderScene={(route, navigator) =>this.renderScene(route, navigator)}
+          configureScene={(route, routeStack) => Navigator.SceneConfigs.FloatFromRight}
+      />
+    );
+  }
+  renderScene(route, navigator){
+      var CamemisRoute = MUNUROUTES[route.name];
+      var MySceneComponent = CamemisRoute.Component;
+      if(route.name=='chatList'){
+        return (
+          <View style={{flex: 1,}}>
+            <View style={styles.container}>
+              <MySceneComponent route={route} navigator={navigator} />
+            </View>
+          </View>
+        );
+      }else{
+        return (
+          <View style={{flex: 1,}}>
+            <View>
+              <CamemisToolbar title={CamemisRoute.title} openDrawer={this._openDrawer} onActionSelected={this._onActionSelected} actions={toolbarActions} />
+            </View>
+            <View style={styles.container}>
+              <MySceneComponent route={route} navigator={navigator} />
+            </View>
+          </View>
+        );
+    }
+  }
+  _openDrawer = () => {
+    this.props.openDrawer();
+  }
+  _logout = () => {
+
+  }
+  _onActionSelected = (action) => {
+    switch (action) {
+      case 'chatList':
+        this.navigator.push({name: 'chatList'});
+        break;
+      case 1:
+        this.navigator.pop();
+        break;
+      default:
+        this.navigator.pop();
+    }
+  }
+}
+
+const styles = StyleSheet.create({
+  container:{
+      flex: 1,
+      backgroundColor: '#FFFFFF',
+      shadowColor: "#000000",
+  },
+});
+export default connect()(CAMEMISNavigatorMenu);

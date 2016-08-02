@@ -1,8 +1,10 @@
 import { combineReducers } from 'redux';
 import chat from './chat';
 import navigator from './navigator';
+import login from './login';
 const camemisApp = combineReducers({
   chat,
+  login,
   navigator,
 });
 export default camemisApp;

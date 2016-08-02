@@ -144,6 +144,7 @@ module.exports = class Attendance extends Component {
               renderTabBar={(TabView) => this.renderTabBar(TabView)}
               >
               <View tabLabel="calendar-check-o" style={styles.tabView}>
+                  {this.renderSelectDisplayDate()}
                   <ScrollView
                     refreshControl={
                       <RefreshControl
@@ -154,7 +155,7 @@ module.exports = class Attendance extends Component {
                   >
                     {this.renderLisView(0)}
                   </ScrollView>
-                  {this.renderSelectDisplayDate()}
+
               </View>
               <ScrollView tabLabel="calendar" style={styles.tabView}
                   refreshControl={

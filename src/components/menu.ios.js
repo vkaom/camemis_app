@@ -1,18 +1,17 @@
 'use strict';
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { ActionCreators } from '../actions';
 import {
     StyleSheet,
-    Text,
     View,
     ScrollView,
     Navigator,
     TouchableWithoutFeedback,
-    TouchableHighlight,
     PanResponder,
     LayoutAnimation,
     Dimensions,
-    Image,
-    PixelRatio
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import CamemisToolbar from './toolbar';
@@ -55,6 +54,9 @@ var MUNUROUTES = {
       title:'ChatList'
     },
 };
+var toolbarActions = [
+  {title: 'Chat List', icon: 'comment', action: 'chatList'},
+];
 var widthSideBar = 280;
 var animate = {
       duration: 550,
@@ -65,7 +67,7 @@ var animate = {
       type: LayoutAnimation.Types.easeInEaseOut,
       springDamping: 0.7,
     }};
-module.exports = class menu extends Component{
+class menu extends Component{
   constructor(props) {
     super(props);
     this.state = {
@@ -76,7 +78,6 @@ module.exports = class menu extends Component{
     };
 
     this._ViewPanResponder = PanResponder.create({
-        // Ask to be the responder:
         onStartShouldSetPanResponder: (evt, gestureState) => true,
         onStartShouldSetPanResponderCapture: (evt, gestureState) => true,
         onMoveShouldSetPanResponder: (evt, gestureState) => true,
@@ -150,6 +151,20 @@ module.exports = class menu extends Component{
   renderScene(route, navigator){
       var CamemisRoute = MUNUROUTES[route.name];
       var MySceneComponent = CamemisRoute.Component;
+      if(route.name=='chatList'){
+          return (<View style={{flex:1}}>
+                    <View style={styles.container}>
+                      <MySceneComponent route={route} navigator={navigator} />
+                    </View>
+                    <View style={this.slidebarStyle()}>
+                      <CamemisSideBarNave loggle={this._handleToggle} navigator={navigator} logout={this._logout}/>
+                      <TouchableWithoutFeedback onPress={this._handleToggle}>
+                        <View style={this.dropBlurStyle()} {...this._ViewPanResponder.panHandlers}></View>
+                      </TouchableWithoutFeedback>
+                    </View>
+                  </View>
+                );
+      }
       return (
           <View style={{flex:1}}>
             <View style={{flex:1}}>
@@ -168,8 +183,7 @@ module.exports = class menu extends Component{
       );
   }
   _logout = () => {
-      this.props.navigator.immediatelyResetRouteStack([{name:'signin'}]);
-      this._handleToggle();
+      this.props.doLogout();
   }
   _changeRout = (route) => {
       this.navigator.push({name:route});
@@ -183,29 +197,20 @@ module.exports = class menu extends Component{
         height:Dimensions.get('window').height,
       });
   }
-  /////////////
-  //////Rada
-  //////////////
+
   _onActionSelected = (action) => {
     switch (action) {
       case 'chatList':
-        this.props.navigator.push({name: 'chatList'});
+        this.navigator.push({name: 'chatList'});
         break;
       case 1:
-        this.props.navigator.pop();
+        this.navigator.pop();
         break;
       default:
-        this.props.navigator.pop();
+        this.navigator.pop();
     }
-    //console.log(this.props.navigator.getCurrentRoutes(0));
   }
 }
-
-var toolbarActions = [
-  // {title: 'Create', icon: 'star-o', action: 'create'},
-  // {title: 'Filter', icon: 'calendar-check-o', action: 'filter'},
-  {title: 'Chat List', icon: 'comment', action: 'chatList'},
-];
 
 const styles = StyleSheet.create({
   container:{
@@ -217,10 +222,9 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       justifyContent: 'center',
   },
-  topStyle:{
-      padding: 15,
-      flexDirection: 'row',
-      backgroundColor: '#4682B4',
-      justifyContent: 'space-between'
-  },
 });
+
+function mapDispatchToProps(dispatch){
+  return bindActionCreators(ActionCreators, dispatch);
+}
+export default connect((state) => {return {}},mapDispatchToProps)(menu);

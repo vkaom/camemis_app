@@ -1,5 +1,8 @@
 'use strict';
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { ActionCreators } from '../actions';
 import {
   AppRegistry,
   StyleSheet,
@@ -15,13 +18,14 @@ import BottonIcon from './buttonIcon';
 import CamemisLogo from './camhead';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-module.exports = class signin extends Component{
+class signin extends Component{
   constructor(props) {
     super(props);
   }
   singIn = () => {
+    this.props.doLogin();
     ///log in succeeded reset route navigator
-    this.props.navigator.immediatelyResetRouteStack([{name:'mymenu'}]);
+    //this.props.navigator.immediatelyResetRouteStack([{name:'mymenu'}]);
   }
   settingCamemis = () => {
     this.props.navigator.push({name:'setting'});
@@ -43,7 +47,7 @@ module.exports = class signin extends Component{
                     <Text style={{color:'#000000'}}>Password:</Text>
                     <TextInput style={styles.input} secureTextEntry={true}/>
                     <View style={{marginTop:10, alignItems:'center', justifyContent: 'center',}}>
-                      <BottonIcon text={'Sign In'} colorText={'#FFFFFF'} onPress={this.singIn} name={'sign-in'} backgroundColor={'#4682B4'}/>
+                      <BottonIcon text={'Sign In'} colorText={'#FFFFFF'} onPress={()=>{this.singIn()}} name={'sign-in'} backgroundColor={'#4682B4'}/>
                     </View>
                   </View>
                 </ScrollView>
@@ -93,5 +97,8 @@ var styles = StyleSheet.create({
         marginLeft: 5,
 
     },
-
 });
+function mapDispatchToProps(dispatch){
+  return bindActionCreators(ActionCreators, dispatch);
+}
+export default connect((state) => {return {}},mapDispatchToProps)(signin);

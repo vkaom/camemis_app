@@ -65,6 +65,8 @@ var styles = StyleSheet.create({
   toolbar: {
     flex: 1,
     flexDirection: 'row',
+    paddingTop:5,
+    paddingBottom:5,
     backgroundColor: '#4682B4',
   },
   toolbarNavIcon: {
