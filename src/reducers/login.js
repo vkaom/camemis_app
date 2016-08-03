@@ -10,6 +10,6 @@ export default function login(state = initialState, action = {}) {
     case types.DO_LOGOUT:
         return false;
     default:
-      return false;
+      return state;
   }
 }

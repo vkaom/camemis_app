@@ -10,7 +10,7 @@ import Attendance from '../components/attendance';
 import Discipline from '../components/discipline';
 import Transcript from '../components/transcript';
 import ChatList from '../components/chatList';
-
+import {navOnDidFocus} from '../actions/navigator';
 var MUNUROUTES = {
     dashboard: {
       Component:Dashboard,
@@ -57,6 +57,9 @@ class CAMEMISNavigatorMenu extends Component{
           initialRoute={{name: 'academic'}}
           renderScene={(route, navigator) =>this.renderScene(route, navigator)}
           configureScene={(route, routeStack) => Navigator.SceneConfigs.FloatFromRight}
+          onDidFocus={(route) => {
+            this.props.dispatch(navOnDidFocus())
+          }}
       />
     );
   }
