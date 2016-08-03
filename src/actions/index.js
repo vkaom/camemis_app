@@ -1,5 +1,6 @@
 import * as chatActions from './chat';
 import * as loginActions from './login';
+import * as schoolSettingActions from './schoolSetting';
 //import * as navigatorActions from './navigator';
 //***not gonna work
 //export const ActionCreators = {chatActions};
@@ -8,6 +9,6 @@ import * as loginActions from './login';
 export const ActionCreators = Object.assign({},
   //navigatorActions,
   chatActions,
-  loginActions
-
+  loginActions,
+  schoolSettingActions
 );

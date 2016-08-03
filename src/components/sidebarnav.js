@@ -36,7 +36,6 @@ module.exports = class CamemisSideBarNave extends Component{
           paddingTop:0,
           shadowColor: '#ccc',
           shadowOpacity: 1.0,
-          //height:this.state.height
       });
     }
     render() {

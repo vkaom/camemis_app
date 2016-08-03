@@ -6,56 +6,22 @@ import { ActionCreators } from '../actions';
 import { StyleSheet,View,ScrollView,Navigator,DrawerLayoutAndroid,BackAndroid } from 'react-native';
 import CamemisToolbar from './toolbar';
 import CamemisSideBarNave from './sidebarnav';
-import Dashboard from './dashboard';
-import Academic from './academic';
-import Schedule from './schedule';
-import Attendance from './attendance';
-import Discipline from './discipline';
-import Transcript from './transcript';
-import ChatList from './chatList';
-//import CAMEMISNavigatorMenu from '../tools/CAMEMISNavigatorMenu';
+import CAMEMISNavigatorMenu from '../tools/CAMEMISNavigatorMenu';
 var widthSideBar = 280;
 var toolbarActions = [
   {title: 'Chat List', icon: 'comment', action: 'chatList'},
 ];
-var MUNUROUTES = {
-    dashboard: {
-      Component:Dashboard,
-      title:'My Dashboard'
-    },
-    academic: {
-      Component:Academic,
-      title:'My Academic'
-    },
-    schedule: {
-      Component:Schedule,
-      title:'My Schedule'
-    },
-    attendance: {
-      Component:Attendance,
-      title:'My Attendance'
-    },
-    discipline: {
-      Component:Discipline,
-      title:'My Discipline'
-    },
-    transcript: {
-      Component:Transcript,
-      title:'My Transcript'
-    },
-    chatList: {
-      Component:ChatList,
-      title:'ChatList'
-    },
-};
+
 export default class menu extends Component{
   constructor(props){
       super(props);
       this.renderDrawerContent = this.renderDrawerContent.bind(this);
       this._handleBackButton = this._handleBackButton.bind(this);
+      this.state = {navigator: null};
   }
   componentDidMount() {
     BackAndroid.addEventListener('hardwareBackPress', this._handleBackButton);
+    this.setState({navigator:this.navigator});
   }
   componentWillUnmount() {
     BackAndroid.removeEventListener('hardwareBackPress', this.handleBackButton);
@@ -82,50 +48,23 @@ export default class menu extends Component{
           ref={(drawer) => { this.drawer = drawer; }}
           renderNavigationView={this.renderDrawerContent}
         >
-          {this.renderMainContent()}
+            <CAMEMISNavigatorMenu
+              refName={(ref) => this.navigator = ref}
+              navigator={this.state.navigator}
+              openDrawer={this._openDrawer} />
+
         </DrawerLayoutAndroid>
       );
   }
   renderDrawerContent(){
     return(
-        <CamemisSideBarNave navigator={this.navigator} loggle={this._closeDrawer} logout={this._logout}/>
+        <CamemisSideBarNave
+          navigator={this.navigator}
+          loggle={this._closeDrawer}
+          logout={this._logout}/>
     );
   }
-  renderMainContent(){
-    return (
-      <Navigator
-          style={styles.container}
-          ref={(navigator) => { this.navigator = navigator; }}
-          initialRoute={{name: 'academic'}}
-          renderScene={(route, navigator) =>this.renderScene(route, navigator)}
-          configureScene={(route, routeStack) => Navigator.SceneConfigs.FloatFromRight}
-      />
-    );
-  }
-  renderScene(route, navigator){
-      var CamemisRoute = MUNUROUTES[route.name];
-      var MySceneComponent = CamemisRoute.Component;
-      if(route.name=='chatList'){
-        return (
-          <View style={{flex: 1,}}>
-            <View style={styles.container}>
-              <MySceneComponent route={route} navigator={navigator} />
-            </View>
-          </View>
-        );
-      }else{
-        return (
-          <View style={{flex: 1,}}>
-            <View>
-              <CamemisToolbar title={CamemisRoute.title} openDrawer={this._openDrawer} onActionSelected={this._onActionSelected} actions={toolbarActions} />
-            </View>
-            <View style={styles.container}>
-              <MySceneComponent route={route} navigator={navigator} />
-            </View>
-          </View>
-        );
-    }
-  }
+
   _logout = () => {
     this.props.doLogout();
   }
@@ -134,18 +73,6 @@ export default class menu extends Component{
   }
   _closeDrawer = () => {
     this.drawer.closeDrawer();
-  }
-  _onActionSelected = (action) => {
-    switch (action) {
-      case 'chatList':
-        this.navigator.push({name: 'chatList'});
-        break;
-      case 1:
-        this.navigator.pop();
-        break;
-      default:
-        this.navigator.pop();
-    }
   }
 }
 const styles = StyleSheet.create({

@@ -48,10 +48,11 @@ class CAMEMISNavigatorMenu extends Component{
   constructor(props) {
     super(props);
   }
+
   render(){
     return(
       <Navigator
-          ref={(navigator) => { this.navigator = navigator; }}
+          ref={this.props.refName}
           style={styles.container}
           initialRoute={{name: 'academic'}}
           renderScene={(route, navigator) =>this.renderScene(route, navigator)}
@@ -86,22 +87,23 @@ class CAMEMISNavigatorMenu extends Component{
   _openDrawer = () => {
     this.props.openDrawer();
   }
-  _logout = () => {
-
-  }
   _onActionSelected = (action) => {
     switch (action) {
       case 'chatList':
-        this.navigator.push({name: 'chatList'});
+        this.props.navigator.push({name: 'chatList'});
         break;
       case 1:
-        this.navigator.pop();
+        this.props.navigator.pop();
         break;
       default:
-        this.navigator.pop();
+        tthis.props.navigator.pop();
     }
   }
 }
+
+CAMEMISNavigatorMenu.propTypes = {
+    refName: React.PropTypes.func,
+};
 
 const styles = StyleSheet.create({
   container:{
