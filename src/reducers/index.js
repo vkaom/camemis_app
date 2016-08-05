@@ -2,7 +2,7 @@ import { combineReducers } from 'redux';
 import chat from './chat';
 import navigator from './navigator';
 import login from './login';
-import schoolSetting from './schoolSetting';
+import schoolSetting from './setting';
 const camemisApp = combineReducers({
   chat,
   login,

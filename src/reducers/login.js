@@ -1,9 +1,6 @@
 import * as types from '../actions/actionTypes';
 
-const initialState = {
-};
-
-export default function login(state = initialState, action = {}) {
+export default function login(state = false, action = {}) {
   switch (action.type) {
     case types.DO_LOGIN:
       return true;

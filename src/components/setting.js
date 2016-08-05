@@ -1,5 +1,8 @@
 'use strict';
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { ActionCreators } from '../actions';
 import {
       StyleSheet,
       Text,
@@ -8,7 +11,6 @@ import {
       Image,
       View,
       Modal,
-      ListView,
       ScrollView,
       Picker,
       PixelRatio,
@@ -19,15 +21,15 @@ import BottonIcon from './buttonIcon';
 import CamemisLogo from './camhead';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-module.exports = class setting extends Component{
+class setting extends Component{
     constructor(props) {
       super(props);
       this.state = {
         modalVisible: false,
-        SCHOOL_NAME:'None',
-        MOBILE_URL:'None',
-        MOBILE_CODE:'None',
-        LANGUAGE:'None',
+        SCHOOL_NAME: this.props.schoolSetting.SCHOOL_NAME,
+        MOBILE_URL: this.props.schoolSetting.MOBILE_URL,
+        MOBILE_CODE: this.props.schoolSetting.MOBILE_CODE,
+        LANGUAGE: this.props.schoolSetting.LANGUAGE,
         key: '',
         selcted: {'icon':'bomb' ,'name':'setting'}
       };
@@ -51,13 +53,7 @@ module.exports = class setting extends Component{
                   <ScrollView style={styles.contentStyle}>
                     <View><Text style={{paddingBottom: 20,fontSize:18}}>Mobile School CAMEMIS Settings:</Text></View>
                     <TouchableHighlight onPress={() => {this.setModalSetting(true,'SCHOOL_NAME')}}>
-                      <View style={{flexDirection: 'row',
-                                    flex: 1,
-                                    padding: 15,
-                                    backgroundColor: 'white',
-                                    borderBottomWidth: 1 / PixelRatio.get(),
-                                    borderBottomColor: '#CDCDCD',
-                                    alignItems: 'center'}}>
+                      <View style={styles.rowViewStyle}>
                         <Icon name="university" size={22} color="#4169e1" style={{marginRight:25}}/>
                         <View style={{flexDirection: 'column',}}>
                           <Text style={{fontSize:16,marginBottom:2}}>School Name</Text>
@@ -66,13 +62,7 @@ module.exports = class setting extends Component{
                       </View>
                     </TouchableHighlight>
                     <TouchableHighlight onPress={() => {this.setModalSetting(true,'MOBILE_URL')}}>
-                      <View style={{flexDirection: 'row',
-                                    flex: 1,
-                                    padding: 15,
-                                    backgroundColor: 'white',
-                                    borderBottomWidth: 1 / PixelRatio.get(),
-                                    borderBottomColor: '#CDCDCD',
-                                    alignItems: 'center'}}>
+                      <View style={styles.rowViewStyle}>
                         <Icon name="bomb" size={22} color="#4169e1" style={{marginRight:25}}/>
                         <View style={{flexDirection: 'column',}}>
                           <Text style={{fontSize:16,marginBottom:2}}>Mobile Url</Text>
@@ -81,13 +71,7 @@ module.exports = class setting extends Component{
                       </View>
                     </TouchableHighlight>
                     <TouchableHighlight onPress={() => {this.setModalSetting(true,'MOBILE_CODE')}}>
-                      <View style={{flexDirection: 'row',
-                                    flex: 1,
-                                    padding: 15,
-                                    backgroundColor: 'white',
-                                    borderBottomWidth: 1 / PixelRatio.get(),
-                                    borderBottomColor: '#CDCDCD',
-                                    alignItems: 'center'}}>
+                      <View style={styles.rowViewStyle}>
                         <Icon name="code" size={22} color="#4169e1" style={{marginRight:25}}/>
                         <View style={{flexDirection: 'column',}}>
                           <Text style={{fontSize:16,marginBottom:2}}>Mobile Code</Text>
@@ -96,13 +80,7 @@ module.exports = class setting extends Component{
                       </View>
                     </TouchableHighlight>
                     <TouchableHighlight onPress={() => {this.setModalSetting(true,'LANGUAGE')}}>
-                      <View style={{flexDirection: 'row',
-                                    flex: 1,
-                                    padding: 15,
-                                    backgroundColor: 'white',
-                                    borderBottomWidth: 1 / PixelRatio.get(),
-                                    borderBottomColor: '#CDCDCD',
-                                    alignItems: 'center'}}>
+                      <View style={styles.rowViewStyle}>
                         <Icon name="language" size={22} color="#4169e1" style={{marginRight:25}}/>
                         <View style={{flexDirection: 'column',}}>
                           <Text style={{fontSize:16,marginBottom:2}}>Countries and Language</Text>
@@ -149,7 +127,7 @@ module.exports = class setting extends Component{
                             </View>
                           </TouchableHighlight>
                           <TouchableHighlight
-                              onPress={() => {this.setModalVisible(!this.state.modalVisible)}}
+                              onPress={() => {this.cancelSetting()}}
                               style={{backgroundColor:'#6495ed'
                                       ,alignItems:'center'
                                       ,justifyContent: 'center'
@@ -174,7 +152,8 @@ module.exports = class setting extends Component{
                     style={styles.input}
                     placeholder={this.state.selcted['name']}
                     onChangeText={(text) => this.setState({SCHOOL_NAME:text})}
-                    value={this.state.SCHOOL_NAME}/>
+                    value={this.state.SCHOOL_NAME}
+                    />
               );
             break;
           case 'MOBILE_CODE':
@@ -214,19 +193,37 @@ module.exports = class setting extends Component{
     saveSetting(){
       switch (this.state.key) {
         case 'SCHOOL_NAME':
-          this.setState({SCHOOL_NAME:this.state.SCHOOL_NAME});
+          this.props.saveSetting(this.state.key,this.state.SCHOOL_NAME);
           break;
         case 'MOBILE_CODE':
-          this.setState({MOBILE_CODE:this.state.MOBILE_CODE});
+          this.props.saveSetting(this.state.key,this.state.MOBILE_CODE);
           break;
         case 'MOBILE_URL':
-          this.setState({MOBILE_URL:this.state.MOBILE_URL});
+          this.props.saveSetting(this.state.key,this.state.MOBILE_URL);
           break;
         case 'LANGUAGE':
-          this.setState({LANGUAGE:this.state.LANGUAGE});
+          this.props.saveSetting(this.state.key,this.state.LANGUAGE);
           break;
       }
       this.setState({modalVisible: !this.state.modalVisible});
+    }
+    cancelSetting(){
+        switch (this.state.key) {
+          case 'SCHOOL_NAME':
+            this.setState({SCHOOL_NAME: this.props.schoolSetting[this.state.key]});
+            break;
+          case 'MOBILE_CODE':
+            this.setState({MOBILE_CODE: this.props.schoolSetting[this.state.key]});
+            break;
+          case 'MOBILE_URL':
+            this.setState({MOBILE_URL: this.props.schoolSetting[this.state.key]});
+            break;
+          case 'LANGUAGE':
+            this.setState({LANGUAGE: this.props.schoolSetting[this.state.key]});
+            break;
+        }
+
+        this.setState({modalVisible: !this.state.modalVisible});
     }
     getIconandName(_v){
         var a = {};
@@ -316,4 +313,20 @@ var styles = StyleSheet.create({
         shadowColor: "#000000",
 
     },
+    rowViewStyle: {
+        flexDirection: 'row',
+        flex: 1,
+        padding: 15,
+        backgroundColor: 'white',
+        borderBottomWidth: 1 / PixelRatio.get(),
+        borderBottomColor: '#CDCDCD',
+        alignItems: 'center'
+    }
 });
+function mapDispatchToProps(dispatch){
+  return bindActionCreators(ActionCreators, dispatch);
+}
+const mapStateToProps = (state) => {
+  return {schoolSetting:state.schoolSetting}
+}
+export default connect(mapStateToProps,mapDispatchToProps)(setting);
