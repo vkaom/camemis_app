@@ -37,7 +37,7 @@ class CamemisApp extends Component {
        }
    }
    render(){
-     if(!this.props.login){
+     if(this.props.schoolId.length == 0 || !this.props.login){
        return(<CAMEMISNavigatorSetting />);
      }else{
        return(<CAMEMISStart />);
@@ -45,7 +45,10 @@ class CamemisApp extends Component {
    }
 }
 const mapStateToProps = (state) => {
-  return {login:state.login}
+  return {
+    login:state.login,
+    schoolId: state.schoolSetting.SCHOOL_ID
+  }
 }
 function mapDispatchToPros(dispatch){
   return bindActionCreators(ActionCreators, dispatch);

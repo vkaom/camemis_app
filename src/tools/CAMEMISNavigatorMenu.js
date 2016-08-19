@@ -54,7 +54,7 @@ class CAMEMISNavigatorMenu extends Component{
       <Navigator
           ref={this.props.refName}
           style={styles.container}
-          initialRoute={{name: 'academic'}}
+          initialRoute={{name: 'dashboard'}}
           renderScene={(route, navigator) =>this.renderScene(route, navigator)}
           configureScene={(route, routeStack) => Navigator.SceneConfigs.FloatFromRight}
           onDidFocus={(route) => {

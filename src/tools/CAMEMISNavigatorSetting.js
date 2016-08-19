@@ -7,14 +7,17 @@ import {
 } from 'react-native';
 import Signin from '../components/signin';
 import Setting from '../components/setting';
+import SchoolLogin from '../components/schoolLogin';
 const ROUTES = {
     signin: Signin,
     setting: Setting,
+    SchoolLogin: SchoolLogin
 };
 class CAMEMISNavigatorSetting extends Component {
     constructor(props){
         super(props);
         this._handleBackButton = this._handleBackButton.bind(this);
+        this.renderScene = this.renderScene.bind(this);
     }
     componentDidMount() {
       BackAndroid.addEventListener('hardwareBackPress', this._handleBackButton);
@@ -31,10 +34,16 @@ class CAMEMISNavigatorSetting extends Component {
         return false;
     }
     render() {
+      var initialRoute = "SchoolLogin";
+      if(this.props.schoolId.length == 0){
+        initialRoute = "SchoolLogin";
+      }else if(!this.props.login){
+        initialRoute = "signin";
+      }
       return(
         <Navigator
             ref="navigator"
-            initialRoute={{name: 'signin'}}
+            initialRoute={{name: initialRoute}}
             renderScene={this.renderScene}
             configureScene={(route, routeStack) => Navigator.SceneConfigs.PushFromRight}
         />
@@ -45,5 +54,10 @@ class CAMEMISNavigatorSetting extends Component {
       return (<Component route={route} navigator={navigator} />);
     }
 }
-
-export default connect()(CAMEMISNavigatorSetting);
+const mapStateToProps = (state) => {
+  return {
+    login:state.login,
+    schoolId: state.schoolSetting.SCHOOL_ID
+  }
+}
+export default connect(mapStateToProps)(CAMEMISNavigatorSetting);

@@ -15,6 +15,7 @@ import {
   RefreshControl,
   Modal,
   TouchableHighlight,
+  NetInfo
 } from 'react-native';
 import CamemisToolbar from './toolbar';
 import { connect } from 'react-redux';
@@ -45,6 +46,20 @@ class ChatListCom extends Component {
     }
   }
   componentDidMount() {
+    NetInfo.fetch().done((reach) => {
+    console.log('Initial: ' + reach);
+    });
+    function handleFirstConnectivityChange(reach) {
+      console.log('First change: ' + reach);
+      NetInfo.removeEventListener(
+        'change',
+        handleFirstConnectivityChange
+      );
+    }
+    NetInfo.addEventListener(
+      'change',
+      handleFirstConnectivityChange
+    );
     //this._fetchChatList();
 
     //using this also works but must remove mapDispatchToProps

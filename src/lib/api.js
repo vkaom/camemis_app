@@ -1,4 +1,5 @@
 class Api {
+
   static headers() {
     return {
       'Accept': 'application/json',
@@ -24,17 +25,23 @@ class Api {
   }
 
   static xhr(route, params, verb) {
-    const host = 'https://raw.githubusercontent.com'
-    const url = `${host}${route}`
+    //const host = 'https://raw.githubusercontent.com'
+    //const url = `${host}${route}`
+    //if(true){ return false; }
+    const url = route;
     let options = Object.assign({ method: verb }, params ? { body: JSON.stringify(params) } : null );
     options.headers = Api.headers()
-    return fetch(url, options).then( resp => {
-      let json = resp.json();
-      if (resp.ok) {
-        return json
-      }
-      return json.then(err => {throw err});
-    }).then( json => json );
+
+    return fetch(url, options)
+      .then( resp => {
+        let json = resp.json();
+        if (resp.ok) {
+          return json
+        }
+        return json.then(err => {throw err});
+      })
+      .then( json => json );
   }
 }
+
 export default Api
