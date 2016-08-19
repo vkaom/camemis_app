@@ -14,7 +14,7 @@ import {
   Picker,
   ToastAndroid
 } from 'react-native';
-
+import t from '../languages/schoolLogin';
 import Botton from './button';
 import BottonIcon from './buttonIcon';
 import CamemisLogo from './camhead';
@@ -27,6 +27,14 @@ class SchoolLogin extends Component{
       //LANGUAGE: this.props.schoolSetting.LANGUAGE,
       SCHOOL_ID: this.props.schoolSetting.SCHOOL_ID,
     };
+  }
+  componentWillMount(){
+    setLanguage(this.props.schoolSetting.LANGUAGE);
+  }
+  componentWillReceiveProps(nextProps) {
+    if (this.props.schoolSetting.LANGUAGE !== nextProps.schoolSetting.LANGUAGE) {
+      setLanguage(nextProps.schoolSetting.LANGUAGE);
+    }
   }
   checkSchool = () => {
     this.props.checkSchool(this.state.SCHOOL_ID).then(() => {
@@ -44,22 +52,22 @@ class SchoolLogin extends Component{
     return(
             <View style={styles.container}>
                 <View style={styles.topVeiwStyle}>
-                  <CamemisLogo text={'CAMEMIS Education'}/>
+                  <CamemisLogo text={t.APP_NAME}/>
                   <View style={styles.topicon}>
-                    <Icon.Button name="cog" size={16} color="#4682B4"  onPress={this.settingCamemis} backgroundColor="#ffffff">Settings</Icon.Button>
+                    <Icon.Button name="cog" size={16} color="#4682B4"  onPress={this.settingCamemis} backgroundColor="#ffffff">{t.SETTINGS}</Icon.Button>
                   </View>
                 </View>
                 <ScrollView>
                   <View style={styles.contentStyle}>
                     <View style={{paddingBottom:20}}><Text style={{fontSize:18,textDecorationLine: 'none',color:'#000000'}}>Campus Prerequisites</Text></View>
-                    <Text style={{color:'#000000'}}>School ID:</Text>
+                    <Text style={{color:'#000000'}}>{t.SCHOOL_ID}:</Text>
                     <TextInput
                       style={styles.input}
                       placeholder="Enter School ID"
                       onChangeText={(text) => this.setState({SCHOOL_ID:text})}
                       value={this.state.SCHOOL_ID}
                     />
-                    <Text style={{color:'#000000'}}>Language:</Text>
+                    <Text style={{color:'#000000'}}>{t.LANGUAGE}:</Text>
                     <Picker
                       style={styles.picker}
                       mode='dropdown'
@@ -70,7 +78,7 @@ class SchoolLogin extends Component{
                       <Picker.Item label="Vietnamese" value="Vietnamese" />
                     </Picker>
                     <View style={{marginTop:10, alignItems:'center', justifyContent: 'center',}}>
-                      <BottonIcon text={'Continue'} colorText={'#FFFFFF'} onPress={()=>{this.checkSchool()}} name={'sign-in'} backgroundColor={'#4682B4'}/>
+                      <BottonIcon text={t.CONTINUE} colorText={'#FFFFFF'} onPress={()=>{this.checkSchool()}} name={'sign-in'} backgroundColor={'#4682B4'}/>
                     </View>
                   </View>
                 </ScrollView>
@@ -124,6 +132,19 @@ var styles = StyleSheet.create({
 
     },
 });
+
+function setLanguage(lang){
+  switch (lang) {
+    case 'Khmer':
+      t.setLanguage('kh');
+      break;
+    case 'English':
+      t.setLanguage('en');
+      break;
+    default:
+  }
+}
+
 function mapDispatchToProps(dispatch){
   return bindActionCreators(ActionCreators, dispatch);
 }

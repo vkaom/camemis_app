@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions';
+import t from '../languages/setting';
 import {
       StyleSheet,
       Text,
@@ -20,7 +21,6 @@ import {
 import BottonIcon from './buttonIcon';
 import CamemisLogo from './camhead';
 import Icon from 'react-native-vector-icons/FontAwesome';
-
 class setting extends Component{
     constructor(props) {
       super(props);
@@ -34,7 +34,14 @@ class setting extends Component{
         selcted: {'icon':'bomb' ,'name':'setting'}
       };
     }
-
+    componentWillMount(){
+      setLanguage(this.props.schoolSetting.LANGUAGE)
+    }
+    componentWillReceiveProps(nextProps) {
+      if (this.props.schoolSetting.LANGUAGE !== nextProps.schoolSetting.LANGUAGE) {
+        setLanguage(nextProps.schoolSetting.LANGUAGE)
+      }
+    }
     render() {
       return(<View style={styles.container}>
                   <View style={styles.topVeiwStyle}>
@@ -83,7 +90,7 @@ class setting extends Component{
                       <View style={styles.rowViewStyle}>
                         <Icon name="language" size={22} color="#4169e1" style={{marginRight:25}}/>
                         <View style={{flexDirection: 'column',}}>
-                          <Text style={{fontSize:16,marginBottom:2}}>Countries and Language</Text>
+                          <Text style={{fontSize:16,marginBottom:2}}>{t.LANGUAGE}</Text>
                           <Text style={{fontSize:12}}>{this.state.LANGUAGE}</Text>
                         </View>
                       </View>
@@ -323,6 +330,17 @@ var styles = StyleSheet.create({
         alignItems: 'center'
     }
 });
+function setLanguage(lang){
+  switch (lang) {
+    case 'Khmer':
+      t.setLanguage('kh');
+      break;
+    case 'English':
+      t.setLanguage('en');
+      break;
+    default:
+  }
+}
 function mapDispatchToProps(dispatch){
   return bindActionCreators(ActionCreators, dispatch);
 }

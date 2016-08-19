@@ -10,6 +10,7 @@
     "react": "15.2.1",
     "react-native": "^0.30.0",
     "react-native-drawer": "^2.2.6",
+    "react-native-localization": "^0.1.17",
     "react-native-push-notification": "^2.0.2",
     "react-native-scrollable-tab-view": "^0.5.3",
     "react-native-svg": "^3.1.1",

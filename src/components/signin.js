@@ -17,10 +17,18 @@ import Botton from './button';
 import BottonIcon from './buttonIcon';
 import CamemisLogo from './camhead';
 import Icon from 'react-native-vector-icons/FontAwesome';
-
+import t from '../languages/signin';
 class signin extends Component{
   constructor(props) {
     super(props);
+  }
+  componentWillMount(){
+    setLanguage(this.props.language);
+  }
+  componentWillReceiveProps(nextProps) {
+    if (this.props.language !== nextProps.language) {
+      setLanguage(nextProps.language);
+    }
   }
   singIn = () => {
     this.props.doLogin();
@@ -34,20 +42,20 @@ class signin extends Component{
     return(
             <View style={styles.container}>
                 <View style={styles.topVeiwStyle}>
-                  <CamemisLogo text={'CAMEMIS Education'}/>
+                  <CamemisLogo text={t.APP_NAME}/>
                   <View style={styles.topicon}>
-                    <Icon.Button name="cog" size={16} color="#4682B4"  onPress={this.settingCamemis} backgroundColor="#ffffff">Settings</Icon.Button>
+                    <Icon.Button name="cog" size={16} color="#4682B4"  onPress={this.settingCamemis} backgroundColor="#ffffff">{t.SETTINGS}</Icon.Button>
                   </View>
                 </View>
                 <ScrollView>
                   <View style={styles.contentStyle}>
                     <View style={{paddingBottom:20}}><Text style={{fontSize:18,textDecorationLine: 'none',color:'#000000'}}>Long in to Aceess Your Informations</Text></View>
-                    <Text style={{color:'#000000'}}>User Name:</Text>
+                    <Text style={{color:'#000000'}}>{t.USERNAME}:</Text>
                     <TextInput style={styles.input} />
-                    <Text style={{color:'#000000'}}>Password:</Text>
+                    <Text style={{color:'#000000'}}>{t.PASSWORD}:</Text>
                     <TextInput style={styles.input} secureTextEntry={true}/>
                     <View style={{marginTop:10, alignItems:'center', justifyContent: 'center',}}>
-                      <BottonIcon text={'Sign In'} colorText={'#FFFFFF'} onPress={()=>{this.singIn()}} name={'sign-in'} backgroundColor={'#4682B4'}/>
+                      <BottonIcon text={t.SIGN_IN} colorText={'#FFFFFF'} onPress={()=>{this.singIn()}} name={'sign-in'} backgroundColor={'#4682B4'}/>
                     </View>
                   </View>
                 </ScrollView>
@@ -98,7 +106,21 @@ var styles = StyleSheet.create({
 
     },
 });
+function setLanguage(lang){
+  switch (lang) {
+    case 'Khmer':
+      t.setLanguage('kh');
+      break;
+    case 'English':
+      t.setLanguage('en');
+      break;
+    default:
+  }
+}
+const mapStateToProps = (state) => {
+  return {language: state.schoolSetting.LANGUAGE}
+}
 function mapDispatchToProps(dispatch){
   return bindActionCreators(ActionCreators, dispatch);
 }
-export default connect((state) => {return {}},mapDispatchToProps)(signin);
+export default connect(mapStateToProps,mapDispatchToProps)(signin);
