@@ -13,5 +13,5 @@ export default new LocalizedStrings({
     USERNAME:"ឈ្មោះ",
     PASSWORD:"លេខសំងាត់",
     SIGN_IN: "ចូលប្រើ",
-  }
+  },
 });

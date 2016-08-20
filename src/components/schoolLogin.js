@@ -29,11 +29,11 @@ class SchoolLogin extends Component{
     };
   }
   componentWillMount(){
-    setLanguage(this.props.schoolSetting.LANGUAGE);
+    t.setLanguage(this.props.schoolSetting.LANGUAGE);
   }
   componentWillReceiveProps(nextProps) {
     if (this.props.schoolSetting.LANGUAGE !== nextProps.schoolSetting.LANGUAGE) {
-      setLanguage(nextProps.schoolSetting.LANGUAGE);
+      t.setLanguage(nextProps.schoolSetting.LANGUAGE);
     }
   }
   checkSchool = () => {
@@ -73,9 +73,9 @@ class SchoolLogin extends Component{
                       mode='dropdown'
                       selectedValue={this.props.schoolSetting.LANGUAGE}
                       onValueChange={(lang) => this.props.saveSetting('LANGUAGE', lang)}>
-                      <Picker.Item label="Khmer" value="Khmer" />
-                      <Picker.Item label="English" value="English" />
-                      <Picker.Item label="Vietnamese" value="Vietnamese" />
+                      <Picker.Item label="Khmer" value="kh" />
+                      <Picker.Item label="English" value="en" />
+                      <Picker.Item label="Vietnamese" value="vn" />
                     </Picker>
                     <View style={{marginTop:10, alignItems:'center', justifyContent: 'center',}}>
                       <BottonIcon text={t.CONTINUE} colorText={'#FFFFFF'} onPress={()=>{this.checkSchool()}} name={'sign-in'} backgroundColor={'#4682B4'}/>
@@ -132,18 +132,6 @@ var styles = StyleSheet.create({
 
     },
 });
-
-function setLanguage(lang){
-  switch (lang) {
-    case 'Khmer':
-      t.setLanguage('kh');
-      break;
-    case 'English':
-      t.setLanguage('en');
-      break;
-    default:
-  }
-}
 
 function mapDispatchToProps(dispatch){
   return bindActionCreators(ActionCreators, dispatch);

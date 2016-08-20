@@ -23,11 +23,11 @@ class signin extends Component{
     super(props);
   }
   componentWillMount(){
-    setLanguage(this.props.language);
+    t.setLanguage(this.props.language);
   }
   componentWillReceiveProps(nextProps) {
     if (this.props.language !== nextProps.language) {
-      setLanguage(nextProps.language);
+      t.setLanguage(nextProps.language);
     }
   }
   singIn = () => {
@@ -106,17 +106,6 @@ var styles = StyleSheet.create({
 
     },
 });
-function setLanguage(lang){
-  switch (lang) {
-    case 'Khmer':
-      t.setLanguage('kh');
-      break;
-    case 'English':
-      t.setLanguage('en');
-      break;
-    default:
-  }
-}
 const mapStateToProps = (state) => {
   return {language: state.schoolSetting.LANGUAGE}
 }
