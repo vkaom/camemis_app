@@ -11,22 +11,34 @@ import {
     Dimensions,
     ScrollView,
 } from 'react-native';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { ActionCreators } from '../actions';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import MenuItem from '../components/menuItem';
+
 var widthSideBar = 280;
-module.exports = class CamemisSideBarNave extends Component{
+class CamemisSideBarNav extends Component{
     constructor(props) {
       super(props);
       this.state = {
         height: Dimensions.get('window').height,
         width: Dimensions.get('window').width,
+        tab: 'academic',
+        menu: 'main-menu',
       };
     }
-    _changeRout = (route) => {
+    _changeRoute = (route) => {
+        this.setState({tab: route});
         this.props.navigator.push({name:route});
         this.props.loggle();
     }
     _logout = () => {
         this.props.logout();
+    }
+    _switchMenu(){
+      var menu = this.state.menu == 'main-menu' ? 'school-menu' : 'main-menu';
+      this.setState({menu: menu});
     }
     viewsideBarStyle(){
       return( {
@@ -38,85 +50,110 @@ module.exports = class CamemisSideBarNave extends Component{
           shadowOpacity: 1.0,
       });
     }
-    render() {
+    _renderMenu(){
+      switch (this.state.menu) {
+        case 'school-menu':
+          return this._renderSchoolMenu();
+          break;
+        case 'main-menu':
+        default:
+          return this._renderMainMenu();
+      }
+    }
+    _renderMainMenu(){
       return(
-          <ScrollView style={this.viewsideBarStyle()}>
-            <View style={styles.schoolStyle}>
-              <Icon name="home" size={25} color="#FFF" />
-              <Text style={styles.schoolStyleText}> ELT Elemetary School</Text>
+        <View style={styles.wrapperdropdown}>
+          <MenuItem
+            title="Dashboard"
+            icon="tachometer"
+            selected={this.state.tab === 'dashboard'}
+            onPress={this._changeRoute.bind(this, 'dashboard')}
+          />
+          <MenuItem
+            title="Academic"
+            icon="graduation-cap"
+            selected={this.state.tab === 'academic'}
+            onPress={this._changeRoute.bind(this, 'academic')}
+            style={{backgroundColor: 'green'}}
+          />
+          <MenuItem
+            title="Schedule"
+            icon="calendar-check-o"
+            selected={this.state.tab === 'schedule'}
+            onPress={this._changeRoute.bind(this, 'schedule')}
+          />
+          <MenuItem
+            title="Attendance"
+            icon="pencil"
+            selected={this.state.tab === 'attendance'}
+            onPress={this._changeRoute.bind(this, 'attendance')}
+          />
+          <MenuItem
+            title="Discipline"
+            icon="paw"
+            selected={this.state.tab === 'discipline'}
+            onPress={this._changeRoute.bind(this, 'discipline')}
+          />
+          <MenuItem
+            title="Transcript"
+            icon="star-o"
+            selected={this.state.tab === 'transcript'}
+            onPress={this._changeRoute.bind(this, 'transcript')}
+          />
+          <MenuItem
+            title="Logout"
+            icon="sign-out"
+            selected={false}
+            onPress={this._logout.bind(this)}
+          />
+        </View>
+      );
+    }
+    _renderSchoolMenu(){
+      return(
+        <View style={styles.wrapperdropdown}>
+        <MenuItem
+          title="Class 01"
+          icon="paw"
+          selected={this.state.tab === 'discipline'}
+          onPress={this._changeRoute.bind(this, 'discipline')}
+        />
+        <MenuItem
+          title="Class 02"
+          icon="star-o"
+          selected={this.state.tab === 'transcript'}
+          onPress={this._changeRoute.bind(this, 'transcript')}
+        />
+        </View>
+      );
+    }
+    render() {
+      var menuTypeIcon = this.state.menu == 'main-menu' ? 'caret-down' : 'caret-up';
+      return(
+        <ScrollView style={this.viewsideBarStyle()}>
+          <View style={{flex:1, padding:15, backgroundColor: '#4682B4'}}>
+            <Image
+              source={require('../images/av1.png')}
+              style={styles.profileImg}
+            />
+            <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center',}}>
+              <Text style={{color:'#fff', marginTop:10}}>{this.props.login.firstname + ' ' + this.props.login.lastname + '\n' + 'khlouk.rada@gmail.com'}</Text>
+              <TouchableHighlight onPress={()=>{this._switchMenu()}} underlayColor="#4682B6" style={{paddingLeft:10, paddingRight:10,paddingTop:5,paddingBottom:5}}>
+                <Icon style={{color:'#fff', fontSize: 16,}} name={menuTypeIcon} />
+              </TouchableHighlight>
             </View>
-            <View style={[styles.schoolStyle,styles.schoolStyleImageProf]}>
-              <Image
-                source={require('../images/av1.png')}
-                style={styles.profileImg}
-                />
-              <Text style={styles.schoolStyleText}> Sna Sor</Text>
-            </View>
-            <View style={styles.wrapperdropdown}>
-              <TouchableHighlight  onPress={()=>{this._changeRout('dashboard')}} underlayColor="#4682B6" >
-                <View style={styles.dropdownOptions}>
-                  <Icon name="tachometer" size={20} color="#006400" />
-                  <Text style={styles.textDropdownOptions}> Dashboard</Text>
-                </View>
-              </TouchableHighlight>
-              <TouchableHighlight  onPress={()=>{this._changeRout('academic')}} underlayColor="#4682B6" >
-                <View style={styles.dropdownOptions}>
-                  <Icon name="graduation-cap" size={20} color="#3cb371" />
-                  <Text style={styles.textDropdownOptions}> Academic</Text>
-                </View>
-              </TouchableHighlight>
-              <TouchableHighlight  onPress={()=>{this._changeRout('schedule')}} underlayColor="#4682B6" >
-                <View style={styles.dropdownOptions}>
-                  <Icon name="calendar-check-o" size={20} color="#b22222" />
-                  <Text style={styles.textDropdownOptions}> Schedule</Text>
-                </View>
-              </TouchableHighlight>
-              <TouchableHighlight onPress={()=>{this._changeRout('attendance')}} underlayColor="#4682B6" >
-                <View style={styles.dropdownOptions}>
-                  <Icon name="pencil" size={20} color="#20b2aa" />
-                  <Text style={styles.textDropdownOptions}> Attendance</Text>
-                </View>
-              </TouchableHighlight>
-              <TouchableHighlight onPress={()=>{this._changeRout('discipline')}} underlayColor="#4682B6" >
-                <View style={styles.dropdownOptions}>
-                  <Icon name="paw" size={20} color="#3cb371" />
-                  <Text style={styles.textDropdownOptions}> Discipline</Text>
-                </View>
-              </TouchableHighlight>
-              <TouchableHighlight onPress={()=>{this._changeRout('transcript')}} underlayColor="#4682B6" >
-                <View style={styles.dropdownOptions}>
-                  <Icon name="star-o" size={20} color="#daa520" />
-                  <Text style={styles.textDropdownOptions}> Gradebook</Text>
-                </View>
-              </TouchableHighlight>
-            </View>
-            <TouchableHighlight onPress={()=>{this._logout()}} underlayColor="#4682B6" >
-              <View style={styles.dropdownOptions}>
-                <Icon name="sign-out" size={20} color="#000" />
-                <Text style={{color:'#000',}}> Logout</Text>
-              </View>
-            </TouchableHighlight>
-          </ScrollView>
+          </View>
+          {this._renderMenu()}
+        </ScrollView>
       );
     }
 }
 const styles = StyleSheet.create({
-
   wrapperdropdown: {
       flexDirection: 'column',
       borderBottomWidth: 1 / PixelRatio.get(),
       borderBottomColor: '#CDCDCD',
-  },
-  dropdownOptions: {
-      flexDirection: 'row',
-      padding: 15,
-      borderBottomColor: '#CDCDCD',
-      alignItems: 'center'
-  },
-  textDropdownOptions:{
-      color:'#000',
-      marginLeft:10,
-      fontSize:16,
+      paddingTop: 10,
   },
   schoolStyle: {
       flexDirection: 'row',
@@ -135,9 +172,9 @@ const styles = StyleSheet.create({
       marginLeft:10
   },
   profileImg: {
-      width: 45,
-      height: 45,
-      borderRadius:22.5
+      width: 70,
+      height: 70,
+      borderRadius:40
   },
   schoolStyleImageProf: {
       paddingTop:20,
@@ -145,3 +182,14 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
   }
 });
+
+const mapStateToProps = (state) => {
+  return {
+    login: state.login,
+    school: state.school,
+  }
+}
+function mapDispatchToProps(dispatch){
+  return bindActionCreators(ActionCreators, dispatch);
+}
+export default connect(mapStateToProps,mapDispatchToProps)(CamemisSideBarNav);

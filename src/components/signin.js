@@ -11,18 +11,34 @@ import {
   View,
   ScrollView,
   Navigator,
+  ToastAndroid,
+  TouchableOpacity,
+  Picker,
 } from 'react-native';
-
 import Botton from './button';
 import BottonIcon from './buttonIcon';
 import CamemisLogo from './camhead';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import t from '../languages/signin';
+
 class signin extends Component{
   constructor(props) {
     super(props);
+    this.state = {
+
+      username: "62E4-4206",
+      password: "Test12345",
+
+      // username: "554E-EE13",
+      // password: "One2345678",
+      role: 1
+    };
   }
   componentWillMount(){
+    // console.log('test');
+    // this.socket.on('getOnlineUser', function (data, disconnectedId) {
+    //   console.log(data);
+    // });
     t.setLanguage(this.props.language);
   }
   componentWillReceiveProps(nextProps) {
@@ -31,9 +47,15 @@ class signin extends Component{
     }
   }
   singIn = () => {
-    this.props.doLogin();
-    ///log in succeeded reset route navigator
-    //this.props.navigator.immediatelyResetRouteStack([{name:'mymenu'}]);
+    this.props.signin(this.state.username, this.state.password, this.state.role).then((resp) => {
+      if(resp.success == false){
+        ToastAndroid.show("Not correct", ToastAndroid.SHORT)
+      }
+    });
+  }
+  forgetSchool = () => {
+    this.props.populateSchoolInfo({});
+    this.props.navigator.push({name:'SchoolLogin'});
   }
   settingCamemis = () => {
     this.props.navigator.push({name:'setting'});
@@ -43,20 +65,36 @@ class signin extends Component{
             <View style={styles.container}>
                 <View style={styles.topVeiwStyle}>
                   <CamemisLogo text={t.APP_NAME}/>
-                  <View style={styles.topicon}>
-                    <Icon.Button name="cog" size={16} color="#4682B4"  onPress={this.settingCamemis} backgroundColor="#ffffff">{t.SETTINGS}</Icon.Button>
-                  </View>
                 </View>
                 <ScrollView>
                   <View style={styles.contentStyle}>
-                    <View style={{paddingBottom:20}}><Text style={{fontSize:18,textDecorationLine: 'none',color:'#000000'}}>Long in to Aceess Your Informations</Text></View>
-                    <Text style={{color:'#000000'}}>{t.USERNAME}:</Text>
-                    <TextInput style={styles.input} />
-                    <Text style={{color:'#000000'}}>{t.PASSWORD}:</Text>
-                    <TextInput style={styles.input} secureTextEntry={true}/>
-                    <View style={{marginTop:10, alignItems:'center', justifyContent: 'center',}}>
-                      <BottonIcon text={t.SIGN_IN} colorText={'#FFFFFF'} onPress={()=>{this.singIn()}} name={'sign-in'} backgroundColor={'#4682B4'}/>
-                    </View>
+                    <Text style={styles.label}>{t.USERNAME}:</Text>
+                    <TextInput style={styles.input} onChangeText={(text) => this.setState({username:text})} value={this.state.username} />
+                    <Text style={styles.label}>{t.PASSWORD}:</Text>
+                    <TextInput style={styles.input} secureTextEntry={true} onChangeText={(text) => this.setState({password:text})} value={this.state.password} />
+                    <Text style={styles.label}>{t.ROLE}:</Text>
+                    <Picker
+                      style={[styles.input, styles.picker]}
+                      mode='dropdown'
+                      selectedValue={'1'}
+                      onValueChange={(role) => {this.setState({role: role})}}
+                      >
+                      <Picker.Item label="Parents" value="3" />
+                      <Picker.Item label="Teacher" value="2" />
+                      <Picker.Item label="Student" value="1" />
+                    </Picker>
+                    <TouchableOpacity activeOpacity={0.8} style={{backgroundColor:"#4682B4", padding:10, borderRadius: 25}} onPress={()=>{this.singIn()}}>
+                      <View style={{flex:1, flexDirection: 'row', justifyContent:"center", alignItems: "center"}}>
+                        <Icon name="sign-in" size={30} color="#fff" />
+                        <Text style={{color:'#FFFFFF', fontSize: 16, marginLeft:10}}>{t.SIGN_IN}</Text>
+                      </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity activeOpacity={0.8} style={{backgroundColor:"#4682B4", padding:10, borderRadius: 25, marginTop:5,}} onPress={()=>{this.forgetSchool()}}>
+                      <View style={{flex:1, flexDirection: 'row', justifyContent:"center", alignItems: "center"}}>
+                        <Icon name="sign-out" size={30} color="#fff" />
+                        <Text style={{color:'#FFFFFF', fontSize: 16, marginLeft:10}}>Forget School</Text>
+                      </View>
+                    </TouchableOpacity>
                   </View>
                 </ScrollView>
             </View>);
@@ -76,20 +114,26 @@ var styles = StyleSheet.create({
         shadowColor: "#000000",
     },
     contentStyle:{
-        alignItems: 'center',
-        marginTop: 15,
-        flex: 1,
+      alignItems: 'stretch',
+      marginTop: 0,
+      padding:30,
+      flex: 1,
+    },
+    label: {
+      fontSize: 16,
     },
     input:{
-        padding: 4,
-        height: 40,
-        borderColor: '#DDDDDD',
-        borderWidth: 1,
-        borderRadius: 5,
-        margin: 5,
-        width:250,
-        alignSelf: 'center',
-        color: '#000000',
+        // padding: 4,
+        // height: 40,
+        // borderColor: '#DDDDDD',
+        // borderWidth: 1,
+        // borderRadius: 5,
+        // margin: 5,
+        // width:250,
+        // alignSelf: 'center',
+        // color: '#000000',
+        marginTop: 10,
+        marginBottom: 10,
     },
     topVeiwStyle:{
         padding: 15,
@@ -105,9 +149,12 @@ var styles = StyleSheet.create({
         marginLeft: 5,
 
     },
+    picker: {
+
+    },
 });
 const mapStateToProps = (state) => {
-  return {language: state.schoolSetting.LANGUAGE}
+  return {language: state.schoolSetting.LANGUAGE, tokenId: state.login.tokenId}
 }
 function mapDispatchToProps(dispatch){
   return bindActionCreators(ActionCreators, dispatch);

@@ -12,7 +12,8 @@ import {
   ScrollView,
   Navigator,
   Picker,
-  ToastAndroid
+  ToastAndroid,
+  TouchableOpacity,
 } from 'react-native';
 import t from '../languages/schoolLogin';
 import Botton from './button';
@@ -24,8 +25,8 @@ class SchoolLogin extends Component{
   constructor(props) {
     super(props);
     this.state = {
-      //LANGUAGE: this.props.schoolSetting.LANGUAGE,
-      SCHOOL_ID: this.props.schoolSetting.SCHOOL_ID,
+      schoolId: "edu-vn.camemis.de",
+      //schoolId: "pro2.school.camemis.home",
     };
   }
   componentWillMount(){
@@ -37,11 +38,11 @@ class SchoolLogin extends Component{
     }
   }
   checkSchool = () => {
-    this.props.checkSchool(this.state.SCHOOL_ID).then(() => {
-      if(this.props.schoolSetting.SCHOOL_ID == "12345"){
+    this.props.checkSchool(this.state.schoolId).then(() => {
+      if(this.props.schoolId.length > 0){
         this.props.navigator.push({name:'signin'});
       }else{
-        ToastAndroid.show("Not correct", ToastAndroid.SHORT)
+        ToastAndroid.show("Not correct. Please try again.", ToastAndroid.SHORT)
       }
     });
   }
@@ -50,39 +51,39 @@ class SchoolLogin extends Component{
   }
   contentContainer(){
     return(
-            <View style={styles.container}>
-                <View style={styles.topVeiwStyle}>
-                  <CamemisLogo text={t.APP_NAME}/>
-                  <View style={styles.topicon}>
-                    <Icon.Button name="cog" size={16} color="#4682B4"  onPress={this.settingCamemis} backgroundColor="#ffffff">{t.SETTINGS}</Icon.Button>
-                  </View>
+      <View style={styles.container}>
+          <View style={styles.topVeiwStyle}>
+            <CamemisLogo text={t.APP_NAME}/>
+          </View>
+          <ScrollView keyboardShouldPersistTaps={false}>
+            <View style={styles.contentStyle}>
+              <Text style={styles.label}>{t.SCHOOL_ID}:</Text>
+              <TextInput
+                style={styles.input}
+                placeholder="Enter School ID"
+                blurOnSubmit = {true}
+                onChangeText={(text) => this.setState({schoolId:text})}
+                value={this.state.schoolId}
+              />
+              <Text style={styles.label}>{t.LANGUAGE}:</Text>
+              <Picker
+                style={[styles.input, styles.picker]}
+                mode='dropdown'
+                selectedValue={this.props.schoolSetting.LANGUAGE}
+                onValueChange={(lang) => this.props.saveSetting('LANGUAGE', lang)}>
+                <Picker.Item label="ខ្មែរ" value="kh" />
+                <Picker.Item label="English" value="en" />
+                <Picker.Item label="Vietnamese" value="vn" />
+              </Picker>
+              <TouchableOpacity activeOpacity={0.8} style={{backgroundColor:"#4682B4", padding:10, borderRadius: 25}} onPress={()=>{this.checkSchool()}}>
+                <View style={{flex:1, flexDirection: 'row', justifyContent:"center", alignItems: "center"}}>
+                  <Icon name="sign-in" size={30} color="#fff" />
+                  <Text style={{color:'#FFFFFF', fontSize: 16, marginLeft:10}}>{t.CONTINUE}</Text>
                 </View>
-                <ScrollView>
-                  <View style={styles.contentStyle}>
-                    <View style={{paddingBottom:20}}><Text style={{fontSize:18,textDecorationLine: 'none',color:'#000000'}}>Campus Prerequisites</Text></View>
-                    <Text style={{color:'#000000'}}>{t.SCHOOL_ID}:</Text>
-                    <TextInput
-                      style={styles.input}
-                      placeholder="Enter School ID"
-                      onChangeText={(text) => this.setState({SCHOOL_ID:text})}
-                      value={this.state.SCHOOL_ID}
-                    />
-                    <Text style={{color:'#000000'}}>{t.LANGUAGE}:</Text>
-                    <Picker
-                      style={styles.picker}
-                      mode='dropdown'
-                      selectedValue={this.props.schoolSetting.LANGUAGE}
-                      onValueChange={(lang) => this.props.saveSetting('LANGUAGE', lang)}>
-                      <Picker.Item label="Khmer" value="kh" />
-                      <Picker.Item label="English" value="en" />
-                      <Picker.Item label="Vietnamese" value="vn" />
-                    </Picker>
-                    <View style={{marginTop:10, alignItems:'center', justifyContent: 'center',}}>
-                      <BottonIcon text={t.CONTINUE} colorText={'#FFFFFF'} onPress={()=>{this.checkSchool()}} name={'sign-in'} backgroundColor={'#4682B4'}/>
-                    </View>
-                  </View>
-                </ScrollView>
-            </View>);
+              </TouchableOpacity>
+            </View>
+          </ScrollView>
+      </View>);
   }
   render() {
     return(<View style={styles.container}>
@@ -99,23 +100,28 @@ var styles = StyleSheet.create({
         shadowColor: "#000000",
     },
     contentStyle:{
-        alignItems: 'center',
-        marginTop: 15,
+        alignItems: 'stretch',
+        marginTop: 0,
+        padding:30,
         flex: 1,
     },
+    label: {
+      fontSize: 16,
+    },
     input:{
-        padding: 4,
-        height: 40,
-        borderColor: '#DDDDDD',
-        borderWidth: 1,
-        borderRadius: 5,
-        margin: 5,
-        width:250,
-        alignSelf: 'center',
-        color: '#000000',
+        // padding: 4,
+        // height: 40,
+        // borderColor: '#DDDDDD',
+        // borderWidth: 1,
+        // borderRadius: 5,
+        marginTop: 10,
+        marginBottom: 10,
+        // width:250,
+        // alignSelf: 'center',
+        // color: '#000000',
     },
     picker: {
-      width: 250
+
     },
     topVeiwStyle:{
         padding: 15,
@@ -129,7 +135,6 @@ var styles = StyleSheet.create({
     topicon:{
         width: 100,
         marginLeft: 5,
-
     },
 });
 
@@ -137,6 +142,9 @@ function mapDispatchToProps(dispatch){
   return bindActionCreators(ActionCreators, dispatch);
 }
 const mapStateToProps = (state) => {
-  return {schoolSetting: state.schoolSetting}
+  return {
+    schoolSetting: state.schoolSetting,
+    schoolId: state.school.schoolId,
+  }
 }
 export default connect(mapStateToProps,mapDispatchToProps)(SchoolLogin);

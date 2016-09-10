@@ -5,7 +5,6 @@ import { bindActionCreators } from 'redux';
 import { ActionCreators } from './actions';
 import PushNotification from 'react-native-push-notification';
 import CAMEMISStart from './components/menu';
-import Singin from './components/signin';
 import CAMEMISNavigatorSetting from './tools/CAMEMISNavigatorSetting';
 
 class CamemisApp extends Component {
@@ -18,8 +17,8 @@ class CamemisApp extends Component {
      AppState.addEventListener('change', this._handleAppStateChange);
      PushNotification.configure({
        onNotification: function(notification) {
-            console.log( 'NOTIFICATION:', notification );
-        }
+          console.log( 'NOTIFICATION:', notification );
+       }
      });
    }
    componentWillUnmount() {
@@ -27,7 +26,6 @@ class CamemisApp extends Component {
    }
    _handleAppStateChange(AppState) {
        if (AppState === 'background'){
-
           //  PushNotification.localNotificationSchedule({
           //      message: "My Notification Message", // (required)
           //      date: new Date(Date.now() + (this.state.second * 1000)), // in 60 secs
@@ -37,7 +35,8 @@ class CamemisApp extends Component {
        }
    }
    render(){
-     if(this.props.schoolId.length == 0 || !this.props.login){
+     //console.log(this.props.login);
+     if(this.props.schoolId.length == 0 || this.props.login.tokenId.length == 0){
        return(<CAMEMISNavigatorSetting />);
      }else{
        return(<CAMEMISStart />);
@@ -46,8 +45,8 @@ class CamemisApp extends Component {
 }
 const mapStateToProps = (state) => {
   return {
-    login:state.login,
-    schoolId: state.schoolSetting.SCHOOL_ID
+    login: state.login,
+    schoolId: state.school.schoolId
   }
 }
 function mapDispatchToPros(dispatch){

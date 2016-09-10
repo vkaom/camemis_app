@@ -3,11 +3,14 @@ import chat from './chat';
 import navigator from './navigator';
 import login from './login';
 import schoolSetting from './setting';
+import school from './school';
+
 const camemisApp = combineReducers({
   chat,
   login,
   navigator,
   schoolSetting,
+  school,
 });
 export default camemisApp;
 

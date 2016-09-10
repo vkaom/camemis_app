@@ -6,11 +6,11 @@ import {
   Navigator,
 } from 'react-native';
 import Signin from '../components/signin';
-import Setting from '../components/setting';
+//import Setting from '../components/setting';
 import SchoolLogin from '../components/schoolLogin';
 const ROUTES = {
     signin: Signin,
-    setting: Setting,
+    //setting: Setting,
     SchoolLogin: SchoolLogin
 };
 class CAMEMISNavigatorSetting extends Component {
@@ -37,7 +37,7 @@ class CAMEMISNavigatorSetting extends Component {
       var initialRoute = "SchoolLogin";
       if(this.props.schoolId.length == 0){
         initialRoute = "SchoolLogin";
-      }else if(!this.props.login){
+      }else if(this.props.login.tokenId.length == 0){
         initialRoute = "signin";
       }
       return(
@@ -56,8 +56,8 @@ class CAMEMISNavigatorSetting extends Component {
 }
 const mapStateToProps = (state) => {
   return {
-    login:state.login,
-    schoolId: state.schoolSetting.SCHOOL_ID
+    login: state.login,
+    schoolId: state.school.schoolId
   }
 }
 export default connect(mapStateToProps)(CAMEMISNavigatorSetting);

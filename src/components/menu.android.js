@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions';
 import { StyleSheet,View,ScrollView,Navigator,DrawerLayoutAndroid,BackAndroid } from 'react-native';
-import CamemisToolbar from './toolbar';
 import CamemisSideBarNave from './sidebarnav';
 import CAMEMISNavigatorMenu from '../tools/CAMEMISNavigatorMenu';
 var widthSideBar = 280;
@@ -82,8 +81,13 @@ const styles = StyleSheet.create({
       shadowColor: "#000000",
   }
 });
-
+const mapStateToProps = (state) => {
+  return {
+    login: state.login,
+    school: state.school,
+  }
+}
 function mapDispatchToProps(dispatch){
   return bindActionCreators(ActionCreators, dispatch);
 }
-export default connect((state) => {return {}},mapDispatchToProps)(menu);
+export default connect(mapStateToProps,mapDispatchToProps)(menu);

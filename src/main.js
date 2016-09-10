@@ -4,6 +4,7 @@ import {
   StyleSheet,
   ActivityIndicator,
   Text,
+  Image,
   View,
 } from 'react-native';
 import { Provider } from 'react-redux';
@@ -22,14 +23,17 @@ class Main extends Component {
   render() {
     if (this.state.isLoading) {
       return(
-        <View style={{flex:1, justifyContent:'center',alignItems:'center'}}>
+        <View style={{flex:1, justifyContent:'center',alignItems:'center', backgroundColor: '#4682B4'}}>
             <View style={{flex:8,justifyContent:'center'}}>
-              <Text style={{fontSize:32,color:'#4682B4',fontWeight: 'bold'}}>CAMEMIS</Text>
+              <Image
+                source={require('./images/camemis-logo-home.png')}
+                style={{width:200, resizeMode: 'contain'}}
+              />
             </View>
             <View style={{justifyContent:'center',flex:2}}>
               <ActivityIndicator
                   animating={true}
-                  color="#4682B4"
+                  color="#fff"
                   size="large"
                 />
             </View>

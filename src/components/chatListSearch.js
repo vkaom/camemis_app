@@ -6,9 +6,10 @@ import {
   View,
   Image,
   TouchableHighlight,
+  TextInput,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-module.exports = class CamemisToolbar extends Component{
+module.exports = class ChatListSearch extends Component{
     constructor(props) {
       super(props);
     }
@@ -17,24 +18,30 @@ module.exports = class CamemisToolbar extends Component{
       return(
         <View style={[styles.toolbar, this.props.styles]}>
           <TouchableHighlight style={styles.toolbarNavIcon} onPress={()=>{this.props.onNavIconPress()}} underlayColor="#4682B6" >
-            <Icon name={this.props.navIcon} size={25} color="#fff" />
+            <Icon name={this.props.navIcon} size={25} color="#ccc" />
           </TouchableHighlight>
           <View style={styles.toolbarMain}>
-            <View style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
-              <Text style={styles.toolbarTitle}>{this.props.title}</Text>
+            <View style={{flex: 1, alignItems: 'stretch',}}>
+              <TextInput
+                style={styles.input}
+                placeholder="Search user"
+                blurOnSubmit = {true}
+                underlineColorAndroid = 'transparent'
+                autoFocus = {true}
+                tintColor = {'green'}
+              />
             </View>
             {this._renderActions()}
           </View>
         </View>
       );
     }
-
     _renderActions(){
       if(this.props.actions && this.props.actions.length > 0){
         return this.props.actions.map(function(object, i){
           return (
             <TouchableHighlight style={styles.toolbarAction} key={i} onPress={()=>{this.props.onActionSelected(object.action)}} underlayColor="#4682B6">
-              <Icon name={object.icon} size={20} color="#ffffff" />
+              <Icon name={object.icon} size={20} color="#ccc" />
             </TouchableHighlight>
           );
         }, this)
@@ -44,14 +51,15 @@ module.exports = class CamemisToolbar extends Component{
     }
 }
 
-
 var styles = StyleSheet.create({
   toolbar: {
     flexDirection: 'row',
     paddingTop:5,
     paddingBottom:5,
-    backgroundColor: '#4682B4',
+    backgroundColor: '#fff',
     height: 60,
+    borderBottomColor: '#bbb',
+    borderBottomWidth: StyleSheet.hairlineWidth
   },
   toolbarNavIcon: {
     flex: 1,
@@ -76,5 +84,20 @@ var styles = StyleSheet.create({
     alignItems: 'center',
     padding:5,
     //backgroundColor: 'yellow',
-  }
+  },
+  input:{
+      // padding: 4,
+      // height: 40,
+      // borderColor: '#DDDDDD',
+      // borderWidth: 1,
+      // borderRadius: 5,
+      // marginTop: 10,
+      // marginBottom: 10,
+      // width:250,
+      // alignSelf: 'center',
+      // color: '#000000',
+      fontSize: 16,
+      borderColor: 'gray',
+      borderWidth: 0,
+  },
 });

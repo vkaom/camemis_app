@@ -5,7 +5,8 @@ export default new LocalizedStrings({
       ...global.en,
       USERNAME:"Username",
       PASSWORD:"Password",
-      "SIGN_IN": "Sign In"
+      "SIGN_IN": "Sign In",
+      "ROLE" : "Role"
     }
   ,
   kh: {
@@ -13,5 +14,6 @@ export default new LocalizedStrings({
     USERNAME:"ឈ្មោះ",
     PASSWORD:"លេខសំងាត់",
     SIGN_IN: "ចូលប្រើ",
+    "ROLE" : "តួនាទី"
   },
 });

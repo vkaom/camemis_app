@@ -2,6 +2,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { StyleSheet,Navigator, View } from 'react-native';
+import { bindActionCreators } from 'redux';
+import { ActionCreators } from '../actions';
 import CamemisToolbar from '../components/toolbar';
 import Dashboard from '../components/dashboard';
 import Academic from '../components/academic';
@@ -10,6 +12,7 @@ import Attendance from '../components/attendance';
 import Discipline from '../components/discipline';
 import Transcript from '../components/transcript';
 import ChatList from '../components/chatList';
+import ChatRoom from '../components/chatRoom';
 import {navOnDidFocus} from '../actions/navigator';
 var MUNUROUTES = {
     dashboard: {
@@ -38,7 +41,11 @@ var MUNUROUTES = {
     },
     chatList: {
       Component:ChatList,
-      title:'ChatList'
+      title:'Chat List'
+    },
+    chatRoom: {
+      Component:ChatRoom,
+      title:'Chat Room'
     },
 };
 var toolbarActions = [
@@ -54,7 +61,7 @@ class CAMEMISNavigatorMenu extends Component{
       <Navigator
           ref={this.props.refName}
           style={styles.container}
-          initialRoute={{name: 'dashboard'}}
+          initialRoute={{name: 'chatRoom'}}
           renderScene={(route, navigator) =>this.renderScene(route, navigator)}
           configureScene={(route, routeStack) => Navigator.SceneConfigs.FloatFromRight}
           onDidFocus={(route) => {
@@ -78,7 +85,7 @@ class CAMEMISNavigatorMenu extends Component{
         return (
           <View style={{flex: 1,}}>
             <View>
-              <CamemisToolbar title={CamemisRoute.title} openDrawer={this._openDrawer} onActionSelected={this._onActionSelected} actions={toolbarActions} />
+              <CamemisToolbar navIcon="bars" title={CamemisRoute.title} onNavIconPress={this._openDrawer} onActionSelected={this._onActionSelected} actions={toolbarActions} />
             </View>
             <View style={styles.container}>
               <MySceneComponent route={route} navigator={navigator} />
@@ -115,4 +122,13 @@ const styles = StyleSheet.create({
       shadowColor: "#000000",
   },
 });
+const mapStateToProps = (state) => {
+  return {
+    login: state.login,
+    school: state.school,
+  }
+}
+function mapDispatchToProps(dispatch){
+  return bindActionCreators(ActionCreators, dispatch);
+}
 export default connect()(CAMEMISNavigatorMenu);
