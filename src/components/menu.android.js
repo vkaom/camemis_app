@@ -11,7 +11,7 @@ var toolbarActions = [
   {title: 'Chat List', icon: 'comment', action: 'chatList'},
 ];
 
-export default class menu extends Component{
+class menu extends Component{
   constructor(props){
       super(props);
       this.renderDrawerContent = this.renderDrawerContent.bind(this);
