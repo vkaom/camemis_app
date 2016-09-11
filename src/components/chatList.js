@@ -31,16 +31,21 @@ class ChatListCom extends Component {
     };
   }
   componentWillReceiveProps(nextProps) {
-    if (this.props.navOnDidFocus !== nextProps.navOnDidFocus) {
-      //this._fetchChatList();
-    }
+    // if (this.props.navOnDidFocus !== nextProps.navOnDidFocus) {
+    //   this._fetchChatList();
+    // }
   }
-  componentDidMount() {}
-  componentWillUpdate(nextProps) {}
+  componentDidMount(){
+    this._fetchChatList();
+  }
   _onRefresh() {
-    //this.props.fetchChatList()
+    //this._fetchChatList();
   }
-  _fetchChatList(){}
+  _fetchChatList(){
+    this.props.fetchChatList().then(() => {
+      this.setState({isLoading: false});
+    });
+  }
   _setSearchModalVisible(visible){
     this.setState({searchModalVisible: visible});
   }
@@ -83,25 +88,40 @@ class ChatListCom extends Component {
   }
   render() {
     if (this.state.isLoading) {
-      //return this._renderLoadingView();
+      return this._renderLoadingView();
     }
     return (
       <View style={{flex: 1}}>
         <CamemisToolbar navIcon="chevron-left" navigator={this.props.navigator} onNavIconPress={() => this.props.navigator.pop()} title="Chat" onActionSelected={this._onActionSelected} actions={toolbarActions} />
         {this._renderSearchModal()}
-        <ScrollView style={styles.container} contentContainerStyle={{paddingTop:10}}>
-          <TouchableHighlight onPress={()=>{this.props.navigator.push({name:'chatRoom'})}}>
-          <View style={styles.chatItemList}>
-            <Image
-              source={require('../images/av2.png')}
-              style={styles.thumbnail}
+        <ScrollView
+          style={styles.container}
+          contentContainerStyle={{paddingTop:10}}
+          refreshControl={
+            <RefreshControl
+              refreshing={this.state.refreshing}
+              onRefresh={this._onRefresh.bind(this)}
             />
-            <View style={styles.rightContainer}>
-              <Text style={styles.name}>Rada K.</Text>
-              <Text style={styles.lastChatText}>Hello, how are you?</Text>
-            </View>
-          </View>
-          </TouchableHighlight>
+          }
+        >
+          {
+            this.props.list.map(function(object, i){
+              return (
+                <TouchableHighlight onPress={()=>{this.props.navigator.push({name:'chatRoom'})}} key={i}>
+                  <View style={styles.chatItemList}>
+                    <Image
+                      source={require('../images/av1.png')}
+                      style={styles.thumbnail}
+                    />
+                    <View style={styles.rightContainer}>
+                      <Text style={styles.name}>{object.name}</Text>
+                      <Text style={styles.lastChatText}>{object.lastMessage}</Text>
+                    </View>
+                  </View>
+                </TouchableHighlight>
+              );
+            }, this)
+          }
         </ScrollView>
       </View>
     );
@@ -141,6 +161,7 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state) => {
   return {
     navOnDidFocus: state.navigator.navOnDidFocus,
+    list: state.chat.list
   }
 }
 function mapDispatchToProps(dispatch){

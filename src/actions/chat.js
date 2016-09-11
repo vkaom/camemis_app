@@ -1,8 +1,7 @@
 import * as types from './actionTypes';
 import Api from '../lib/api';
+import * as config from '../config/';
 import {ToastAndroid} from 'react-native';
-
-var baseUrl;
 
 export function receiveChatList(data) {
   return {
@@ -10,17 +9,23 @@ export function receiveChatList(data) {
     data: data
   };
 }
+export function receiveChatMessage(data) {
+  return {
+    type: types.RECEIVE_CHAT_MESSAGE,
+    data: data
+  };
+}
 export function fetchChatList() {
   return (dispatch, getState) => {
-
-    var baseUrl = getState().schoolSetting.MOBILE_URL;
-    const params = [
-      //`i=${encodeURIComponent(ingredients)}`,
-      //'p=1'
-    ].join('&')
-
-    return Api.get('https://raw.githubusercontent.com' + `/facebook/react-native/master/docs/MoviesExample.json`).then( resp => {
-      dispatch(receiveChatList(resp.movies))
+    const params = {
+      //action_key: "Pu0QUvj82x",
+      //url: schoolId,
+    }
+    return Api.get(config.app_api_url+'/chat', params).then( resp => {
+      if(resp.success == true){
+        console.log(resp.data);
+        dispatch(receiveChatList(resp.data))
+      }
     }).catch( (ex) => {
       var exText = "" + ex;
       ToastAndroid.show(exText, ToastAndroid.SHORT)

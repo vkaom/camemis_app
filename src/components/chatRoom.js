@@ -1,9 +1,3 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
-
 import React, { Component } from 'react';
 import {
   StyleSheet,
@@ -15,30 +9,40 @@ import {
   ScrollView,
   TextInput,
   TouchableHighlight,
+  RefreshControl,
 } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions';
+import * as config from '../config/';
 import '../lib/UserAgent';
 import io from 'socket.io-client/socket.io';
 import Icon from 'react-native-vector-icons/FontAwesome';
+
+var roomId;
 class ChatRoom extends Component {
   constructor(props) {
     super(props);
     this.state = {
-
+      refreshing: false,
+      isLoading: true,
+      message: "",
     };
-    // var nodeServerUrl = 'http://192.168.0.101:8081';
-    // //var nodeServerUrl = 'http://admin-tool.camemis.de:8081';
+
     // this.socket = io(nodeServerUrl, {transports: ['websocket'], jsonp: false});
-    //this.chatSocket = io(nodeServerUrl + '/chat', {transports: ['websocket'], jsonp: false});
+    this.chatSocket = io(config.app_node_url + '/chat', {transports: ['websocket'], jsonp: false});
+    var room = ['Pu0QUvj82xZ15AcO0PTe6L2EnOLNTB1QJaH', '6E6B3F2E-DC84-4C'];
+    this.chatSocket.emit('joinroom', room);
   }
   componentDidMount() {
-    // this.socket.emit('getUserId', this.props.tokenId);
-    // this.socket.on('receiveChatNotification', function (data) {
-    //   console.log('----------------------CHAT MESSAGE----------------------');
-    //   console.log(data);
-    // });
+    this.setState({messageList: {message: 'hi'}});
+    this.chatSocket.on('chatmessage', function (data) {
+      this.props.receiveChatMessage(data);
+    });
+    this.props.receiveChatMessage([{message: 'Hi'}]);
+    this.chatSocket.on('getroom', function (data) {
+      roomId = data;
+    });
   }
   _renderPostItem(){
     return (
@@ -93,25 +97,45 @@ class ChatRoom extends Component {
       </View>
     );
   }
+  _onRefresh() {
+    //this._fetchChatList();
+  }
+  _sendMessage = () => {
+    this.chatSocket.emit('chatmessage', roomId, {
+        PROFILE_PHOTO: '/public/nifty-bootstrap/img/av1.png',
+        NAME: 'Thuận Trần Sĩ',
+        MESSAGE: this.state.message,
+        TIME: '4:00 PM',
+        RECEIVE_ID: '6E6B3F2E-DC84-4C',
+        ID: 'Pu0QUvj82xZ15AcO0PTe6L2EnOLNTB1QJaH'
+    });
+    this.setState({message: ''});
+  }
   render() {
     return(
       <View style={styles.container}>
         <ScrollView>
-          {this._renderPostItem()}
+        {
+          this.props.messageList.map(function(object, i){
+            return (
+              <Text key={i}>{object.message}</Text>
+            );
+          })
+        }
         </ScrollView>
-        <View style={{borderTopColor: '#bbb',borderTopWidth: StyleSheet.hairlineWidth,
-        flexDirection: 'row',justifyContent:'center', alignItems:'center'}}>
+        <View style={{borderTopColor: '#bbb',borderTopWidth: StyleSheet.hairlineWidth,flexDirection: 'row',justifyContent:'center', alignItems:'center'}}>
           <View style={{flex: 11}}>
-          <TextInput
-            style={styles.input}
-            placeholder="Write a message..."
-            blurOnSubmit = {true}
-            underlineColorAndroid = 'transparent'
-            autoFocus = {true}
-            tintColor = {'green'}
-          />
+            <TextInput
+              style={styles.input}
+              placeholder="Write a message..."
+              blurOnSubmit = {true}
+              underlineColorAndroid = 'transparent'
+              autoFocus = {true}
+              tintColor = {'green'}
+              onChangeText={(text) => this.setState({message:text})} value={this.state.message}
+            />
           </View>
-          <TouchableHighlight style={{backgroundColor:'#4682B4',padding:15}}>
+          <TouchableHighlight style={{backgroundColor:'#4682B4',padding:15}} onPress={()=>{this._sendMessage()}}>
             <Icon name="send-o" size={20} color="#fff" />
           </TouchableHighlight>
         </View>
@@ -170,7 +194,7 @@ const styles = StyleSheet.create({
 });
 const mapStateToProps = (state) => {
   return {
-    tokenId: state.login.tokenId
+    messageList: state.chat.messageList,
   }
 }
 function mapDispatchToProps(dispatch){
