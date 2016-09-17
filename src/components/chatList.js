@@ -16,7 +16,7 @@ import ChatListSearch from './chatListSearch';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions';
-
+import t from '../languages/chat';
 var toolbarActions = [
   {title: 'Search', icon: 'search', action: 'search'},
 ];
@@ -34,6 +34,9 @@ class ChatListCom extends Component {
     // if (this.props.navOnDidFocus !== nextProps.navOnDidFocus) {
     //   this._fetchChatList();
     // }
+  }
+  componentWillMount(){
+    t.setLanguage(this.props.language);
   }
   componentDidMount(){
     this._fetchChatList();
@@ -60,7 +63,7 @@ class ChatListCom extends Component {
         }}
         style={{flex:1,backgroundColor: 'yellow', margin:0, padding:0}}
         >
-        <ChatListSearch navIcon="chevron-left" navigator={this.props.navigator} title="Chat" onNavIconPress={this._setSearchModalVisible.bind(this, false)} onActionSelected={this._onActionSelected} actions={toolbarActions} />
+        <ChatListSearch navIcon="chevron-left" navigator={this.props.navigator} placeholder={t.SEARCH_USER} onNavIconPress={this._setSearchModalVisible.bind(this, false)} onActionSelected={this._onActionSelected} actions={toolbarActions} />
 
       </Modal>
     );
@@ -68,7 +71,7 @@ class ChatListCom extends Component {
   _renderLoadingView() {
     return (
       <View style={{flex: 1}}>
-        <CamemisToolbar navIcon="chevron-left" navigator={this.props.navigator} title="Chat" onActionSelected={this._onActionSelected} actions={toolbarActions} />
+        <CamemisToolbar navIcon="chevron-left" navigator={this.props.navigator} title={t.CHAT} onActionSelected={this._onActionSelected} actions={toolbarActions} />
         <View style={{flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center',backgroundColor: '#FFFFFF',}}>
           <Text>
             Loading...
@@ -92,7 +95,7 @@ class ChatListCom extends Component {
     }
     return (
       <View style={{flex: 1}}>
-        <CamemisToolbar navIcon="chevron-left" navigator={this.props.navigator} onNavIconPress={() => this.props.navigator.pop()} title="Chat" onActionSelected={this._onActionSelected} actions={toolbarActions} />
+        <CamemisToolbar navIcon="chevron-left" navigator={this.props.navigator} onNavIconPress={() => this.props.navigator.pop()} title={t.CHAT} onActionSelected={this._onActionSelected} actions={toolbarActions} />
         {this._renderSearchModal()}
         <ScrollView
           style={styles.container}
@@ -107,10 +110,10 @@ class ChatListCom extends Component {
           {
             this.props.list.map(function(object, i){
               return (
-                <TouchableHighlight onPress={()=>{this.props.navigator.push({name:'chatRoom'})}} key={i}>
+                <TouchableHighlight onPress={()=>{this.props.navigator.push({name:'chatRoom', toId: object.id})}} key={i}>
                   <View style={styles.chatItemList}>
                     <Image
-                      source={require('../images/av1.png')}
+                      source={{uri: object.profileImage}}
                       style={styles.thumbnail}
                     />
                     <View style={styles.rightContainer}>
@@ -161,7 +164,8 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state) => {
   return {
     navOnDidFocus: state.navigator.navOnDidFocus,
-    list: state.chat.list
+    list: state.chat.list,
+    language: state.schoolSetting.LANGUAGE,
   }
 }
 function mapDispatchToProps(dispatch){

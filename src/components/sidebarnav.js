@@ -11,12 +11,13 @@ import {
     Dimensions,
     ScrollView,
 } from 'react-native';
+
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import MenuItem from '../components/menuItem';
-
+import t from '../languages/menu';
 var widthSideBar = 280;
 class CamemisSideBarNav extends Component{
     constructor(props) {
@@ -24,9 +25,12 @@ class CamemisSideBarNav extends Component{
       this.state = {
         height: Dimensions.get('window').height,
         width: Dimensions.get('window').width,
-        tab: 'academic',
+        tab: 'dashboard',
         menu: 'main-menu',
       };
+    }
+    componentWillMount(){
+      t.setLanguage(this.props.schoolSetting.LANGUAGE);
     }
     _changeRoute = (route) => {
         this.setState({tab: route});
@@ -64,44 +68,44 @@ class CamemisSideBarNav extends Component{
       return(
         <View style={styles.wrapperdropdown}>
           <MenuItem
-            title="Dashboard"
+            title={t.DASHBOARD}
             icon="tachometer"
             selected={this.state.tab === 'dashboard'}
             onPress={this._changeRoute.bind(this, 'dashboard')}
           />
           <MenuItem
-            title="Academic"
+            title={t.ACADEMIC}
             icon="graduation-cap"
             selected={this.state.tab === 'academic'}
             onPress={this._changeRoute.bind(this, 'academic')}
             style={{backgroundColor: 'green'}}
           />
           <MenuItem
-            title="Schedule"
+            title={t.SCHEDULE}
             icon="calendar-check-o"
             selected={this.state.tab === 'schedule'}
             onPress={this._changeRoute.bind(this, 'schedule')}
           />
           <MenuItem
-            title="Attendance"
+            title={t.ATTENDANCE}
             icon="pencil"
             selected={this.state.tab === 'attendance'}
             onPress={this._changeRoute.bind(this, 'attendance')}
           />
           <MenuItem
-            title="Discipline"
+            title={t.DISCIPLINE}
             icon="paw"
             selected={this.state.tab === 'discipline'}
             onPress={this._changeRoute.bind(this, 'discipline')}
           />
           <MenuItem
-            title="Transcript"
+            title={t.TRANSCRIPT}
             icon="star-o"
             selected={this.state.tab === 'transcript'}
             onPress={this._changeRoute.bind(this, 'transcript')}
           />
           <MenuItem
-            title="Logout"
+            title={t.LOGOUT}
             icon="sign-out"
             selected={false}
             onPress={this._logout.bind(this)}
@@ -113,13 +117,13 @@ class CamemisSideBarNav extends Component{
       return(
         <View style={styles.wrapperdropdown}>
         <MenuItem
-          title="Class 01"
+          title={t.CLASS + " 01"}
           icon="paw"
           selected={this.state.tab === 'discipline'}
           onPress={this._changeRoute.bind(this, 'discipline')}
         />
         <MenuItem
-          title="Class 02"
+          title={t.CLASS + " 02"}
           icon="star-o"
           selected={this.state.tab === 'transcript'}
           onPress={this._changeRoute.bind(this, 'transcript')}
@@ -187,6 +191,7 @@ const mapStateToProps = (state) => {
   return {
     login: state.login,
     school: state.school,
+    schoolSetting: state.schoolSetting,
   }
 }
 function mapDispatchToProps(dispatch){

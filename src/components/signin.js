@@ -79,9 +79,9 @@ class signin extends Component{
                       selectedValue={'1'}
                       onValueChange={(role) => {this.setState({role: role})}}
                       >
-                      <Picker.Item label="Parents" value="3" />
-                      <Picker.Item label="Teacher" value="2" />
-                      <Picker.Item label="Student" value="1" />
+                      <Picker.Item label={t.PARENT} value="3" />
+                      <Picker.Item label={t.TEACHER} value="2" />
+                      <Picker.Item label={t.STUDENT} value="1" />
                     </Picker>
                     <TouchableOpacity activeOpacity={0.8} style={{backgroundColor:"#4682B4", padding:10, borderRadius: 25}} onPress={()=>{this.singIn()}}>
                       <View style={{flex:1, flexDirection: 'row', justifyContent:"center", alignItems: "center"}}>
@@ -92,7 +92,7 @@ class signin extends Component{
                     <TouchableOpacity activeOpacity={0.8} style={{backgroundColor:"#4682B4", padding:10, borderRadius: 25, marginTop:5,}} onPress={()=>{this.forgetSchool()}}>
                       <View style={{flex:1, flexDirection: 'row', justifyContent:"center", alignItems: "center"}}>
                         <Icon name="sign-out" size={30} color="#fff" />
-                        <Text style={{color:'#FFFFFF', fontSize: 16, marginLeft:10}}>Forget School</Text>
+                        <Text style={{color:'#FFFFFF', fontSize: 16, marginLeft:10}}>{t.CHANGE_SCHOOL}</Text>
                       </View>
                     </TouchableOpacity>
                   </View>

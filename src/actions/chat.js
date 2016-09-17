@@ -9,9 +9,9 @@ export function receiveChatList(data) {
     data: data
   };
 }
-export function receiveChatMessage(data) {
+export function receiveChatMessageList(data) {
   return {
-    type: types.RECEIVE_CHAT_MESSAGE,
+    type: types.RECEIVE_CHAT_MESSAGE_LIST,
     data: data
   };
 }
@@ -23,11 +23,30 @@ export function fetchChatList() {
     }
     return Api.get(config.app_api_url+'/chat', params).then( resp => {
       if(resp.success == true){
-        console.log(resp.data);
+        //console.log(resp.data);
         dispatch(receiveChatList(resp.data))
       }
     }).catch( (ex) => {
+      //console.log(ex);
       var exText = "" + ex;
+      ToastAndroid.show(exText, ToastAndroid.SHORT)
+    });
+  }
+}
+export function fetchChatMessageList() {
+  return (dispatch, getState) => {
+    const params = {
+      action_key: "getChatMessageList"
+    };
+    return Api.post(config.app_api_url+'/chat', params).then( resp => {
+      console.log(resp);
+      if(resp.success == true){
+        console.log(resp.data);
+        dispatch(receiveChatMessageList(resp.data))
+      }
+    }).catch( (ex) => {
+      var exText = "" + ex;
+      console.log(exText);
       ToastAndroid.show(exText, ToastAndroid.SHORT)
     });
   }

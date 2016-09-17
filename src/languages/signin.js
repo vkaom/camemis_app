@@ -6,7 +6,11 @@ export default new LocalizedStrings({
       USERNAME:"Username",
       PASSWORD:"Password",
       "SIGN_IN": "Sign In",
-      "ROLE" : "Role"
+      "ROLE" : "Role",
+      "CHANGE_SCHOOL" : "Change School",
+      "TEACHER": "Teacher",
+      "STUDENT" : "Student",
+      "PARENT"  : "Parent",
     }
   ,
   kh: {
@@ -14,6 +18,10 @@ export default new LocalizedStrings({
     USERNAME:"ឈ្មោះ",
     PASSWORD:"លេខសំងាត់",
     SIGN_IN: "ចូលប្រើ",
-    "ROLE" : "តួនាទី"
+    "ROLE" : "តួនាទី",
+    "CHANGE_SCHOOL" : "ប្តូរសាលា",
+    "TEACHER": "គ្រូបង្រៀន",
+    "STUDENT" : "កូនសិស្ស",
+    "PARENT"  : "អាណាព្យាបាល",
   },
 });

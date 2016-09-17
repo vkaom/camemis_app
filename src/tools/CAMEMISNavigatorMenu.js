@@ -1,7 +1,7 @@
 'use strict';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { StyleSheet,Navigator, View } from 'react-native';
+import { StyleSheet,Navigator, View,Text } from 'react-native';
 import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions';
 import CamemisToolbar from '../components/toolbar';
@@ -14,40 +14,8 @@ import Transcript from '../components/transcript';
 import ChatList from '../components/chatList';
 import ChatRoom from '../components/chatRoom';
 import {navOnDidFocus} from '../actions/navigator';
-var MUNUROUTES = {
-    dashboard: {
-      Component:Dashboard,
-      title:'My Dashboard'
-    },
-    academic: {
-      Component:Academic,
-      title:'My Academic'
-    },
-    schedule: {
-      Component:Schedule,
-      title:'My Schedule'
-    },
-    attendance: {
-      Component:Attendance,
-      title:'My Attendance'
-    },
-    discipline: {
-      Component:Discipline,
-      title:'My Discipline'
-    },
-    transcript: {
-      Component:Transcript,
-      title:'My Transcript'
-    },
-    chatList: {
-      Component:ChatList,
-      title:'Chat List'
-    },
-    chatRoom: {
-      Component:ChatRoom,
-      title:'Chat Room'
-    },
-};
+import t from '../languages/menu';
+var MUNUROUTES;
 var toolbarActions = [
   {title: 'Chat List', icon: 'comment', action: 'chatList'},
 ];
@@ -55,7 +23,44 @@ class CAMEMISNavigatorMenu extends Component{
   constructor(props) {
     super(props);
   }
-
+  componentWillMount(){
+    var language = this.props.schoolSetting.LANGUAGE;
+    t.setLanguage(language);
+    MUNUROUTES = {
+        dashboard: {
+          Component:Dashboard,
+          title: t.getString("DASHBOARD", language)
+        },
+        academic: {
+          Component:Academic,
+          title:t.getString("ACADEMIC", language)
+        },
+        schedule: {
+          Component:Schedule,
+          title:t.getString("SCHEDULE", language)
+        },
+        attendance: {
+          Component: Attendance ,
+          title:t.getString("ATTENDANCE", language)
+        },
+        discipline: {
+          Component:Discipline,
+          title:t.getString("DISCIPLINE", language)
+        },
+        transcript: {
+          Component:Transcript,
+          title:t.getString("TRANSCRIPT", language)
+        },
+        chatList: {
+          Component:ChatList,
+          title:t.getString("CHAT", language)
+        },
+        chatRoom: {
+          Component:ChatRoom,
+          title:t.getString("CHAT_ROOM", language)
+        },
+    };
+  }
   render(){
     return(
       <Navigator
@@ -123,12 +128,14 @@ const styles = StyleSheet.create({
   },
 });
 const mapStateToProps = (state) => {
+  const lang = state.schoolSetting.LANGUAGE;
   return {
     login: state.login,
     school: state.school,
+    schoolSetting: state.schoolSetting,
   }
 }
 function mapDispatchToProps(dispatch){
   return bindActionCreators(ActionCreators, dispatch);
 }
-export default connect()(CAMEMISNavigatorMenu);
+export default connect(mapStateToProps)(CAMEMISNavigatorMenu);

@@ -24,7 +24,7 @@ module.exports = class ChatListSearch extends Component{
             <View style={{flex: 1, alignItems: 'stretch',}}>
               <TextInput
                 style={styles.input}
-                placeholder="Search user"
+                placeholder={this.props.placeholder}
                 blurOnSubmit = {true}
                 underlineColorAndroid = 'transparent'
                 autoFocus = {true}

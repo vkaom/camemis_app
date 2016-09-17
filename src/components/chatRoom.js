@@ -18,7 +18,7 @@ import * as config from '../config/';
 import '../lib/UserAgent';
 import io from 'socket.io-client/socket.io';
 import Icon from 'react-native-vector-icons/FontAwesome';
-
+import t from '../languages/chat';
 var roomId;
 class ChatRoom extends Component {
   constructor(props) {
@@ -35,64 +35,48 @@ class ChatRoom extends Component {
     this.chatSocket.emit('joinroom', room);
   }
   componentDidMount() {
-    this.setState({messageList: {message: 'hi'}});
+    this._fetchChatMessageList();
+
+    //socket events
     this.chatSocket.on('chatmessage', function (data) {
       this.props.receiveChatMessage(data);
     });
-    this.props.receiveChatMessage([{message: 'Hi'}]);
     this.chatSocket.on('getroom', function (data) {
       roomId = data;
     });
   }
-  _renderPostItem(){
+  componentWillMount(){
+    t.setLanguage(this.props.language);
+  }
+  _fetchChatMessageList(){
+    this.props.fetchChatMessageList().then(() => {
+      this.setState({isLoading: false});
+    });
+  }
+  _renderLoadingView() {
+    return (
+      <View style={{flex: 1}}>
+        <View style={{flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center',backgroundColor: '#FFFFFF',}}>
+          <Text>
+            Loading...
+          </Text>
+        </View>
+      </View>
+    );
+  }
+  _renderMessageList(){
     return (
       <View style={styles.postWrapper}>
         <View style={styles.postMiddle}>
-          <View style={{flexDirection: 'row', paddingBottom:10,}}>
-            <Image
-              source={require('../images/av1.png')}
-              style={{width:40, height:40, borderRadius:30, resizeMode: 'contain', marginRight: 10}}
-            />
-            <View style={{backgroundColor:'#ddd', borderRadius: 30, alignItems:'center',padding:10,}}>
-              <Text style={styles.postTime}>Hi!</Text>
-            </View>
-          </View>
-          <View style={{flexDirection: 'row', paddingBottom:10,}}>
-            <Image
-              source={require('../images/av1.png')}
-              style={{width:40, height:40, borderRadius:30, resizeMode: 'contain', marginRight: 10}}
-            />
-            <View style={{backgroundColor:'#ddd', borderRadius: 30, alignItems:'center',padding:10,}}>
-              <Text style={styles.postTime}>How are you?</Text>
-            </View>
-          </View>
-          <View style={{flexDirection: 'row', paddingBottom:10, justifyContent: 'flex-end'}}>
-            <View style={{backgroundColor:'#4682B4', borderRadius: 30, alignItems:'center',padding:10,}}>
-              <Text style={[styles.postTime,{color: 'white'}]}>Fine, thanks. and u?</Text>
-            </View>
-            <Image
-              source={require('../images/av2.png')}
-              style={{width:40, height:40, borderRadius:30, resizeMode: 'contain', marginLeft: 10}}
-            />
-          </View>
-          <View style={{flexDirection: 'row', paddingBottom:10, justifyContent: 'flex-end'}}>
-            <View style={{backgroundColor:'#4682B4', borderRadius: 30, alignItems:'center',padding:10,}}>
-              <Text style={[styles.postTime,{color: 'white'}]}>Fine, thanks. and u?</Text>
-            </View>
-            <Image
-              source={require('../images/av2.png')}
-              style={{width:40, height:40, borderRadius:30, resizeMode: 'contain', marginLeft: 10}}
-            />
-          </View>
-          <View style={{flexDirection: 'row', paddingBottom:10, justifyContent: 'flex-end'}}>
-            <View style={{backgroundColor:'#4682B4', borderRadius: 30, alignItems:'center',padding:10,}}>
-              <Text style={[styles.postTime,{color: 'white'}]}>Fine, thanks. and u?</Text>
-            </View>
-            <Image
-              source={require('../images/av2.png')}
-              style={{width:40, height:40, borderRadius:30, resizeMode: 'contain', marginLeft: 10}}
-            />
-          </View>
+          {
+            this.props.messageList.map(function(object, i){
+              return (
+                <View style={styles.chatItemList} key={i}>
+                  <Text style={styles.name}>{object.MESSAGE + " - with " + this.props.route.toId}</Text>
+                </View>
+              );
+            }, this)
+          }
         </View>
       </View>
     );
@@ -112,22 +96,21 @@ class ChatRoom extends Component {
     this.setState({message: ''});
   }
   render() {
+    if (this.state.isLoading) {
+      return this._renderLoadingView()
+    }
     return(
       <View style={styles.container}>
         <ScrollView>
         {
-          this.props.messageList.map(function(object, i){
-            return (
-              <Text key={i}>{object.message}</Text>
-            );
-          })
+            this._renderMessageList()
         }
         </ScrollView>
         <View style={{borderTopColor: '#bbb',borderTopWidth: StyleSheet.hairlineWidth,flexDirection: 'row',justifyContent:'center', alignItems:'center'}}>
           <View style={{flex: 11}}>
             <TextInput
               style={styles.input}
-              placeholder="Write a message..."
+              placeholder={t.WRITE_A_MESSAGE}
               blurOnSubmit = {true}
               underlineColorAndroid = 'transparent'
               autoFocus = {true}
@@ -195,6 +178,7 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state) => {
   return {
     messageList: state.chat.messageList,
+    language: state.schoolSetting.LANGUAGE,
   }
 }
 function mapDispatchToProps(dispatch){

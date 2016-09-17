@@ -16,6 +16,7 @@ export function checkSchool(schoolId) {
       action_key: "Pu0QUvj82x",
       url: schoolId,
     }
+    //console.log(config.app_api_url);
     return Api.post(config.app_api_url, params).then( resp => {
       //console.log(resp);
       if(resp.success == true){
@@ -24,6 +25,7 @@ export function checkSchool(schoolId) {
       }
     }).catch( (ex) => {
       var exText = "" + ex;
+      //console.log(exText);
       ToastAndroid.show(exText, ToastAndroid.SHORT)
     });
   }
