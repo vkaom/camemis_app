@@ -15,15 +15,12 @@ import {
     View
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import TimerMixin from 'react-timer-mixin';
-var personList = [
-  {name: 'Ethan Fox', img: require('../images/av2.png'), lastChatText: 'Sweet! I heard they had a great time over at the cabin. Next time we should bring the croquest set.'},
-  {name: 'John Son', img: require('../images/av3.png'), lastChatText: 'You: Nope! We are good!'},
-  {name: 'Marry', img: require('../images/av4.png'), lastChatText: 'Oh yeah? Because I think no.:)'},
-  {name: 'Steven', img: require('../images/av6.png'), lastChatText: 'Oh yeah? Because I think no.:)'},
-  {name: 'Hungary', img: require('../images/av5.png'), lastChatText: 'Oh yeah? Because I think no.:)'},
-];
-module.exports = class Academic extends Component {
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { ActionCreators } from '../actions';
+import t from '../languages/academic';
+
+class Academic extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -31,114 +28,82 @@ module.exports = class Academic extends Component {
       loaded: false,
     };
   }
-  _onRefresh() {
-    this.setState({refreshing: true});
-    TimerMixin.setTimeout(
-      () => {
-      this.setState({refreshing: false});
-      },
-      800
-    );
+  componentWillMount(){
+    t.setLanguage(this.props.schoolSetting.LANGUAGE)
   }
   render() {
     return (
-      <ScrollView
-        refreshControl={
-          <RefreshControl
-            refreshing={this.state.refreshing}
-            onRefresh={this._onRefresh.bind(this)}
-          />
-        }
-      >
-        <View>
-          <View style={styles.barInfoStyle}>
-            <Icon name="info-circle" size={20} color="#fff"/>
-            <Text style={{marginLeft:10,fontSize:18,color:'#fff'}}>Class Informations</Text>
+      <ScrollView style={styles.container}>
+        <View style={{padding:15,}}>
+          <Text style={{fontSize:16, fontWeight: 'bold',}}>{t.CLASS_INFORMATION}</Text>
+        </View>
+        <View style={{paddingLeft:15, paddingRight: 15, backgroundColor:'white', marginRight:15, marginLeft:15}}>
+          <View style={styles.row}>
+            <Text style={{fontWeight:'bold'}}>{t.ACADEMIC_YEAR}:</Text>
+            <Text>2015-2016</Text>
           </View>
-          <View style={{padding:10,backgroundColor:'#f0f8ff'}}>
-              <View style={{flex:1, flexDirection:'row',}}>
-                <Text>Year:</Text><Text style={{fontWeight: 'bold'}}> Academic Year 2015-2016</Text>
-                <Text style={{marginLeft:20}}>Grade:</Text><Text style={{fontWeight: 'bold'}}> Level 12</Text>
-              </View>
-              <View style={{flex:1, flexDirection:'row'}}>
-                <Text>Class:</Text><Text style={{fontWeight: 'bold'}}> grade 12 A</Text>
-              </View>
-              <View style={{flex:1, flexDirection:'row',}}>
-                <Text>Contact Info:</Text><Text style={{fontWeight: 'bold'}}> 012 3345 2455</Text>
-              </View>
-              <View style={{flex:1, flexDirection:'row'}}>
-                <Text>Email:</Text><Text style={{fontWeight: 'bold'}}> elt.info@elt.kh.edu</Text>
-              </View>
+          <View style={styles.row}>
+            <Text style={{fontWeight:'bold'}}>{t.GRADE}:</Text>
+            <Text>Level 12</Text>
+          </View>
+          <View style={styles.row}>
+            <Text style={{fontWeight:'bold'}}>{t.CLASS}:</Text>
+            <Text>Grade 12 A</Text>
+          </View>
+          <View style={styles.row}>
+            <Text style={{fontWeight:'bold'}}>{t.PHONE}:</Text>
+            <Text>017 48 84 40</Text>
+          </View>
+          <View style={[styles.row,styles.lastRow]}>
+            <Text style={{fontWeight:'bold'}}>{t.EMAIL}:</Text>
+            <Text>info@camemis.com.kh</Text>
           </View>
         </View>
-        <View>
-          <View style={styles.barInfoStyle}>
-            <Icon name="list-alt" size={20} color="#fff"/>
-            <Text style={{marginLeft:10,fontSize:18,color:'#fff'}}>Student Lists</Text>
+        <View style={{backgroundColor:'transparent',flex:1,padding:15, justifyContent:'space-between'}}>
+          <View style={{flex:1,  backgroundColor:'#FFA300', marginBottom:10, height:90, justifyContent: 'center',alignItems:'center'}}>
+            <Icon name="star-o" size={40} color="#ffffff" />
+            <Text style={{color:'#fff', fontSize:16,}}>{t.STUDENT_LIST}</Text>
           </View>
-          <View>
-            {this.personLists()}
-          </View>
-        </View>
-        <View>
-          <View style={styles.barInfoStyle}>
-            <Icon name="file-text" size={20} color="#fff"/>
-            <Text style={{marginLeft:10,fontSize:18,color:'#fff'}}>Teachers And Subjects</Text>
-          </View>
-          <View>
-            {this.personLists()}
+          <View style={{flex:1, flexDirection: 'row', height:90}}>
+            <View style={{flex:1, backgroundColor:'#4682B4',marginRight:10,height:90,justifyContent: 'center',alignItems:'center'}}>
+              <Icon name="pencil" size={40} color="#ffffff" />
+              <Text style={{color:'#fff', fontSize:16,}}>{t.TEACHER}</Text>
+            </View>
+            <View style={{flex:1, backgroundColor:'#4682B4',height:90,justifyContent: 'center',alignItems:'center'}}>
+              <Icon name="graduation-cap" size={40} color="#ffffff" />
+              <Text style={{color:'#fff', fontSize:16,}}>{t.SUBJECT}</Text>
+            </View>
           </View>
         </View>
       </ScrollView>
     );
   }
-  personLists() {
-    return personList.map(function(object, i){
-      return(
-        <View key={i} style={{flexDirection:'row', marginTop:5}}>
-          <Image
-            source={object['img']}
-            style={styles.thumbnail}
-          />
-          <View style={styles.rightContainer}>
-            <Text style={styles.name}>{object['name']}</Text>
-            <Text style={styles.lastChatText}>{object['lastChatText']}</Text>
-          </View>
-        </View>
-      );
-    });
-  }
+
 }
 
 const styles = StyleSheet.create({
-  barInfoStyle: {
-    flex:1,
-    padding:10,
+  container:{
+      flex: 1,
+      backgroundColor: '#f1f1f1',
+  },
+  row:{
     flexDirection:'row',
-    alignItems:'center',
-    backgroundColor:'#4682B4',
-    marginTop:10,
-    borderRadius:5,
+    justifyContent: 'space-between',
+    //alignItems: 'center',
+    borderBottomColor: '#bbb',
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    paddingTop:10,
+    paddingBottom: 10,
   },
-  chatItemList: {
-    flexDirection: 'row',
-    marginBottom: 10,
-  },
-  thumbnail: {
-    width: 45,
-    height: 45,
-    marginLeft: 10,
-    marginRight:20,
-    borderRadius:22.5,
-  },
-  rightContainer: {
-    flex: 1,
-    marginRight: 10,
-	  //backgroundColor: '#FF0000',
-  },
-  name: {
-    fontSize: 20,
-    marginBottom: 8,
-    // textAlign: 'center',
-  },
+  lastRow:{
+    borderBottomWidth: 0
+  }
 });
+
+function mapDispatchToProps(dispatch){
+  return bindActionCreators(ActionCreators, dispatch);
+}
+const mapStateToProps = (state) => {
+  return {schoolSetting:state.schoolSetting}
+}
+export default connect(mapStateToProps,mapDispatchToProps)(Academic);

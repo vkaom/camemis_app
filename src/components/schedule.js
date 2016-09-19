@@ -19,19 +19,17 @@ import {
 } from 'react-native';
 import moment from 'moment';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { ActionCreators } from '../actions';
+import t from '../languages/schedule';
+
 var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
-module.exports = class Schedule extends Component {
-  constructor(props){
-    super(props);
+class Schedule extends Component {
+  componentWillMount(){
+    t.setLanguage(this.props.schoolSetting.LANGUAGE)
   }
-  render() {
-    return (
-        <StudentSchedule />
-    );
-  }
-}
-class StudentSchedule extends Component {
   constructor(props){
     super(props);
     var myDialyData = [{starttime:'13:00PM',endtime:'14:00PM',subject:'Math',room:'RM_007',teacher:'Chun Veng',color:'#228b22'},
@@ -82,7 +80,7 @@ class StudentSchedule extends Component {
             style={[styles.tab,{backgroundColor:TabView.activeTab === 0 ?'#4682B4':'#fff',}]}
             underlayColor="#4682B4"
             onPress={() => TabView.goToPage(0)} >
-            <View><Text style={{color:TabView.activeTab === 0 ?'#fff':'#000'}}>Dialy</Text></View>
+            <View><Text style={{color:TabView.activeTab === 0 ?'#fff':'#000'}}>{t.DAILY}</Text></View>
           </TouchableHighlight>
           <View>
               {this.renderSelectDisplayDate()}
@@ -91,7 +89,7 @@ class StudentSchedule extends Component {
             style={[styles.tab,{backgroundColor:TabView.activeTab === 1 ?'#4682B4':'#fff',}]}
             underlayColor="#4682B4"
             onPress={() => TabView.goToPage(1)} >
-            <View><Text style={{color:TabView.activeTab === 1 ?'#fff':'#000'}}>Week</Text></View>
+            <View><Text style={{color:TabView.activeTab === 1 ?'#fff':'#000'}}>{t.WEEKLY}</Text></View>
           </TouchableHighlight>
       </View>
     );
@@ -283,3 +281,10 @@ const styles = StyleSheet.create({
     },
 
 });
+function mapDispatchToProps(dispatch){
+  return bindActionCreators(ActionCreators, dispatch);
+}
+const mapStateToProps = (state) => {
+  return {schoolSetting:state.schoolSetting}
+}
+export default connect(mapStateToProps,mapDispatchToProps)(Schedule);

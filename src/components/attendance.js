@@ -23,12 +23,13 @@ import moment from 'moment';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import TimerMixin from 'react-timer-mixin';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { ActionCreators } from '../actions';
+import t from '../languages/attendance';
 
 var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-var dataDialyData = [
-    {Date: 'Date',Time: 'Time', Type: 'Type', Subject:'Subject', isDialy:true,color:'#4682B4'},
-    {Date: '27/07/2016', Time: '14:00-15:00', Type: 'Absence', Subject:'Science', isDialy:true,color:'#DDDDDD'},
-    {Date: '27/07/2016', Time: '13:00-14:00', Type: 'Late', Subject:'Math', isDialy:true,color:'#DDDDDD'},];
+
 var dataAllData = [
     {Date: 'Date',Time: 'Time', Type: 'Type', Subject:'Subject', isDialy:true,color:'#4682B4'},
     {Date: '27/07/2016', Time: '14:00-15:00', Type: 'Absence', Subject:'Science', isDialy:true,color:'#DDDDDD'},
@@ -58,10 +59,15 @@ var data1stData = [
     {Date: '24/07/2015', Time: '13:00-14:00', Type: 'Late', Subject:'Math', isDialy:true,color:'#DDDDDD'},
     {Date: '17/08/2015\n to \n 17/09/2015', Time: '', Type: 'Absence', Subject:'', isDialy:false,color:'#fff8dc'},
 ];
-module.exports = class Attendance extends Component {
+class Attendance extends Component {
 
   constructor(props){
       super(props);
+      var language =  props.schoolSetting.LANGUAGE;
+      var dataDialyData = [
+          {Date: t.getString("DATE", language),Time: t.getString("TIME", language), Type: t.getString("TYPE", language), Subject:t.getString("SUBJECT", language), isDialy:true,color:'#4682B4'},
+          {Date: '27/07/2016', Time: '14:00-15:00', Type: 'Absence', Subject:'Science', isDialy:true,color:'#DDDDDD'},
+          {Date: '27/07/2016', Time: '13:00-14:00', Type: 'Late', Subject:'Math', isDialy:true,color:'#DDDDDD'},];
       this.state = {
           dataDialySource: ds.cloneWithRows(dataDialyData),
           dataAllSource: ds.cloneWithRows(dataAllData),
@@ -74,7 +80,10 @@ module.exports = class Attendance extends Component {
           loading: false,
           refreshing: false,
       };
-
+  }
+  componentWillMount(){
+    var language = this.props.schoolSetting.LANGUAGE;
+    t.setLanguage(language);
   }
   _onRefresh() {
     this.setState({refreshing: true});
@@ -96,7 +105,7 @@ module.exports = class Attendance extends Component {
                       name='calendar-check-o'
                       size={20}
                       color={TabView.activeTab === 0 ? '#4682B4' : 'rgb(0,0,0)'}
-                    /> Dialy
+                    /> {t.DAILY}
                 </Text>
             </View>
           </TouchableOpacity>
@@ -107,7 +116,7 @@ module.exports = class Attendance extends Component {
                     name='calendar'
                     size={20}
                     color={TabView.activeTab === 1 ? '#4682B4' : 'rgb(0,0,0)'}
-                  /> All
+                  /> {t.ALL}
                 </Text>
             </View>
           </TouchableOpacity>
@@ -118,7 +127,7 @@ module.exports = class Attendance extends Component {
                     name='calendar-o'
                     size={20}
                     color={TabView.activeTab === 2 ? '#4682B4' : 'rgb(0,0,0)'}
-                  /> 1st
+                  /> {t.FIRST}
                 </Text>
             </View>
           </TouchableOpacity>
@@ -129,7 +138,7 @@ module.exports = class Attendance extends Component {
                     name='calendar-o'
                     size={20}
                     color={TabView.activeTab === 3 ? '#4682B4' : 'rgb(0,0,0)'}
-                  /> 2nd
+                  /> {t.SECOND}
                 </Text>
             </View>
           </TouchableOpacity>
@@ -379,3 +388,10 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
 });
+function mapDispatchToProps(dispatch){
+  return bindActionCreators(ActionCreators, dispatch);
+}
+const mapStateToProps = (state) => {
+  return {schoolSetting:state.schoolSetting}
+}
+export default connect(mapStateToProps,mapDispatchToProps)(Attendance);
