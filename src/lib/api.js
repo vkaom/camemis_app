@@ -16,21 +16,21 @@ class Api {
     return this.xhr(route, params, 'PUT')
   }
 
-  static post(route, params) {
-    return this.xhr(route, params, 'POST')
+  static post(route, params, headers = null) {
+    return this.xhr(route, params, headers, 'POST')
   }
 
   static delete(route, params) {
     return this.xhr(route, params, 'DELETE')
   }
 
-  static xhr(route, params, verb) {
+  static xhr(route, params, headers, verb) {
     //const host = 'https://raw.githubusercontent.com'
     //const url = `${host}${route}`
     //if(true){ return false; }
     const url = route;
     let options = Object.assign({ method: verb }, params ? { body: JSON.stringify(params) } : null );
-    options.headers = Api.headers()
+    options.headers = OObject.assign(Api.headers(), headers);
     //console.log(options);
     return fetch(url, options)
       .then( resp => {
