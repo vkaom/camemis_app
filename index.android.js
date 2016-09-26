@@ -4,10 +4,10 @@
  * @flow
  */
 
-import React, { Component } from 'react';
-import {
-  AppRegistry
-} from 'react-native';
+ import React, { Component } from 'react';
+ import {
+   AppRegistry
+ } from 'react-native';
 
-import Main from './src/main';
-AppRegistry.registerComponent('camemis_app', () => Main);
+ import Main from './src/main';
+ AppRegistry.registerComponent('camemis_app', () => Main);

@@ -30,7 +30,7 @@ class Api {
     //if(true){ return false; }
     const url = route;
     let options = Object.assign({ method: verb }, params ? { body: JSON.stringify(params) } : null );
-    options.headers = OObject.assign(Api.headers(), headers);
+    options.headers = Object.assign(Api.headers(), headers);
     //console.log(options);
     return fetch(url, options)
       .then( resp => {
